@@ -97,28 +97,28 @@
                     </div>
                 </a>
 
-                <!-- Desktop Navigation Menu (8 Categories) -->
-                <nav class="hidden lg:flex items-center gap-1 text-sm font-semibold text-slate-700">
-                    <button onclick="filterByCategory('all')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 text-emerald-600 bg-emerald-50 transition flex items-center gap-1.5" data-cat="all"><i class="fa-solid fa-house text-xs"></i> Home</button>
-                    <button onclick="filterByCategory('how-to')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="how-to">How-To</button>
-                    <button onclick="filterByCategory('finance')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="finance">Finance</button>
-                    <button onclick="filterByCategory('health')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="health">Health</button>
-                    <button onclick="filterByCategory('tools')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="tools">Calculators</button>
-                    <button onclick="filterByCategory('automotive')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="automotive">Automotive</button>
-                    <button onclick="filterByCategory('lifestyle')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="lifestyle">Lifestyle</button>
-                    <button onclick="filterByCategory('culture')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="culture">Culture</button>
-                    
-                    <span class="h-4 w-px bg-slate-200 mx-1"></span>
-                    <button onclick="showStaticPage('write-for-us')" class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-bold hover:bg-emerald-100 transition flex items-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-pen-nib"></i> Write for Us
+                <!-- Desktop Navigation Menu -->
+                <nav class="hidden xl:flex items-center gap-1.5 text-sm font-medium text-slate-600">
+                    <button onclick="filterByCategory('all')" class="category-nav-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition flex items-center gap-1.5 text-emerald-700 bg-emerald-50 font-semibold" data-cat="all">
+                        <i class="fa-solid fa-house text-xs"></i> Home
                     </button>
+                    <button onclick="filterByCategory('how-to')" class="category-nav-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition" data-cat="how-to">How-To</button>
+                    <button onclick="filterByCategory('finance')" class="category-nav-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition" data-cat="finance">Finance</button>
+                    <button onclick="filterByCategory('health')" class="category-nav-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition" data-cat="health">Health</button>
+                    <button onclick="filterByCategory('tools')" class="category-nav-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition" data-cat="tools">Calculators</button>
+                    <button onclick="filterByCategory('automotive')" class="category-nav-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition" data-cat="automotive">Automotive</button>
+                    <button onclick="filterByCategory('lifestyle')" class="category-nav-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition" data-cat="lifestyle">Lifestyle</button>
+                    <button onclick="filterByCategory('culture')" class="category-nav-btn px-3 py-1.5 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition" data-cat="culture">Culture</button>
                 </nav>
 
-                <!-- Clean Search Quick Action -->
+                <!-- Right Actions: Write for Us & Search -->
                 <div class="flex items-center gap-3">
-                    <div class="relative hidden sm:block w-44">
-                        <input type="text" onkeyup="handleSearch(this.value)" placeholder="Quick search..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-100/80 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                    <button onclick="showStaticPage('write-for-us')" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-emerald-300/80 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition shadow-xs">
+                        <i class="fa-solid fa-pen-nib text-emerald-600"></i> Write for Us
+                    </button>
+                    <div class="relative w-40 md:w-48">
+                        <input type="text" onkeyup="handleSearch(this.value)" placeholder="Search guides..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-100/90 border border-slate-200 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2 text-slate-400 text-xs"></i>
                     </div>
                 </div>
             </div>
@@ -1408,9 +1408,11 @@
 
             document.querySelectorAll('.category-nav-btn').forEach(b => {
                 if (b.dataset.cat === slug) {
-                    b.classList.add('text-emerald-600', 'bg-emerald-50');
+                    b.classList.add('text-emerald-700', 'bg-emerald-50', 'font-semibold');
+                    b.classList.remove('text-slate-600', 'hover:bg-slate-100');
                 } else {
-                    b.classList.remove('text-emerald-600', 'bg-emerald-50');
+                    b.classList.remove('text-emerald-700', 'bg-emerald-50', 'font-semibold');
+                    b.classList.add('text-slate-600');
                 }
             });
             const catName = slug === 'all' ? 'Latest Articles' : (CATEGORIES_DATA[slug]?.name || slug);
