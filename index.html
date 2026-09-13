@@ -22,6 +22,9 @@
   <meta name="twitter:title" content="GeneralPedia — Digital Knowledge Magazine">
   <meta name="twitter:description" content="Research-backed articles, trending news, and tools across finance, health, tech, automotive, and everyday living.">
 
+  <!-- Favicon / Brand Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%230f172a'/%3E%3Cpath d='M10 26V14h9.5c3.5 0 6 2 6 5.5s-2.5 5.5-6 5.5H15v-5h4.2c1.2 0 2-.6 2-1.8 0-1.1-.8-1.7-2-1.7h-5.2v9H10z' fill='%23ffffff'/%3E%3Cpath d='M25 14h5v12h-5z' fill='%23e63946'/%3E%3C/svg%3E">
+
   <!-- Structured Data (JSON-LD) -->
   <script type="application/ld+json">
   {
@@ -246,32 +249,47 @@
       flex-direction: column;
     }
     .site-logo {
-      font-size: 2.25rem;
+      font-size: 2.125rem;
       font-weight: 900;
       letter-spacing: -0.04em;
       color: var(--text-main);
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 12px;
       text-decoration: none;
       line-height: 1;
     }
-    .logo-badge {
-      background: var(--secondary);
-      color: #ffffff;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 1.5rem;
+    .brand-symbol {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      display: inline-flex;
     }
-    .logo-accent {
+    .logo-text-wrap {
+      display: inline-flex;
+      align-items: baseline;
+      letter-spacing: -0.04em;
+    }
+    .logo-title-main {
+      font-weight: 900;
+      color: var(--text-main);
+    }
+    .logo-title-sub {
+      font-weight: 800;
       color: var(--primary);
     }
+    [data-theme="dark"] .logo-title-main {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .logo-title-sub {
+      color: #38bdf8;
+    }
     .site-tagline {
-      font-size: 0.8125rem;
+      font-size: 0.75rem;
       color: var(--text-subtle);
       margin-top: 6px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
+      font-weight: 600;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
     /* Editorial Sponsor Banner Area (728x90 Magazine slot) */
@@ -1129,13 +1147,21 @@
   <!-- ==================== 2. MAIN HEADER (EDITORIAL LOGO + SPONSOR/EDITORIAL BANNER) ==================== -->
   <header class="main-header" role="banner">
     <div class="container header-layout">
-      <!-- Site Logo -->
+      <!-- Top-Notch Modern Editorial Logo -->
       <div class="brand-group">
         <a href="#" onclick="showHomeView(); return false;" class="site-logo" aria-label="GeneralPedia Magazine Home">
-          <span class="logo-badge">G</span>
-          <span>General<span class="logo-accent">Pedia</span></span>
+          <svg class="brand-symbol" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="42" height="42" rx="9" fill="#0f172a"/>
+            <!-- Stylized Bold G Book/Compass geometry -->
+            <path d="M22 11C15.9249 11 11 15.9249 11 22C11 28.0751 15.9249 33 22 33C27.2 33 31.5 29.4 32.7 24.5H22V19.5H37.8C37.9 20.3 38 21.1 38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C26.5 6 30.5 7.9 33.3 10.9L29.7 14.5C27.8 12.3 25.1 11 22 11Z" fill="#ffffff"/>
+            <!-- Editorial Crimson Accent Spark -->
+            <circle cx="29.5" cy="22" r="3.5" fill="#e63946"/>
+          </svg>
+          <div class="logo-text-wrap">
+            <span class="logo-title-main">General</span><span class="logo-title-sub">Pedia</span>
+          </div>
         </a>
-        <span class="site-tagline">Universal Knowledge Magazine &amp; Verified Reference</span>
+        <span class="site-tagline">The Digital Knowledge Hub &amp; Magazine</span>
       </div>
 
       <!-- Removed duplicate banner as requested to keep layout clean and unified -->
@@ -1431,9 +1457,15 @@
         
         <!-- Col 1: About GeneralPedia -->
         <div class="footer-col">
-          <div class="site-logo" style="color: #ffffff; margin-bottom: 12px; font-size: 1.75rem;">
-            <span class="logo-badge" style="font-size: 1.25rem;">G</span>
-            <span>General<span style="color: #38bdf8;">Pedia</span></span>
+          <div class="site-logo" style="color: #ffffff; margin-bottom: 14px; font-size: 1.75rem;">
+            <svg class="brand-symbol" style="width: 34px; height: 34px;" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="42" height="42" rx="9" fill="#1e293b"/>
+              <path d="M22 11C15.9249 11 11 15.9249 11 22C11 28.0751 15.9249 33 22 33C27.2 33 31.5 29.4 32.7 24.5H22V19.5H37.8C37.9 20.3 38 21.1 38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C26.5 6 30.5 7.9 33.3 10.9L29.7 14.5C27.8 12.3 25.1 11 22 11Z" fill="#ffffff"/>
+              <circle cx="29.5" cy="22" r="3.5" fill="#e63946"/>
+            </svg>
+            <div class="logo-text-wrap">
+              <span style="color: #ffffff;">General</span><span style="color: #38bdf8;">Pedia</span>
+            </div>
           </div>
           <p>
             GeneralPedia is an independent digital knowledge magazine and open reference hub delivering fact-checked how-to guides, automotive specs, wellness breakthroughs, and comprehensive guest analysis.
