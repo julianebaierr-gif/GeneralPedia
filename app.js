@@ -91,7 +91,7 @@
         "GeneralPedia is a premier digital news, encyclopedia, and magazine publication delivering verified guides, personal finance, health insights, and expert tutorials.",
         "/"
       );
-      renderFeed(ARTICLES_DATA);
+      renderFeed(ARTICLES_DATA.length > 3 ? ARTICLES_DATA.slice(3) : ARTICLES_DATA);
       if (push) history.pushState({ view: 'home' }, '', '/');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -207,7 +207,7 @@
       if (!trendingMiniContainer) return;
       trendingMiniContainer.innerHTML = '';
       
-      const sample = ARTICLES_DATA.slice(0, 4);
+      const sample = ARTICLES_DATA.length > 3 ? ARTICLES_DATA.slice(3, 7) : ARTICLES_DATA.slice(0, 4);
       sample.forEach(art => {
         const div = document.createElement('div');
         div.className = 'mini-card';
