@@ -790,8 +790,17 @@
       margin-bottom: 24px;
       padding-left: 28px;
     }
+    .article-body ol {
+      list-style-type: decimal;
+      list-style-position: outside;
+    }
+    .article-body ul {
+      list-style-type: disc;
+      list-style-position: outside;
+    }
     .article-body li {
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      line-height: 1.7;
     }
     .article-body blockquote {
       border-left: 3px solid var(--accent);
@@ -1319,9 +1328,9 @@
           <h4>Contributors</h4>
           <ul>
             <li><button onclick="showStaticPage('write-for-us')">Guest Post Guidelines</button></li>
-            <li><button onclick="showStaticPage('editorial-guidelines')">Editorial Guidelines</button></li>
+            <li><button onclick="showStaticPage('editorial-guidelines')">Editorial &amp; Sourcing Policy</button></li>
             <li><button onclick="showStaticPage('about')">About Our Publication</button></li>
-            <li><button onclick="showStaticPage('contact')">Pitch Your Story</button></li>
+            <li><button onclick="showStaticPage('contact')">Editorial Pitch &amp; Desk</button></li>
           </ul>
         </div>
 
@@ -1501,13 +1510,53 @@
         <p>
             GeneralPedia maintains high editorial thresholds. Submissions that do not comply with our quality criteria will be declined immediately:
         </p>
-        <ol>
-            <li><strong>Minimum Word Count &amp; Analytical Depth:</strong> Submissions must contain a minimum of <strong>1,200 to 2,000 words</strong> of actionable, well-organized content. We strictly reject generic 500-word summaries, AI-spun generic drafts, or rewritten content available elsewhere on Google.</li>
-            <li><strong>100% Uniqueness &amp; Originality:</strong> All articles are checked through enterprise plagiarism detection software. Content must pass with 0% duplication. Previously published or syndicated content is strictly prohibited.</li>
-            <li><strong>Structured Formatting &amp; Visual Readability:</strong> Articles must follow logical hierarchical formatting: an engaging title, descriptive H2 and H3 subheadings, concise paragraphs, bulleted summary lists, and data tables where applicable.</li>
-            <li><strong>Linking Policy &amp; Outbound Citations:</strong> You may include <strong>up to 2 contextual do-follow links</strong> to your client or website, provided they are contextually relevant and link to informative, authoritative pages. Commercial anchor stuffing, link schemes, and links to prohibited niches (gambling, adult, crypto scams, payday loans) are forbidden. Each article must also cite at least 2 primary high-authority resources (.gov, .edu, Wikipedia, Statista).</li>
-            <li><strong>Author Bio &amp; Image Assets:</strong> Please submit a 50-word author biography, a headshot photo or avatar, and at least one high-resolution, copyright-free or original diagram/infographic.</li>
-        </ol>
+        <div style="display: flex; flex-direction: column; gap: 16px; margin: 20px 0 28px;">
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">1</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">Minimum Word Count &amp; Analytical Depth</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        Submissions must contain a minimum of <strong>1,200 to 2,000 words</strong> of actionable, well-organized content. We strictly reject generic 500-word summaries, AI-spun generic drafts, or rewritten content available elsewhere on Google.
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">2</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">100% Uniqueness &amp; Originality</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        All articles are checked through enterprise plagiarism detection software. Content must pass with 0% duplication. Previously published or syndicated content is strictly prohibited.
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">3</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">Structured Formatting &amp; Visual Readability</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        Articles must follow logical hierarchical formatting: an engaging title, descriptive H2 and H3 subheadings, concise paragraphs, bulleted summary lists, and data tables where applicable.
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">4</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">Linking Policy &amp; Outbound Citations</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        You may include <strong>up to 2 contextual do-follow links</strong> to your client or website, provided they are contextually relevant and link to informative, authoritative pages. Commercial anchor stuffing, link schemes, and links to prohibited niches (gambling, adult, crypto scams, payday loans) are forbidden. Each article must also cite at least 2 primary high-authority resources (.gov, .edu, Wikipedia, Statista).
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">5</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">Author Bio &amp; Image Assets</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        Please submit a 50-word author biography, a headshot photo or avatar, and at least one high-resolution, copyright-free or original diagram/infographic.
+                    </p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <div class="callout-box" style="text-align: center; margin-top: 36px;">
@@ -1720,12 +1769,44 @@
         <p>
             Before an article or interactive module is published on GeneralPedia, it must successfully navigate our structured four-tier editorial workflow:
         </p>
-        <ol>
-            <li><strong>Primary Source Research:</strong> Authors must extract data directly from authoritative primary sources: statutory legislative records (IRS, Congressional Budget Office), peer-reviewed scientific journals (PubMed, Nature, The Lancet), or recognized engineering standards (SAE, ISO). Secondhand hearsay or unverified forum commentary is strictly rejected.</li>
-            <li><strong>Subject-Matter Editorial Review:</strong> Senior editors cross-examine all statistical claims, formulas, and legal thresholds. In our finance and medical categories, content is evaluated against the latest clinical consensus and active statutory fiscal calendars.</li>
-            <li><strong>Clarity &amp; Readability Optimization:</strong> Technical terminology is clearly defined. Content is structured with clear bullet points, comparison tables, bold highlights, and direct answers to reader intent, avoiding unnecessary fluff.</li>
-            <li><strong>Post-Publication Auditing &amp; Freshness Updates:</strong> Content is not static. Our editors continuously monitor regulatory changes, tax bracket annual adjustments, interest rate shifts, and vehicle recall alerts, updating existing articles promptly.</li>
-        </ol>
+        <div style="display: flex; flex-direction: column; gap: 16px; margin: 20px 0 28px;">
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">1</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">Primary Source Research</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        Authors must extract data directly from authoritative primary sources: statutory legislative records (IRS, Congressional Budget Office), peer-reviewed scientific journals (PubMed, Nature, The Lancet), or recognized engineering standards (SAE, ISO). Secondhand hearsay or unverified forum commentary is strictly rejected.
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">2</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">Subject-Matter Editorial Review</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        Senior editors cross-examine all statistical claims, formulas, and legal thresholds. In our finance and medical categories, content is evaluated against the latest clinical consensus and active statutory fiscal calendars.
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">3</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">Clarity &amp; Readability Optimization</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        Technical terminology is clearly defined. Content is structured with clear bullet points, comparison tables, bold highlights, and direct answers to reader intent, avoiding unnecessary fluff.
+                    </p>
+                </div>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px 20px;">
+                <span style="background: var(--bg-accent-subtle); color: var(--accent); border: 1px solid var(--accent-border); width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 0.9375rem; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">4</span>
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 1.0625rem; font-weight: 700; color: var(--text-main);">Post-Publication Auditing &amp; Freshness Updates</h3>
+                    <p style="margin: 0; font-size: 0.9375rem; color: var(--text-muted); line-height: 1.6;">
+                        Content is not static. Our editors continuously monitor regulatory changes, tax bracket annual adjustments, interest rate shifts, and vehicle recall alerts, updating existing articles promptly.
+                    </p>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section>
