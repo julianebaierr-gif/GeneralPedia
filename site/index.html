@@ -2155,18 +2155,20 @@
       searchView.classList.add('hidden');
     }
 
-    function showHomeView() {
+    function showHomeView(push = true) {
       hideAllViews();
       homeView.classList.remove('hidden');
       currentCategorySlug = 'all';
       updateNavHighlight('all');
       document.getElementById('mag-feed-heading').innerText = "Latest Published Reports";
       document.getElementById('mag-feed-count').innerText = `Showing all ${ARTICLES_DATA.length} entries`;
+      document.title = "GeneralPedia — The Digital Knowledge Hub & Magazine";
       renderFeed(ARTICLES_DATA);
+      if (push) history.pushState({ view: 'home' }, '', '/');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function filterCategory(slug) {
+    function filterCategory(slug, push = true) {
       hideAllViews();
       homeView.classList.remove('hidden');
       currentCategorySlug = slug;
@@ -2186,9 +2188,12 @@
         'culture': 'Culture, Sports & Entertainment'
       };
 
-      document.getElementById('mag-feed-heading').innerText = slug === 'all' ? "Latest Published Reports" : (titleMap[slug] || slug);
+      const catTitle = titleMap[slug] || slug;
+      document.getElementById('mag-feed-heading').innerText = slug === 'all' ? "Latest Published Reports" : catTitle;
       document.getElementById('mag-feed-count').innerText = `Showing ${filtered.length} articles in this topic`;
+      document.title = `${catTitle} — GeneralPedia`;
       renderFeed(filtered);
+      if (push) history.pushState({ view: 'category', slug: slug }, '', `/category/${slug}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -2297,7 +2302,7 @@
       }
     }
 
-    async function openArticle(id) {
+    async function openArticle(id, push = true) {
       let post = ARTICLES_DATA.find(a => a.id === id);
       if (!post || !post.content_html) {
         try {
@@ -2315,21 +2320,25 @@
       document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
       document.getElementById('art-read-time').innerText = post.read_time || '5 min read';
       document.getElementById('art-content').innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
+      document.title = `${post.title} — GeneralPedia`;
 
       hideAllViews();
       articleView.classList.remove('hidden');
+      if (push) history.pushState({ view: 'article', id: id }, '', `/${id}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function showStaticPage(slug) {
+    function showStaticPage(slug, push = true) {
       const page = STATIC_PAGES[slug];
       if (!page) return;
 
       document.getElementById('static-crumb').innerText = page.title;
       document.getElementById('static-content').innerHTML = page.content;
+      document.title = `${page.title.replace('&amp;', '&')} — GeneralPedia`;
 
       hideAllViews();
       staticView.classList.remove('hidden');
+      if (push) history.pushState({ view: 'static', slug: slug }, '', `/${slug}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -2341,7 +2350,7 @@
       }
     }
 
-    function executeSearch(query) {
+    function executeSearch(query, push = true) {
       if (!query || !query.trim()) return;
       const q = query.trim().toLowerCase();
       const results = ARTICLES_DATA.filter(a => 
@@ -2355,6 +2364,8 @@
       searchView.classList.remove('hidden');
       document.getElementById('search-query-title').innerText = `Search: "${query.trim()}"`;
       document.getElementById('search-count-meta').innerText = `${results.length} result${results.length === 1 ? '' : 's'} identified`;
+      document.title = `Search: "${query.trim()}" — GeneralPedia`;
+      if (push) history.pushState({ view: 'search', q: query.trim() }, '', `/?q=${encodeURIComponent(query.trim())}`);
 
       const grid = document.getElementById('search-results-grid');
       grid.innerHTML = '';
@@ -2429,10 +2440,51 @@
         .replace(/'/g, '&#039;');
     }
 
+    // Handle URL routing on load and history navigation
+    function handleRoute() {
+      const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+      const searchParams = new URLSearchParams(window.location.search);
+      const query = searchParams.get('q');
+
+      if (query) {
+        executeSearch(query, false);
+        return;
+      }
+
+      if (!path) {
+        showHomeView(false);
+        return;
+      }
+
+      if (path.startsWith('category/')) {
+        const catSlug = path.replace('category/', '');
+        filterCategory(catSlug, false);
+        return;
+      }
+
+      if (STATIC_PAGES[path]) {
+        showStaticPage(path, false);
+        return;
+      }
+
+      const foundArticle = ARTICLES_DATA.find(a => a.id === path);
+      if (foundArticle) {
+        openArticle(path, false);
+        return;
+      }
+
+      // Fallback
+      showHomeView(false);
+    }
+
+    window.addEventListener('popstate', (e) => {
+      handleRoute();
+    });
+
     // Init
-    renderFeed(ARTICLES_DATA);
     renderTrendingMini();
     renderPopularSidebar();
+    handleRoute();
   </script>
 </body>
 </html>
