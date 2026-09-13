@@ -1358,12 +1358,6 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
           <span id="current-date-display">Sunday, September 13, 2026</span>
         </div>
-        <div class="breaking-label">
-          <span>Flash</span>
-        </div>
-        <div class="breaking-ticker" id="top-breaking-text" onclick="openArticle('queen-of-wands')">
-          Queen of Wands: Comprehensive Archetype Meaning &amp; Analysis
-        </div>
       </div>
       <div class="top-bar-right">
         <ul class="top-links">
@@ -2603,6 +2597,14 @@
       document.getElementById('art-meta').innerText = post.meta_description || '';
       document.getElementById('art-category-badge').innerText = post.category_name || 'Knowledge Guide';
       document.getElementById('art-category-crumb').innerText = post.category_name || 'Category';
+      if (post.category_slug) {
+        currentCategorySlug = post.category_slug;
+        updateNavHighlight(post.category_slug);
+        const catCrumb = document.getElementById('art-category-crumb');
+        if (catCrumb) {
+          catCrumb.onclick = () => filterCategory(post.category_slug);
+        }
+      }
       document.getElementById('art-title-crumb').innerText = post.primary_keyword || post.title;
       document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
       document.getElementById('art-read-time').innerText = post.read_time || '5 min read';
@@ -2620,6 +2622,7 @@
     }
 
     function showStaticPage(slug, push = true) {
+      updateNavHighlight(null);
       const page = STATIC_PAGES[slug];
       if (!page) return;
 
@@ -2648,6 +2651,7 @@
 
     function executeSearch(query, push = true) {
       if (!query || !query.trim()) return;
+      updateNavHighlight(null);
       const q = query.trim().toLowerCase();
       const results = ARTICLES_DATA.filter(a => 
         a.title.toLowerCase().includes(q) ||
