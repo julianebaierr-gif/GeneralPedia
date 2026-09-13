@@ -11,7 +11,7 @@ SITE_DIR = os.path.join(BASE_DIR, "site")
 
 SPREADSHEET_ID = "1IDS7DUc4PrlYbxhKwlqsoeQK70JH10-M_Qq80zm_-b0"
 SHEET_GID = "758476499"
-APPS_SCRIPT_WEBHOOK_URL = os.environ.get("GENERALPEDIA_SHEET_WEBHOOK", "")
+APPS_SCRIPT_WEBHOOK_URL = os.environ.get("GENERALPEDIA_SHEET_WEBHOOK", "https://script.google.com/macros/s/AKfycbzP5tXwq7ESaDVZawatxxeUhl641F0LmJzeokAd_vTjgvPfLbAMBVsPpR9cP_2W9Psk5w/exec")
 
 CATEGORIES = {
     "how-to": {
