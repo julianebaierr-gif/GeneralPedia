@@ -3,21 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeneralPedia - The Complete Encyclopedia & Everyday Knowledge Hub</title>
-    <!-- Tailwind CSS -->
+    <title>GeneralPedia - The Premier Everyday Knowledge Hub & Encyclopedia</title>
+    <meta name="description" content="GeneralPedia is your definitive digital encyclopedia for trusted guides, tax calculations, verified medical insights, interactive tools, and expert how-to tutorials.">
+    <meta name="keywords" content="encyclopedia, general knowledge, tax brackets, roth ira calculator, health symptoms, how to guides, automotive reviews, calculators">
+    <meta name="author" content="GeneralPedia Editorial Board">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://generalpedia.com">
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://generalpedia.com">
+    <meta property="og:title" content="GeneralPedia - The Premier Everyday Knowledge Hub & Encyclopedia">
+    <meta property="og:description" content="Discover in-depth explanations, verified facts, financial calculators, and step-by-step guides on GeneralPedia.com.">
+    <meta property="og:site_name" content="GeneralPedia">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GeneralPedia - The Premier Everyday Knowledge Hub">
+    <meta name="twitter:description" content="Discover in-depth explanations, verified facts, financial calculators, and step-by-step guides on GeneralPedia.com.">
+
+    <!-- Schema.org JSON-LD Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "GeneralPedia",
+      "alternateName": "GeneralPedia.com",
+      "url": "https://generalpedia.com",
+      "description": "The Premier Everyday Knowledge Hub & Comprehensive Encyclopedia",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://generalpedia.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Tailwind CSS & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
                     colors: {
                         brand: {
-                            50: '#ecfdf5',
-                            100: '#d1fae5',
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
                             500: '#10b981',
                             600: '#059669',
                             700: '#047857',
+                            800: '#065f46',
                             900: '#064e3b',
                         }
                     }
@@ -28,21 +71,29 @@
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
 
-
     <!-- Main Navigation Header -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm backdrop-blur-md bg-white/95">
+    <header class="bg-white border-b border-slate-200/80 sticky top-0 z-40 shadow-sm backdrop-blur-md bg-white/95">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
-                <!-- Brand Logo -->
-                <a href="#" onclick="showHomeView()" class="flex items-center gap-3 group">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white text-2xl font-black shadow-md shadow-emerald-500/20 group-hover:scale-105 transition">
-                        G
+                
+                <!-- TOP NOTCH BRAND LOGO -->
+                <a href="#" onclick="showHomeView()" class="flex items-center gap-3.5 group">
+                    <div class="relative w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-700 via-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-lg shadow-emerald-600/20 group-hover:shadow-emerald-600/30 group-hover:scale-105 transition-all duration-300">
+                        <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                        <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-400 rounded-full border-2 border-white flex items-center justify-center">
+                            <span class="w-1.5 h-1.5 bg-emerald-900 rounded-full"></span>
+                        </div>
                     </div>
                     <div>
-                        <span class="text-2xl font-black tracking-tight text-slate-900 flex items-center">
-                            General<span class="text-emerald-600">Pedia</span><span class="text-xs ml-1.5 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">.COM</span>
-                        </span>
-                        <p class="text-xs text-slate-500 font-medium tracking-wide">The All-in-One Everyday Encyclopedia</p>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-2xl font-black tracking-tight text-slate-900">
+                                General<span class="text-emerald-600">Pedia</span>
+                            </span>
+                            <span class="text-[10px] uppercase font-extrabold px-1.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200/60 tracking-wider">PRO</span>
+                        </div>
+                        <p class="text-[11px] font-semibold text-slate-500 tracking-wide">The Premier Everyday Knowledge Hub</p>
                     </div>
                 </a>
 
@@ -58,6 +109,13 @@
                     <button onclick="filterByCategory('culture')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="culture">Culture</button>
                 </nav>
 
+                <!-- Clean Search Quick Action -->
+                <div class="flex items-center gap-3">
+                    <div class="relative hidden sm:block w-48">
+                        <input type="text" onkeyup="handleSearch(this.value)" placeholder="Quick search..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-100/80 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
@@ -72,7 +130,7 @@
                 <div class="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] opacity-10"></div>
                 <div class="relative z-10 max-w-3xl mx-auto text-center space-y-6">
                     <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold tracking-wide border border-emerald-500/30">
-                        <i class="fa-solid fa-sparkles"></i> 3,108 Filtered Clustered Keywords
+                        <i class="fa-solid fa-sparkles"></i> High-Authority Digital Knowledge Base
                     </span>
                     <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
                         Answers, Guides & Data on <span class="text-emerald-400">Everything</span>
@@ -99,7 +157,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Browse Categories</h2>
-                        <p class="text-sm text-slate-500">Explore structured pillars across 3,100+ analyzed high-demand queries</p>
+                        <p class="text-sm text-slate-500">Explore structured knowledge across all primary lifestyle and technical fields</p>
                     </div>
                 </div>
 
@@ -155,11 +213,6 @@
                         <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center">G</span>
                         <span>Published by <strong>GeneralPedia Editorial Board</strong></span>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <span>Search Vol: <strong id="art-vol">0</strong></span>
-                        <span>KD: <strong id="art-kd">0</strong></span>
-                        <span id="art-cpc-wrap">CPC: <strong id="art-cpc">$0.00</strong></span>
-                    </div>
                 </div>
             </div>
 
@@ -185,69 +238,18 @@
 
     </main>
 
-    <!-- Automation Modal (Control Center) -->
-    <div id="auto-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-6">
-            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg font-bold">
-                        <i class="fa-solid fa-robot"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-slate-900">GeneralPedia Automation Engine</h3>
-                        <p class="text-xs text-slate-500">Autonomous content generation & Google Sheets synchronization</p>
-                    </div>
-                </div>
-                <button onclick="closeAutomationModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Controls -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Automated Google Sheets Sync</span>
-                    <p class="text-xs text-slate-600">Syncs Keywords, Category, Tags, Status, Post URL, and Date/Time.</p>
-                    <a href="https://docs.google.com/spreadsheets/d/1IDS7DUc4PrlYbxhKwlqsoeQK70JH10-M_Qq80zm_-b0/edit?gid=758476499" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-table"></i> Open Google Sheet
-                    </a>
-                </div>
-
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">GitHub Project Repository</span>
-                    <p class="text-xs text-slate-600">Full source code, automation scripts, and deployment configuration.</p>
-                    <a href="https://github.com/julianebaierr-gif/GeneralPedia" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-semibold text-sm transition flex items-center justify-center gap-2">
-                        <i class="fa-brands fa-github"></i> View GitHub Repo
-                    </a>
-                </div>
-            </div>
-
-            <!-- Live Status Logs -->
-            <div class="space-y-2">
-                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Engine Activity Log</span>
-                <div id="engine-logs" class="h-44 overflow-y-auto bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs space-y-1">
-                    <div>[System Init] GeneralPedia.com deployed on Vercel Edge.</div>
-                    <div>[Keywords Pool] 3,108 filtered clusters loaded.</div>
-                    <div>[Sheet Status] Columns mapped (Keywords, Category, Tags, Status, Post URL, Date/Time).</div>
-                </div>
-            </div>
-
-            <div class="text-right">
-                <button onclick="closeAutomationModal()" class="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm">
-                    Close
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 mt-16 py-12">
+    <!-- Clean Footer with Professional Logo -->
+    <footer class="bg-white border-t border-slate-200/80 mt-16 py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg">G</div>
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-700 to-teal-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
                 <div>
-                    <span class="font-bold text-slate-800 text-base">GeneralPedia.com</span>
-                    <p class="text-xs text-slate-500">© 2026 GeneralPedia. Autonomous Content System.</p>
+                    <span class="font-extrabold text-slate-900 text-base">General<span class="text-emerald-600">Pedia</span>.com</span>
+                    <p class="text-xs text-slate-500 font-medium">The Premier Everyday Knowledge Hub & Encyclopedia</p>
                 </div>
             </div>
             <div class="flex flex-wrap items-center gap-6 text-xs text-slate-600 font-medium">
@@ -257,11 +259,12 @@
                 <button onclick="filterByCategory('tools')" class="hover:text-emerald-600">Tools</button>
                 <button onclick="filterByCategory('automotive')" class="hover:text-emerald-600">Automotive</button>
                 <button onclick="filterByCategory('lifestyle')" class="hover:text-emerald-600">Lifestyle</button>
+                <button onclick="filterByCategory('culture')" class="hover:text-emerald-600">Culture</button>
             </div>
         </div>
     </footer>
 
-    <!-- Application Script with Embedded Fallback Data for 100% Vercel Uptime -->
+    <!-- Application Script -->
     <script>
         const CATEGORIES_DATA = {
             "how-to": { name: "How-To & Guides", icon: "fa-book-open", color: "emerald" },
@@ -274,7 +277,6 @@
             "culture": { name: "Culture", icon: "fa-masks-theater", color: "purple" }
         };
 
-        // Pre-seeded high-volume clustered articles from dataset for instant Vercel rendering
         const DEFAULT_ARTICLES = [
             {
                 "id": "tax-brackets-2025",
@@ -492,11 +494,10 @@
                     }
                 }
             } catch (e) {
-                console.log("Using resilient client dataset");
+                console.log("Using cached articles");
             }
             renderCategoriesGrid();
             renderArticlesFeed();
-            updateCounts();
         }
 
         function renderCategoriesGrid() {
@@ -528,7 +529,7 @@
                             <i class="fa-regular fa-folder-open"></i>
                         </div>
                         <h3 class="text-lg font-bold text-slate-800">No articles yet in this category</h3>
-                        <p class="text-sm text-slate-500">More articles are being added continuously by the automation engine.</p>
+                        <p class="text-sm text-slate-500">More articles are being added continuously by the knowledge engine.</p>
                     </div>
                 `;
                 return;
@@ -619,9 +620,6 @@
             document.getElementById('art-slug-crumb').innerText = data.primary_keyword;
             document.getElementById('art-category-badge').innerText = data.category_name;
             document.getElementById('art-date').innerText = data.display_date || 'Recently';
-            document.getElementById('art-vol').innerText = Number(data.search_volume || 0).toLocaleString();
-            document.getElementById('art-kd').innerText = data.difficulty || 0;
-            document.getElementById('art-cpc').innerText = `$${Number(data.cpc || 0).toFixed(2)}`;
             document.getElementById('art-content').innerHTML = data.content_html;
             
             const tagsCont = document.getElementById('art-tags');
@@ -642,20 +640,6 @@
             document.getElementById('article-view').classList.add('hidden');
             document.getElementById('home-view').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function updateCounts() {
-            document.getElementById('top-published-count').innerText = articlesList.length;
-        }
-
-        function openAutomationModal() {
-            document.getElementById('auto-modal').classList.remove('hidden');
-            document.getElementById('auto-modal').classList.add('flex');
-        }
-
-        function closeAutomationModal() {
-            document.getElementById('auto-modal').classList.add('hidden');
-            document.getElementById('auto-modal').classList.remove('flex');
         }
 
         // Initialize on page load
