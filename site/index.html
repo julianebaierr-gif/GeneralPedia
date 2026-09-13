@@ -1399,7 +1399,7 @@
   <nav class="main-nav-bar" aria-label="Primary Navigation">
     <div class="container nav-bar-inner">
       <ul class="nav-menu" id="primary-nav">
-        <li><button onclick="filterCategory('all')" class="nav-item-btn active" data-cat="all">Home</button></li>
+        <li><button onclick="showHomeView()" class="nav-item-btn active" data-cat="all">Home</button></li>
         <li><button onclick="filterCategory('how-to')" class="nav-item-btn" data-cat="how-to">How-To</button></li>
         <li><button onclick="filterCategory('finance')" class="nav-item-btn" data-cat="finance">Finance</button></li>
         <li><button onclick="filterCategory('health')" class="nav-item-btn" data-cat="health">Health</button></li>
@@ -2423,6 +2423,11 @@
     }
 
     function filterCategory(slug, push = true) {
+      if (slug === 'all' || !slug) {
+        showHomeView(push);
+        return;
+      }
+
       hideAllViews();
       homeView.classList.remove('hidden');
       
@@ -2449,31 +2454,22 @@
       const catTitle = titleMap[slug] || (slug.charAt(0).toUpperCase() + slug.slice(1));
       const catDesc = descMap[slug] || 'Curated editorial manuals, in-depth breakdowns, and interactive references.';
 
-      if (slug === 'all') {
-        if (homeHeroSection) homeHeroSection.classList.remove('hidden');
-        if (homeTrendingSection) homeTrendingSection.classList.remove('hidden');
-        if (categoryHeaderBanner) categoryHeaderBanner.classList.add('hidden');
-        document.getElementById('mag-feed-heading').innerText = "Latest Published Reports";
-      } else {
-        if (homeHeroSection) homeHeroSection.classList.add('hidden');
-        if (homeTrendingSection) homeTrendingSection.classList.add('hidden');
-        if (categoryHeaderBanner) {
-          categoryHeaderBanner.classList.remove('hidden');
-          document.getElementById('category-crumb-current').innerText = catTitle;
-          document.getElementById('category-banner-title').innerText = catTitle;
-          document.getElementById('category-banner-desc').innerText = catDesc;
-        }
-        document.getElementById('mag-feed-heading').innerText = `${catTitle} Feed`;
+      if (homeHeroSection) homeHeroSection.classList.add('hidden');
+      if (homeTrendingSection) homeTrendingSection.classList.add('hidden');
+      if (categoryHeaderBanner) {
+        categoryHeaderBanner.classList.remove('hidden');
+        document.getElementById('category-crumb-current').innerText = catTitle;
+        document.getElementById('category-banner-title').innerText = catTitle;
+        document.getElementById('category-banner-desc').innerText = catDesc;
       }
+      document.getElementById('mag-feed-heading').innerText = `${catTitle} Feed`;
 
       currentCategorySlug = slug;
       updateNavHighlight(slug);
 
-      const filtered = slug === 'all' 
-        ? ARTICLES_DATA 
-        : ARTICLES_DATA.filter(a => a.category_slug === slug);
+      const filtered = ARTICLES_DATA.filter(a => a.category_slug === slug);
 
-      if (slug !== 'all' && categoryHeaderBanner) {
+      if (categoryHeaderBanner) {
         document.getElementById('category-banner-meta').innerText = `Showing ${filtered.length} verified ${filtered.length === 1 ? 'guide' : 'guides'}`;
       }
       document.getElementById('mag-feed-count').innerText = `Showing ${filtered.length} articles in this topic`;
