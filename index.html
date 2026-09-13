@@ -325,139 +325,784 @@
             "culture": { name: "Culture", icon: "fa-masks-theater", color: "purple" }
         };
 
-        const STATIC_PAGES_DATA = {
+                const STATIC_PAGES_DATA = {
             "about": {
                 title: "About GeneralPedia",
-                content: `
-                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">About GeneralPedia.com</h1>
-                    <p class="text-lg text-slate-600 mb-6">
-                        <strong>GeneralPedia.com</strong> is a premier digital encyclopedia and universal knowledge repository dedicated to making complex, high-value information accessible, reliable, and actionable for readers worldwide.
-                    </p>
-                    <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Our Mission</h2>
-                    <p class="mb-4">
-                        In an era saturated with fragmented information, GeneralPedia provides structured, expert-verified, and data-backed coverage across finance, health, lifestyle, technology, and practical how-to tutorials. Every article is crafted according to strict editorial benchmarks to answer real reader questions concisely.
-                    </p>
-                    <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">What We Cover</h2>
-                    <ul class="list-disc pl-6 space-y-2 mb-6">
-                        <li><strong>Personal Finance & Taxes:</strong> Unpacking complex IRS brackets, Roth IRAs, retirement limits, insurance terms, and loans.</li>
-                        <li><strong>Health & Wellness:</strong> Evidence-grounded symptom explanations, natural remedies, and lifestyle longevity tips.</li>
-                        <li><strong>Actionable How-To Guides:</strong> Step-by-step everyday problem-solving tutorials.</li>
-                        <li><strong>Automotive & Tech:</strong> Comprehensive vehicle valuations, specs breakdowns, and digital safety principles.</li>
-                        <li><strong>Utility Tools:</strong> Precision calculators and measurement converters for daily productivity.</li>
-                    </ul>
-                `
+                content: `<div class="space-y-8 text-slate-700 leading-relaxed">
+    <div class="p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white shadow-xl">
+        <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-500/30">
+            About Our Publication
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-4 mb-3">
+            About GeneralPedia: The Premier Universal Knowledge Repository
+        </h1>
+        <p class="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed">
+            Empowering curious minds, everyday decision-makers, and industry professionals with verified, research-backed knowledge across finance, medicine, automotive engineering, digital technology, and practical lifestyle sciences.
+        </p>
+    </div>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-compass text-emerald-600"></i> Our Core Mission & Vision
+        </h2>
+        <p>
+            Founded with a singular commitment to clarity, factual rigor, and universal accessibility, <strong>GeneralPedia.com</strong> serves as a comprehensive digital encyclopedia designed for the modern web. In a digital ecosystem saturated with superficial clickbait, unverified rumors, and fragmented answers, GeneralPedia bridges the gap between complex technical documentation and everyday user practicality.
+        </p>
+        <p>
+            Our core mission is to democratize high-value information. Whether a homeowner is diagnosing an automotive fault code, a young professional is calculating their marginal tax bracket under current IRS regulations, or an individual is researching evidence-based health remedies, GeneralPedia provides comprehensive, unambiguous, and unbiased explanations grounded in verified data.
+        </p>
+    </section>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg mb-3">
+                <i class="fa-solid fa-scale-balanced"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Uncompromising Factual Integrity</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+                Every claim, metric, and recommendation published on GeneralPedia is corroborated by official regulatory bodies, primary scientific papers, peer-reviewed journals, or verified industry benchmarks.
+            </p>
+        </div>
+        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg mb-3">
+                <i class="fa-solid fa-users-gear"></i>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mb-2">Multi-Disciplinary Editorial Team</h3>
+            <p class="text-sm text-slate-600 leading-relaxed">
+                Our content is produced and audited by seasoned researchers, financial analysts, automotive enthusiasts, and technical writers who prioritize practical reader utility above all else.
+            </p>
+        </div>
+    </div>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-layer-group text-emerald-600"></i> What We Cover: Editorial Scope & Taxonomy
+        </h2>
+        <p>
+            GeneralPedia is structured into eight distinct topical silos to ensure deep semantic relevance, intuitive navigation, and authoritative coverage:
+        </p>
+        <div class="space-y-3 pl-2">
+            <div class="border-l-4 border-emerald-500 pl-4 py-1">
+                <h4 class="font-bold text-slate-900 text-base">1. Personal Finance & Wealth Management</h4>
+                <p class="text-sm text-slate-600">
+                    Comprehensive examinations of federal and state income tax brackets, Roth IRA contribution limits, 401(k) retirement calculations, mortgage amortization schedules, interest rate economics, and debt consolidation frameworks.
+                </p>
+            </div>
+            <div class="border-l-4 border-teal-500 pl-4 py-1">
+                <h4 class="font-bold text-slate-900 text-base">2. Health, Medicine & Preventive Wellness</h4>
+                <p class="text-sm text-slate-600">
+                    Symptom awareness guides, metabolic nutrition breakdowns, mental wellness strategies, and pharmacological references sourced directly from peer-reviewed medical journals and health organizations (CDC, WHO, NIH).
+                </p>
+            </div>
+            <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                <h4 class="font-bold text-slate-900 text-base">3. Practical How-To & Problem Solving</h4>
+                <p class="text-sm text-slate-600">
+                    Step-by-step procedural tutorials designed to resolve real-world dilemmas, ranging from software troubleshooting to home maintenance, legal filing workflows, and document certification.
+                </p>
+            </div>
+            <div class="border-l-4 border-cyan-500 pl-4 py-1">
+                <h4 class="font-bold text-slate-900 text-base">4. Automotive Engineering & Maintenance</h4>
+                <p class="text-sm text-slate-600">
+                    Detailed vehicle depreciation calculations, OBD-II diagnostic troubleshooting, fluid specification charts, safety ratings, and comparative purchasing guides for electric, hybrid, and combustion vehicles.
+                </p>
+            </div>
+            <div class="border-l-4 border-purple-500 pl-4 py-1">
+                <h4 class="font-bold text-slate-900 text-base">5. Technology, AI & Modern Systems</h4>
+                <p class="text-sm text-slate-600">
+                    In-depth analyses of artificial intelligence algorithms, cybersecurity best practices, cloud infrastructure fundamentals, consumer hardware evaluations, and software programming tutorials.
+                </p>
+            </div>
+            <div class="border-l-4 border-amber-500 pl-4 py-1">
+                <h4 class="font-bold text-slate-900 text-base">6. Interactive Web Tools & Calculators</h4>
+                <p class="text-sm text-slate-600">
+                    Lightweight, real-time client-side calculators designed for instantaneous financial modeling, unit conversions, caloric expenditure estimations, and geometric equations.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-award text-emerald-600"></i> Google Helpful Content & E-E-A-T Adherence
+        </h2>
+        <p>
+            GeneralPedia adheres strictly to Google's Search Quality Rater Guidelines, placing profound emphasis on <strong>Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T)</strong>. 
+        </p>
+        <p>
+            We recognize that topics concerning personal finance and physical health fall under Google's <em>"Your Money or Your Life" (YMYL)</em> classification. Consequently, we enforce the following foundational publishing tenets:
+        </p>
+        <ul class="list-disc pl-6 space-y-2 text-sm text-slate-600">
+            <li><strong>Zero Thin Content Policy:</strong> Every article must provide comprehensive, multi-dimensional answers that satisfy user intent without requiring supplementary search queries.</li>
+            <li><strong>Continuous Content Freshness:</strong> Tax tables, inflation indices, statutory contribution limits, and technological specs are actively reviewed and updated upon government policy enactments.</li>
+            <li><strong>Radical Transparency:</strong> Editorial staff bylines, publication timestamps, and revision histories are clearly documented on every published article.</li>
+            <li><strong>Independent Voice:</strong> Commercial partnerships never influence our editorial stance or objective factual conclusions.</li>
+        </ul>
+    </section>
+
+    <section class="p-6 bg-slate-100/80 rounded-2xl border border-slate-200 text-center space-y-3">
+        <h3 class="text-xl font-bold text-slate-900">Partner With Our Editorial Team</h3>
+        <p class="text-sm text-slate-600 max-w-2xl mx-auto">
+            Have questions about our editorial board, factual research methodology, or corporate press releases? Contact our communications office directly.
+        </p>
+        <button onclick="showStaticPage('contact')" class="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl transition shadow-md shadow-emerald-600/20">
+            <i class="fa-solid fa-envelope"></i> Contact GeneralPedia Desk
+        </button>
+    </section>
+</div>`
             },
             "write-for-us": {
-                title: "Write for Us - Guest Posting Guidelines",
-                content: `
-                    <div class="p-6 bg-emerald-50 rounded-2xl border border-emerald-200 mb-8">
-                        <span class="px-3 py-1 bg-emerald-600 text-white rounded-full text-xs font-bold uppercase tracking-wider">Accepting Submissions</span>
-                        <h1 class="text-3xl font-extrabold text-slate-900 mt-3 mb-2">Write for Us (Guest Posting & Sponsored Content)</h1>
-                        <p class="text-slate-700">Contribute your expert perspective to GeneralPedia.com and reach our growing audience of global readers and searchers.</p>
-                    </div>
+                title: "Write for Us - Guest Posting & Editorial Guidelines",
+                content: `<div class="space-y-8 text-slate-700 leading-relaxed">
+    <div class="p-8 rounded-3xl bg-gradient-to-br from-emerald-900 via-teal-900 to-slate-900 text-white shadow-xl">
+        <div class="flex items-center gap-3 mb-3">
+            <span class="px-3.5 py-1.5 rounded-full bg-emerald-400 text-slate-950 text-xs font-black uppercase tracking-wider">
+                Now Accepting Guest Submissions
+            </span>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-emerald-300 text-xs font-semibold">
+                High DA & Real Topical Authority
+            </span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
+            Write for Us: Guest Post Guidelines & Editorial Submissions
+        </h1>
+        <p class="text-slate-200 text-base sm:text-lg max-w-3xl leading-relaxed">
+            Showcase your subject-matter expertise on GeneralPedia.com. We invite industry experts, seasoned bloggers, researchers, and professional writers to publish authoritative, well-researched guest articles.
+        </p>
+    </div>
 
-                    <h2 class="text-2xl font-bold text-slate-900 mt-6 mb-4">Why Publish on GeneralPedia?</h2>
-                    <ul class="list-disc pl-6 space-y-2 mb-6">
-                        <li><strong>High Authority Context:</strong> Your content is hosted on a structured digital encyclopedia with strict topical silo architecture.</li>
-                        <li><strong>Permanent Placement:</strong> All published guest articles receive permanent do-follow indexation with fast search crawler discovery.</li>
-                        <li><strong>Contextual Relevance:</strong> We accept contributions across Business, Finance, Health, Technology, Home Improvement, Automotive, and Lifestyle.</li>
-                    </ul>
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-bullhorn text-emerald-600"></i> Why Contribute to GeneralPedia?
+        </h2>
+        <p>
+            GeneralPedia is a rapidly expanding global reference encyclopedia that attracts decision-makers, students, investors, and consumers searching for unambiguous answers. Contributing a guest post to GeneralPedia provides significant strategic advantages:
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
+            <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+                <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold mb-3">
+                    <i class="fa-solid fa-link"></i>
+                </div>
+                <h4 class="font-bold text-slate-900 text-base mb-1.5">Contextual Link Juice</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Gain high-relevance, permanent do-follow editorial links situated within tightly siloed, content-rich topic clusters indexed by major search engines.
+                </p>
+            </div>
+            <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+                <div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold mb-3">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <h4 class="font-bold text-slate-900 text-base mb-1.5">Targeted Organic Reach</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Our semantic architecture ensures your article ranks for high-intent long-tail keywords, driving recurring organic referral traffic to your brand.
+                </p>
+            </div>
+            <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl">
+                <div class="w-9 h-9 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold mb-3">
+                    <i class="fa-solid fa-certificate"></i>
+                </div>
+                <h4 class="font-bold text-slate-900 text-base mb-1.5">E-E-A-T Author Authority</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Build tangible digital authority with a verified author bio, credentials citation, and social proof on an established knowledge publication.
+                </p>
+            </div>
+        </div>
+    </section>
 
-                    <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Editorial & Submission Guidelines</h2>
-                    <div class="space-y-4 mb-8">
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                            <h4 class="font-bold text-slate-800 mb-1">1. Originality & Depth</h4>
-                            <p class="text-sm text-slate-600">Articles must be 100% unique, human-readable, and minimum 1,000 to 1,500 words. We do not accept unedited automated content or spun articles.</p>
-                        </div>
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                            <h4 class="font-bold text-slate-800 mb-1">2. Clear Structure</h4>
-                            <p class="text-sm text-slate-600">Include descriptive sub-headings (H2, H3), bulleted takeaways, and concise paragraphs (15-20 words per sentence) for optimal readability.</p>
-                        </div>
-                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
-                            <h4 class="font-bold text-slate-800 mb-1">3. Linking Policy</h4>
-                            <p class="text-sm text-slate-600">You may include 1 to 2 authoritative, relevant editorial links. We reject spammy, gambling, adult, or deceptive links.</p>
-                        </div>
-                    </div>
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-folder-open text-emerald-600"></i> Accepted Niches & Categories
+        </h2>
+        <p>
+            To maintain strict thematic coherence and search engine trust, we only accept article pitches within the following core operational verticals:
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-3">
+                <i class="fa-solid fa-coins text-amber-600 text-lg"></i>
+                <div>
+                    <span class="font-bold text-slate-800">Business & Personal Finance</span>
+                    <p class="text-xs text-slate-500">Taxes, wealth building, retirement, fintech, crypto, mortgages</p>
+                </div>
+            </div>
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-3">
+                <i class="fa-solid fa-microchip text-blue-600 text-lg"></i>
+                <div>
+                    <span class="font-bold text-slate-800">Technology, AI & Software</span>
+                    <p class="text-xs text-slate-500">Machine learning, SaaS tools, cybersecurity, coding, cloud</p>
+                </div>
+            </div>
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-3">
+                <i class="fa-solid fa-heart-pulse text-rose-600 text-lg"></i>
+                <div>
+                    <span class="font-bold text-slate-800">Health, Wellness & Longevity</span>
+                    <p class="text-xs text-slate-500">Clinical nutrition, fitness science, mental health, medical research</p>
+                </div>
+            </div>
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-3">
+                <i class="fa-solid fa-car text-cyan-600 text-lg"></i>
+                <div>
+                    <span class="font-bold text-slate-800">Automotive & Transportation</span>
+                    <p class="text-xs text-slate-500">EV technology, DIY maintenance, car valuations, OBD diagnostics</p>
+                </div>
+            </div>
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-3">
+                <i class="fa-solid fa-house text-teal-600 text-lg"></i>
+                <div>
+                    <span class="font-bold text-slate-800">Real Estate & Home Improvement</span>
+                    <p class="text-xs text-slate-500">Interior design, DIY renovations, property valuation, smart homes</p>
+                </div>
+            </div>
+            <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center gap-3">
+                <i class="fa-solid fa-magnifying-glass-chart text-emerald-600 text-lg"></i>
+                <div>
+                    <span class="font-bold text-slate-800">Digital Marketing & SEO</span>
+                    <p class="text-xs text-slate-500">Content strategy, link building, conversion rate optimization</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                    <div class="p-8 bg-slate-900 text-white rounded-2xl text-center space-y-4">
-                        <h3 class="text-2xl font-bold">Ready to Submit Your Pitch?</h3>
-                        <p class="text-slate-300 text-sm max-w-xl mx-auto">Send your article pitch or draft along with target anchor links to our editorial desk for review within 24 hours.</p>
-                        <div class="pt-2">
-                            <a href="mailto:contact@generalpedia.com?subject=Guest Post Submission - GeneralPedia" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl transition">
-                                <i class="fa-solid fa-envelope"></i> Submit Guest Post (contact@generalpedia.com)
-                            </a>
-                        </div>
-                    </div>
-                `
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-list-check text-emerald-600"></i> Strict Quality & Submission Guidelines
+        </h2>
+        <p>
+            GeneralPedia maintains high editorial thresholds. Submissions that do not comply with our quality criteria will be declined immediately:
+        </p>
+        <div class="space-y-3">
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <h4 class="font-bold text-slate-900 text-sm mb-1">1. Minimum Word Count & Analytical Depth</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Submissions must contain a minimum of <strong>1,200 to 2,000 words</strong> of actionable, well-organized content. We strictly reject generic 500-word summaries, AI-spun generic drafts, or rewritten content available elsewhere on Google.
+                </p>
+            </div>
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <h4 class="font-bold text-slate-900 text-sm mb-1">2. 100% Uniqueness & Originality</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    All articles are checked through enterprise plagiarism detection software (Copyscape, Turnitin). Content must pass with 0% duplication. Previously published or syndicated content is strictly prohibited.
+                </p>
+            </div>
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <h4 class="font-bold text-slate-900 text-sm mb-1">3. Structured Formatting & Visual Readability</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Articles must follow logical hierarchical formatting: an engaging H1 title, descriptive H2 and H3 subheadings, concise paragraphs (under 4 lines each), bulleted summary lists, and data tables where applicable.
+                </p>
+            </div>
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <h4 class="font-bold text-slate-900 text-sm mb-1">4. Linking Policy & Outbound Citations</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    You may include <strong>up to 2 contextual do-follow links</strong> to your client or website, provided they are contextually relevant and link to informative, authoritative pages. We do not allow commercial anchor stuffing, link schemes, or links to prohibited niches (gambling, adult, crypto scams, payday loans, essay mills). Each article must also cite at least 2 primary high-authority resources (e.g., Wikipedia, .gov, .edu, Statista).
+                </p>
+            </div>
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <h4 class="font-bold text-slate-900 text-sm mb-1">5. Author Bio & Image Assets</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Please submit a 50-word author biography, a headshot photo (or avatar), and at least one high-resolution, copyright-free or original diagram/infographic (minimum 1200x630px).
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i> Review Process & Turnaround Time
+        </h2>
+        <p>
+            Upon receipt of your pitch or draft:
+        </p>
+        <ol class="list-decimal pl-6 space-y-2 text-sm text-slate-600">
+            <li><strong>Initial Review (24 - 48 Hours):</strong> Our editorial team assesses the proposed topic, keyword alignment, and originality.</li>
+            <li><strong>Editorial Revisions:</strong> If accepted, minor copyediting adjustments may be made to enhance readability and ensure internal linking coherence.</li>
+            <li><strong>Publication & Indexing:</strong> Your piece is scheduled, assigned permanent canonical URLs, added to our XML sitemap, and submitted directly to search console indexing pipelines.</li>
+        </ol>
+    </section>
+
+    <div class="p-8 bg-slate-900 text-white rounded-3xl text-center space-y-4 shadow-xl">
+        <h3 class="text-2xl font-bold">Ready to Submit Your Guest Post Pitch?</h3>
+        <p class="text-slate-300 text-sm max-w-xl mx-auto leading-relaxed">
+            Send your topic proposals, target anchor text, and preliminary outline directly to our editorial inbox. We respond to all qualified contributors within 24 business hours.
+        </p>
+        <div class="pt-2">
+            <a href="mailto:contact@generalpedia.com?subject=Guest Post Pitch: [Proposed Topic] - GeneralPedia" class="inline-flex items-center gap-2 px-8 py-3.5 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold rounded-2xl transition shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-paper-plane"></i> Submit Your Article Pitch (contact@generalpedia.com)
+            </a>
+        </div>
+    </div>
+</div>`
             },
             "contact": {
                 title: "Contact Us",
-                content: `
-                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Contact GeneralPedia</h1>
-                    <p class="text-slate-600 mb-8">We welcome inquiries regarding editorial submissions, advertising partnerships, factual corrections, and general feedback.</p>
-                    
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
-                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg font-bold mb-3">
-                                <i class="fa-solid fa-envelope"></i>
-                            </div>
-                            <h3 class="font-bold text-slate-900 mb-1">Editorial & Guest Posts</h3>
-                            <p class="text-sm text-slate-500 mb-2">For article proposals, guest contributions, and content pitches.</p>
-                            <a href="mailto:contact@generalpedia.com" class="text-sm font-semibold text-emerald-600 hover:underline">contact@generalpedia.com</a>
-                        </div>
+                content: `<div class="space-y-8 text-slate-700 leading-relaxed">
+    <div class="p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white shadow-xl">
+        <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-500/30">
+            Get in Touch
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-4 mb-3">
+            Contact GeneralPedia: Editorial, Press & Partnerships
+        </h1>
+        <p class="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed">
+            We welcome correspondence from our global readers, prospective guest contributors, advertisers, researchers, and media organizations.
+        </p>
+    </div>
 
-                        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
-                            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg font-bold mb-3">
-                                <i class="fa-solid fa-handshake"></i>
-                            </div>
-                            <h3 class="font-bold text-slate-900 mb-1">Partnerships & Advertising</h3>
-                            <p class="text-sm text-slate-500 mb-2">For brand sponsorships, display advertising, and syndication.</p>
-                            <a href="mailto:advertising@generalpedia.com" class="text-sm font-semibold text-emerald-600 hover:underline">advertising@generalpedia.com</a>
-                        </div>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col justify-between">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl font-bold mb-4">
+                    <i class="fa-solid fa-pen-nib"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-1">Guest Post & Pitches</h3>
+                <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                    Submit article proposals, sponsored placements, and expert guest post contributions. Review our <button onclick="showStaticPage('write-for-us')" class="text-emerald-600 underline font-semibold">Guidelines</button> first.
+                </p>
+            </div>
+            <a href="mailto:contact@generalpedia.com?subject=Guest Post Inquiry - GeneralPedia" class="text-sm font-bold text-emerald-600 hover:underline">
+                contact@generalpedia.com →
+            </a>
+        </div>
 
-                    <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
-                        <h3 class="font-bold text-slate-900 mb-3">Response Time</h3>
-                        <p class="text-sm text-slate-600">Our editorial and management team reviews all messages within 24 to 48 business hours.</p>
-                    </div>
-                `
+        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col justify-between">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-bold mb-4">
+                    <i class="fa-solid fa-handshake"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-1">Advertising & Press</h3>
+                <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                    For corporate sponsorships, programmatic display advertising, media interviews, and official syndicated partnerships.
+                </p>
+            </div>
+            <a href="mailto:advertising@generalpedia.com?subject=Advertising Inquiry - GeneralPedia" class="text-sm font-bold text-emerald-600 hover:underline">
+                advertising@generalpedia.com →
+            </a>
+        </div>
+
+        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col justify-between">
+            <div>
+                <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center text-xl font-bold mb-4">
+                    <i class="fa-solid fa-shield-check"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-1">Editorial & Legal</h3>
+                <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                    For reporting factual corrections, copyright/DMCA notices, data privacy inquiries, or technical website issues.
+                </p>
+            </div>
+            <a href="mailto:privacy@generalpedia.com?subject=Legal / Editorial Inquiry" class="text-sm font-bold text-emerald-600 hover:underline">
+                privacy@generalpedia.com →
+            </a>
+        </div>
+    </div>
+
+    <section class="p-8 bg-white border border-slate-200 rounded-3xl shadow-sm space-y-6">
+        <div>
+            <h2 class="text-2xl font-bold text-slate-900 mb-1">Send an Instant Message</h2>
+            <p class="text-sm text-slate-500">Fill in the fields below and our communications desk will route your inquiry to the relevant department.</p>
+        </div>
+
+        <form onsubmit="event.preventDefault(); alert('Thank you for contacting GeneralPedia! Our editorial desk has received your message and will respond within 24 to 48 business hours.'); this.reset();" class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Your Full Name *</label>
+                    <input type="text" required placeholder="Jane Doe" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Email Address *</label>
+                    <input type="email" required placeholder="jane@example.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Department / Purpose *</label>
+                    <select class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                        <option>Guest Post Submission / Sponsored Pitch</option>
+                        <option>Advertising & Sponsorship</option>
+                        <option>Factual Correction or Feedback</option>
+                        <option>Technical Support / Website Bug</option>
+                        <option>DMCA / Copyright Inquiry</option>
+                        <option>General Inquiries</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Website / Portfolio (Optional)</label>
+                    <input type="url" placeholder="https://yourwebsite.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Subject *</label>
+                <input type="text" required placeholder="Brief summary of your inquiry..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Message / Pitch Details *</label>
+                <textarea required rows="5" placeholder="Provide complete details regarding your pitch, proposal, or inquiry..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition"></textarea>
+            </div>
+
+            <button type="submit" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-paper-plane"></i> Transmit Message
+            </button>
+        </form>
+    </section>
+
+    <section class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2 text-xs text-slate-600">
+        <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+            <h4 class="font-bold text-slate-900 text-sm mb-1"><i class="fa-solid fa-stopwatch text-emerald-600"></i> Editorial Turnaround Standard</h4>
+            <p>Our communications coordinators review submissions during business days (Monday – Friday). Typical response duration is within 24 to 48 hours.</p>
+        </div>
+        <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+            <h4 class="font-bold text-slate-900 text-sm mb-1"><i class="fa-solid fa-envelope-shield text-blue-600"></i> Confidentiality & Anti-Spam</h4>
+            <p>Your contact credentials are never shared, sold, or distributed to third-party telemarketers. All inquiries are treated with strict editorial confidentiality.</p>
+        </div>
+    </section>
+</div>`
             },
             "privacy-policy": {
                 title: "Privacy Policy",
-                content: `
-                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Privacy Policy</h1>
-                    <p class="text-sm text-slate-400 mb-6">Last Updated: September 13, 2026</p>
-                    <p class="mb-4">At GeneralPedia.com, accessible from https://generalpedia.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected and recorded by GeneralPedia and how we use it.</p>
-                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">Log Files</h2>
-                    <p class="mb-4">GeneralPedia follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks.</p>
-                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">Cookies and Web Beacons</h2>
-                    <p class="mb-4">Like any other website, GeneralPedia uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
-                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">GDPR and CCPA Privacy Rights</h2>
-                    <p class="mb-4">We respect your rights under the GDPR and CCPA. Users have the right to request access to their data, request rectification of any inaccurate information, and request the deletion of their personal data.</p>
-                `
+                content: `<div class="space-y-8 text-slate-700 leading-relaxed">
+    <div class="p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white shadow-xl">
+        <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-500/30">
+            Legal & Compliance
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-4 mb-3">
+            Privacy Policy & Data Protection Declaration
+        </h1>
+        <p class="text-slate-300 text-xs sm:text-sm">
+            Effective Date: September 13, 2026 | Last Comprehensive Review: September 13, 2026
+        </p>
+    </div>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-shield-halved text-emerald-600"></i> 1. Introduction & Scope
+        </h2>
+        <p>
+            At <strong>GeneralPedia.com</strong> ("GeneralPedia", "we", "us", or "our"), accessible via <a href="https://generalpedia.com" class="text-emerald-600 underline font-semibold">https://generalpedia.com</a>, the privacy of our visitors and users is of paramount importance. This Privacy Policy outlines our transparent data practices, detailing the categories of information collected, stored, processed, and safeguarded when you access or interact with our knowledge base, interactive tools, search utilities, and informational articles.
+        </p>
+        <p>
+            This policy strictly complies with international privacy statutes, including the European Union <strong>General Data Protection Regulation (GDPR)</strong>, the <strong>California Consumer Privacy Act (CCPA) / CPRA</strong>, and standard advertising guidelines governed by the Federal Trade Commission (FTC).
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-server text-emerald-600"></i> 2. Information We Collect
+        </h2>
+        <p>
+            We collect information through two primary mechanisms: automated passive telemetry and voluntary user communications.
+        </p>
+        <div class="space-y-3">
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <h4 class="font-bold text-slate-900 text-sm mb-1">A. Automated Log Files & Technical Metadata</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    Like virtually all professional web publications, GeneralPedia follows standard log file routines. Information gathered automatically includes: Internet Protocol (IP) addresses, browser brand and engine version, operating system architecture, Internet Service Provider (ISP), date/time stamps, referring and exit pages, platform type, and click counts. This telemetry is aggregated anonymously to diagnose server performance, prevent distributed denial of service (DDoS) attacks, and analyze navigational patterns across topic hubs.
+                </p>
+            </div>
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <h4 class="font-bold text-slate-900 text-sm mb-1">B. Voluntarily Submitted Information</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    When you contact our editorial desk, propose guest articles, report factual discrepancies, or subscribe to informational updates, you may voluntarily submit personal identifiers such as your full legal name, email address, website URL, company name, and the text content of your correspondence. We use this information solely to process and respond to your specific inquiry.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-cookie-bite text-emerald-600"></i> 3. Cookies, Tracking Beacons & Third-Party Advertising
+        </h2>
+        <p>
+            GeneralPedia utilizes industry-standard browser cookies (small text files deposited on your local storage device) to enhance user experience, preserve reader preferences (such as display themes or calculation variables), and evaluate page performance.
+        </p>
+        <div class="space-y-3 text-sm text-slate-600">
+            <p>
+                <strong>Google DoubleClick DART Cookie:</strong> Google is one of our primary third-party service providers. Google uses cookies, commonly known as DART cookies, to serve ads to our site visitors based on their visit to GeneralPedia.com and other websites across the Internet. Visitors may opt out of the use of the DART cookie by visiting the Google Ad and Content Network Privacy Policy at <a href="https://policies.google.com/technologies/ads" target="_blank" rel="nofollow noopener" class="text-emerald-600 underline">https://policies.google.com/technologies/ads</a>.
+            </p>
+            <p>
+                <strong>Analytics & Telemetry:</strong> We may deploy privacy-centric analytics frameworks (such as Google Analytics 4) with IP anonymization flags permanently enabled. This allows our data scientists to discern macro reader interests—such as high interest in retirement tax planning calculators—without tracking personally identifiable user behavior.
+            </p>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-scale-balanced text-emerald-600"></i> 4. GDPR Data Protection Rights (For European Economic Area Citizens)
+        </h2>
+        <p>
+            If you reside within the European Union or European Economic Area, you are entitled to comprehensive data protection rights under the GDPR:
+        </p>
+        <ul class="list-disc pl-6 space-y-1.5 text-xs text-slate-600">
+            <li><strong>The Right to Access:</strong> You have the right to request copies of your personal data held in our communication logs.</li>
+            <li><strong>The Right to Rectification:</strong> You have the right to request the correction of any information you believe is inaccurate or incomplete.</li>
+            <li><strong>The Right to Erasure ("Right to Be Forgotten"):</strong> You have the right to request that we expunge your personal records under qualifying statutory circumstances.</li>
+            <li><strong>The Right to Restrict Processing:</strong> You have the right to demand the restriction of the processing of your personal data under certain conditions.</li>
+            <li><strong>The Right to Object to Processing:</strong> You maintain the unconditional right to object to our processing of your personal data for direct marketing or analytical profiling.</li>
+            <li><strong>The Right to Data Portability:</strong> You may request the structured digital export of your submitted information.</li>
+        </ul>
+        <p class="text-xs text-slate-600">
+            To exercise any of these statutory rights, please contact our Data Protection Officer via email at <a href="mailto:privacy@generalpedia.com" class="text-emerald-600 underline font-semibold">privacy@generalpedia.com</a>. We are required by law to respond to verified requests within one calendar month.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-flag-usa text-emerald-600"></i> 5. California Privacy Rights (CCPA / CPRA Notice)
+        </h2>
+        <p>
+            Under the California Consumer Privacy Act (CCPA), as amended by the California Privacy Rights Act (CPRA), California residents enjoy designated entitlements:
+        </p>
+        <ul class="list-disc pl-6 space-y-1.5 text-xs text-slate-600">
+            <li><strong>Right to Know:</strong> Request disclosure of the categories and specific pieces of personal information collected over the preceding 12 months.</li>
+            <li><strong>Right to Delete:</strong> Request the deletion of personal information gathered from the consumer.</li>
+            <li><strong>Right to Opt-Out of Sale or Sharing:</strong> GeneralPedia does <em>NOT</em> sell, rent, monetize, or trade your personal data to external data brokers or commercial marketing lists.</li>
+            <li><strong>Right to Non-Discrimination:</strong> Exercising your privacy rights will never result in degraded service, premium paywalls, or altered content delivery.</li>
+        </ul>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-children text-emerald-600"></i> 6. Children's Information (COPPA Compliance)
+        </h2>
+        <p>
+            Safeguarding children while navigating digital networks is a critical responsibility. GeneralPedia does not knowingly collect any personally identifiable information from children under the age of 13. If a parent or guardian discovers that a child has provided personal information to GeneralPedia, please notify us immediately at <a href="mailto:privacy@generalpedia.com" class="text-emerald-600 underline font-semibold">privacy@generalpedia.com</a>, and we will promptly purge such records from our databases.
+        </p>
+    </section>
+
+    <section class="p-6 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+        <h3 class="font-bold text-slate-900">7. Data Security Safeguards</h3>
+        <p class="text-xs text-slate-600 leading-relaxed">
+            GeneralPedia implements modern technical and organizational measures to prevent unauthorized data access, loss, or alteration. All web transmissions are encrypted using Transport Layer Security (TLS 1.3) protocols. However, no electronic transmission over the public internet can be guaranteed to be 100% invulnerable; visitors navigate the web with standard digital awareness.
+        </p>
+    </section>
+</div>`
             },
             "terms": {
                 title: "Terms of Service",
-                content: `
-                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Terms of Service</h1>
-                    <p class="text-sm text-slate-400 mb-6">Effective Date: September 13, 2026</p>
-                    <p class="mb-4">Welcome to GeneralPedia.com. By accessing or using this website, you agree to be bound by these Terms of Service.</p>
-                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">1. Informational Disclaimer</h2>
-                    <p class="mb-4">The materials and content on GeneralPedia.com are provided for general informational, educational, and reference purposes only. Nothing on this website constitutes professional medical, financial, tax, or legal advice.</p>
-                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">2. Intellectual Property</h2>
-                    <p class="mb-4">All content, structure, logos, text, and data compilations on GeneralPedia.com are the intellectual property of GeneralPedia unless otherwise noted.</p>
-                `
+                content: `<div class="space-y-8 text-slate-700 leading-relaxed">
+    <div class="p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white shadow-xl">
+        <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-500/30">
+            Terms & Conditions
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-4 mb-3">
+            Terms of Service & Usage Agreement
+        </h1>
+        <p class="text-slate-300 text-xs sm:text-sm">
+            Effective Date: September 13, 2026 | Governing Law: Universal Digital Standards
+        </p>
+    </div>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-handshake text-emerald-600"></i> 1. Acceptance of Terms
+        </h2>
+        <p>
+            Welcome to <strong>GeneralPedia.com</strong> ("the Website", "Platform", "we", "our"). By browsing, accessing, referencing, or utilizing any portion of this Website—including our informational articles, tax calculations, symptom breakdowns, automotive guides, and interactive tools—you ("User", "Visitor") formally acknowledge and agree to comply with these binding Terms of Service, along with our <button onclick="showStaticPage('privacy-policy')" class="text-emerald-600 font-semibold underline">Privacy Policy</button>.
+        </p>
+        <p>
+            If you do not unconditionally accept all terms and conditions set forth herein, you must immediately discontinue use of this Website.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600"></i> 2. Professional & General Informational Disclaimers
+        </h2>
+        <p>
+            The content, tools, and materials published on GeneralPedia are compiled strictly for <strong>general educational, informational, and reference purposes only</strong>.
+        </p>
+        <div class="space-y-3 text-xs text-slate-600">
+            <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                <h4 class="font-bold text-amber-950 text-sm mb-1"><i class="fa-solid fa-notes-medical"></i> Medical Disclaimer:</h4>
+                <p>
+                    No content on GeneralPedia is intended to serve as medical diagnosis, prescription, or treatment advice. Always seek the advice of a qualified physician or licensed medical practitioner regarding any health condition. Never disregard professional medical advice or delay seeking it because of information read on this Website.
+                </p>
+            </div>
+            <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl">
+                <h4 class="font-bold text-emerald-950 text-sm mb-1"><i class="fa-solid fa-coins"></i> Financial & Tax Disclaimer:</h4>
+                <p>
+                    Articles analyzing IRS tax brackets, retirement accounts (Roth IRA, 401k), investment yields, and mortgage rates do not constitute licensed financial, investment, accounting, or tax counsel. Tax legislation varies by jurisdiction and personal circumstances. Consult a Certified Public Accountant (CPA) or fiduciary financial planner before making financial commitments.
+                </p>
+            </div>
+            <div class="p-4 bg-slate-100 border border-slate-200 rounded-xl">
+                <h4 class="font-bold text-slate-900 text-sm mb-1"><i class="fa-solid fa-wrench"></i> Automotive & Safety Disclaimer:</h4>
+                <p>
+                    Automotive maintenance tutorials, wiring schematics, and mechanical repair tips are undertaken entirely at your own risk. GeneralPedia assumes no liability for vehicle damage, mechanical failure, or personal bodily injury resulting from repair attempts.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-copyright text-emerald-600"></i> 3. Intellectual Property Rights & Fair Use
+        </h2>
+        <p>
+            Unless explicitly noted, all intellectual property rights—including editorial text, compilation databases, visual layout, software scripts, custom calculators, trademarks, and branding assets—are the exclusive property of GeneralPedia.com and are protected under international copyright and intellectual property conventions.
+        </p>
+        <p class="text-sm text-slate-600">
+            <strong>Permitted Personal Use:</strong> You are granted a limited, revocable, non-exclusive license to view, read, and bookmark content for non-commercial personal reference. You may quote short passages (under 100 words) provided prominent, do-follow attribution with a clickable hyperlink to the source URL on GeneralPedia.com is included.
+        </p>
+        <p class="text-sm text-slate-600">
+            <strong>Prohibited Commercial Reproduction:</strong> Systematic scraping, automated data harvesting, bulk replication, or re-publishing of our articles or codebases without express written consent from GeneralPedia management is strictly prohibited and subject to DMCA takedown procedures.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-pen-nib text-emerald-600"></i> 4. Guest Contributors & Sponsored Content Terms
+        </h2>
+        <p>
+            Authors submitting guest articles, sponsored pieces, or press releases warrant that their submissions are 100% original, unplagiarized, and free of copyright infringements. By submitting content to GeneralPedia, contributors grant GeneralPedia an irrevocable, royalty-free, worldwide, perpetual license to edit, index, format, monetize, and distribute the contribution across our digital network.
+        </p>
+        <p class="text-sm text-slate-600">
+            GeneralPedia reserves full editorial discretion to reject, revise, or subsequently unpublish any sponsored content or guest article that fails our ongoing quality audits or violates updated Google Search spam guidelines.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-ban text-rose-600"></i> 5. Limitation of Liability
+        </h2>
+        <p class="text-xs text-slate-600 leading-relaxed">
+            TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, GENERALPEDIA.COM, ITS DIRECTORS, EMPLOYEES, CONTENT CONTRIBUTORS, AND AFFILIATES SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, CONSEQUENTIAL, SPECIAL, OR PUNITIVE DAMAGES—INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA LOSS, MEDICAL COMPLICATIONS, FINANCIAL DISRUPTIONS, OR HARDWARE MALFUNCTION—ARISING OUT OF OR IN CONNECTION WITH YOUR USE OR INABILITY TO USE THIS WEBSITE OR ITS CONTENTS.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-rotate text-emerald-600"></i> 6. Revisions & Modification of Terms
+        </h2>
+        <p class="text-sm text-slate-600">
+            We reserve the right to revise and modify these Terms of Service at any juncture without prior individualized notice. Changes take immediate effect upon being published on this page. Your continued use of the Platform after changes are published constitutes binding acceptance of the updated terms.
+        </p>
+    </section>
+</div>`
             },
             "editorial-guidelines": {
                 title: "Editorial Guidelines",
-                content: `
-                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Editorial Guidelines & Standards</h1>
-                    <p class="text-lg text-slate-600 mb-6">At GeneralPedia, our editorial standards prioritize clarity, factual integrity, and reader utility.</p>
-                    <h2 class="text-2xl font-bold text-slate-900 mt-6 mb-3">Fact Verification & Sourcing</h2>
-                    <p class="mb-4">Every article published on GeneralPedia undergoes rigorous editorial review. We rely exclusively on primary data sources, recognized scientific institutions, official government databases (IRS, NIH, CDC), and accredited academic studies.</p>
-                    <h2 class="text-2xl font-bold text-slate-900 mt-6 mb-3">Independence & Transparency</h2>
-                    <p class="mb-4">Our editorial recommendations are entirely independent. Where sponsored content or guest articles are accepted, they must satisfy our strict quality benchmarks and are clearly labeled for reader transparency.</p>
-                `
+                content: `<div class="space-y-8 text-slate-700 leading-relaxed">
+    <div class="p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white shadow-xl">
+        <span class="px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider border border-emerald-500/30">
+            Editorial Integrity & Standards
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mt-4 mb-3">
+            Editorial Guidelines, Fact-Checking & Sourcing Policy
+        </h1>
+        <p class="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed">
+            The foundational principles that guide every article, calculator, data table, and analytical breakdown published across GeneralPedia.com.
+        </p>
+    </div>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-compass-drafting text-emerald-600"></i> 1. The GeneralPedia Editorial Commitment
+        </h2>
+        <p>
+            At <strong>GeneralPedia.com</strong>, we believe that factual accuracy is the bedrock of public trust. Millions of global internet users rely on digital encyclopedias to make consequential life decisions—ranging from managing hard-earned personal savings to interpreting medical symptoms and buying family vehicles.
+        </p>
+        <p>
+            Our editorial staff, freelance contributors, and data researchers adhere to strict editorial ethics, uncompromising fact-checking protocols, and transparent attribution practices. We measure our success not by sensational headlines, but by the depth, clarity, and factual durability of our publications.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-magnifying-glass-check text-emerald-600"></i> 2. Four-Step Fact-Checking & Verification Lifecycle
+        </h2>
+        <p>
+            Before an article or interactive module is published on GeneralPedia, it must successfully navigate our structured four-tier editorial workflow:
+        </p>
+        <div class="space-y-3">
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center">1</span>
+                    <h4 class="font-bold text-slate-900 text-sm">Primary Source Research</h4>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed pl-8">
+                    Authors must extract data directly from authoritative primary sources: statutory legislative records (e.g., Internal Revenue Service, Congressional Budget Office), peer-reviewed scientific journals (PubMed, Nature, The Lancet), or recognized engineering standards (SAE, ISO). Secondhand hearsay or unverified forum commentary is strictly rejected.
+                </p>
+            </div>
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center">2</span>
+                    <h4 class="font-bold text-slate-900 text-sm">Subject-Matter Editorial Review</h4>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed pl-8">
+                    Senior editors cross-examine all statistical claims, formulas, and legal thresholds. In our finance and medical categories, content is evaluated against the latest clinical consensus and active statutory fiscal calendars.
+                </p>
+            </div>
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center">3</span>
+                    <h4 class="font-bold text-slate-900 text-sm">Clarity & Readability Optimization</h4>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed pl-8">
+                    Technical terminology is clearly defined. Content is structured with clear bullet points, comparison tables, bold highlights, and direct answers to reader intent, avoiding unnecessary fluff.
+                </p>
+            </div>
+            <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-black flex items-center justify-center">4</span>
+                    <h4 class="font-bold text-slate-900 text-sm">Post-Publication Auditing & Freshness Updates</h4>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed pl-8">
+                    Content is not static. Our editors continuously monitor regulatory changes, tax bracket annual adjustments, interest rate shifts, and vehicle recall alerts, updating existing articles promptly.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-quote-left text-emerald-600"></i> 3. Citation & Sourcing Hierarchy
+        </h2>
+        <p>
+            To guarantee absolute transparency, our writers cite reputable resources in accordance with the following hierarchy:
+        </p>
+        <ul class="list-disc pl-6 space-y-2 text-xs text-slate-600">
+            <li><strong>Tier 1 (Governmental & Regulatory Repositories):</strong> IRS.gov, CDC.gov, FDA.gov, SEC.gov, BLS.gov, DOT.gov, NIH.gov.</li>
+            <li><strong>Tier 2 (Academic & Scientific Institutions):</strong> Stanford, Harvard, MIT, Nature, JSTOR, PubMed, ScienceDirect.</li>
+            <li><strong>Tier 3 (Accredited Non-Profit Organizations & Standards Bodies):</strong> American Heart Association, Brookings Institution, SAE International.</li>
+            <li><strong>Tier 4 (Recognized Industry Publications):</strong> Bloomberg, Reuters, Edmunds, Kelley Blue Book.</li>
+        </ul>
+        <p class="text-xs text-slate-600">
+            We strictly forbid linking to content farms, low-quality aggregators, sponsored spam blogs, or biased promotional advertorials.
+        </p>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-robot text-emerald-600"></i> 4. Policy on Artificial Intelligence (AI) & Automation
+        </h2>
+        <p>
+            At GeneralPedia, we embrace technological innovation while strictly upholding human editorial oversight. We align fully with Google's Search Central guidelines regarding AI-generated content:
+        </p>
+        <div class="p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-2 text-xs text-slate-600 leading-relaxed">
+            <p>
+                <strong>Human-in-the-Loop Requirement:</strong> While algorithmic tools and LLMs may assist in data aggregation, semantic clustering, or stylistic proofreading, <em>no article is ever published without comprehensive human review, factual verification, and editorial refinement</em>.
+            </p>
+            <p>
+                <strong>Zero Unchecked Automation:</strong> Automated mass-generation designed solely to manipulate search rankings without adding genuine human value is strictly prohibited across our publication.
+            </p>
+        </div>
+    </section>
+
+    <section class="space-y-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+            <i class="fa-solid fa-pen-fancy text-emerald-600"></i> 5. Corrections & Feedback Protocol
+        </h2>
+        <p class="text-sm text-slate-600 leading-relaxed">
+            Despite our exhaustive vetting protocols, errors or outdated regulatory figures may occasionally occur. GeneralPedia is committed to swift, transparent corrections. If you detect a factual discrepancy or outdated data point in any article:
+        </p>
+        <div class="p-6 bg-slate-100 rounded-2xl border border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+                <h4 class="font-bold text-slate-900 text-sm">Report a Factual Inaccuracy</h4>
+                <p class="text-xs text-slate-600">Send the article URL and supporting documentation to our editorial team.</p>
+            </div>
+            <a href="mailto:corrections@generalpedia.com?subject=Factual Correction Request - GeneralPedia" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition">
+                Submit Correction (corrections@generalpedia.com)
+            </a>
+        </div>
+    </section>
+</div>`
             }
         };
 
