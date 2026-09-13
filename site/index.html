@@ -364,22 +364,48 @@
     .nav-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
-    .nav-search-btn {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #ffffff;
-      padding: 6px 12px;
+    .nav-search-form {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .nav-search-input {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
       border-radius: var(--radius-sm);
+      color: #ffffff;
+      padding: 6px 32px 6px 12px;
       font-size: 0.8125rem;
+      width: 180px;
+      outline: none;
+      transition: width 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .nav-search-input::placeholder {
+      color: #94a3b8;
+    }
+    .nav-search-input:focus {
+      width: 240px;
+      background: rgba(255,255,255,0.2);
+      border-color: #38bdf8;
+    }
+    .nav-search-submit {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #cbd5e1;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      padding: 4px;
     }
-    .nav-search-btn:hover {
-      background: rgba(255,255,255,0.2);
+    .nav-search-submit:hover {
+      color: #ffffff;
     }
     .nav-guest-btn {
       background: var(--primary);
@@ -1112,19 +1138,7 @@
         <span class="site-tagline">Universal Knowledge Magazine &amp; Verified Reference</span>
       </div>
 
-      <!-- Header Editorial Ad Banner (728x90 slot) -->
-      <div class="header-banner" role="complementary" aria-label="Editorial Submission Banner">
-        <div class="banner-text">
-          <h4>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            GeneralPedia Editorial Program
-          </h4>
-          <p>Accepting research papers, case analyses, and authoritative guest guides.</p>
-        </div>
-        <a href="#" onclick="showStaticPage('write-for-us'); return false;" class="banner-badge">
-          Submit Article
-        </a>
-      </div>
+      <!-- Removed duplicate banner as requested to keep layout clean and unified -->
     </div>
   </header>
 
@@ -1143,10 +1157,13 @@
       </ul>
 
       <div class="nav-actions">
-        <button class="nav-search-btn" onclick="triggerSearchFocus()" aria-label="Open search form">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <span>Search Guides</span>
-        </button>
+        <!-- Direct embedded search bar (no popup prompt) -->
+        <form class="nav-search-form" onsubmit="event.preventDefault(); executeSearch(document.getElementById('nav-search-input').value);">
+          <input type="text" id="nav-search-input" class="nav-search-input" placeholder="Search guides..." autocomplete="off">
+          <button type="submit" class="nav-search-submit" aria-label="Submit search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+        </form>
         <button class="nav-guest-btn" onclick="showStaticPage('write-for-us')">
           Write for Us
         </button>
@@ -2285,9 +2302,10 @@
     }
 
     function triggerSearchFocus() {
-      const q = prompt("Search GeneralPedia Guides & Reports:");
-      if (q && q.trim()) {
-        executeSearch(q.trim());
+      const searchInput = document.getElementById('nav-search-input');
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.select();
       }
     }
 
