@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeneralPedia - The Complete Encyclopedia & Everyday Knowledge Hub</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Top Banner: Automatic Engine Status -->
+    <div class="bg-slate-900 text-white text-xs py-2 px-4 border-b border-slate-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-medium">GeneralPedia Auto-Publishing Engine:</span>
+                <span class="text-emerald-400 font-semibold" id="top-status-text">ACTIVE & READY</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-300">
+                <span><i class="fa-solid fa-layer-group text-slate-400"></i> Categories: <strong>8</strong></span>
+                <span><i class="fa-solid fa-file-lines text-slate-400"></i> Published: <strong id="top-published-count">1</strong></span>
+                <span><i class="fa-solid fa-database text-slate-400"></i> Keywords Pool: <strong>3,108</strong></span>
+                <button onclick="openAutomationModal()" class="text-emerald-400 hover:text-emerald-300 underline font-medium">
+                    <i class="fa-solid fa-gear"></i> Automation Control
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm backdrop-blur-md bg-white/95">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand Logo -->
+                <a href="#" onclick="showHomeView()" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white text-2xl font-black shadow-md shadow-emerald-500/20 group-hover:scale-105 transition">
+                        G
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-tight text-slate-900 flex items-center">
+                            General<span class="text-emerald-600">Pedia</span><span class="text-xs ml-1.5 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">.COM</span>
+                        </span>
+                        <p class="text-xs text-slate-500 font-medium tracking-wide">The All-in-One Everyday Encyclopedia</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Menu (8 Categories) -->
+                <nav class="hidden lg:flex items-center gap-1 text-sm font-semibold text-slate-700">
+                    <button onclick="filterByCategory('all')" class="category-nav-btn px-3.5 py-2 rounded-xl hover:bg-slate-100 text-emerald-600 bg-emerald-50 transition" data-cat="all">All</button>
+                    <button onclick="filterByCategory('how-to')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="how-to">How-To</button>
+                    <button onclick="filterByCategory('finance')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="finance">Finance</button>
+                    <button onclick="filterByCategory('health')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="health">Health</button>
+                    <button onclick="filterByCategory('tools')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="tools">Calculators</button>
+                    <button onclick="filterByCategory('automotive')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="automotive">Automotive</button>
+                    <button onclick="filterByCategory('lifestyle')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="lifestyle">Lifestyle</button>
+                    <button onclick="filterByCategory('culture')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="culture">Culture</button>
+                </nav>
+
+                <!-- Actions / Automation Quick Button -->
+                <div class="flex items-center gap-3">
+                    <button onclick="triggerAutoPublish()" id="quick-publish-btn" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 text-white font-semibold text-sm shadow-sm hover:bg-emerald-700 active:scale-95 transition">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>Auto-Publish Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Views Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="main-content">
+        
+        <!-- ================= HOME VIEW ================= -->
+        <div id="home-view" class="space-y-10">
+            <!-- Hero Search Section -->
+            <section class="relative rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white p-8 sm:p-12 overflow-hidden shadow-xl">
+                <div class="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px] opacity-10"></div>
+                <div class="relative z-10 max-w-3xl mx-auto text-center space-y-6">
+                    <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold tracking-wide border border-emerald-500/30">
+                        <i class="fa-solid fa-sparkles"></i> Comprehensive Knowledge Base
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                        Answers, Guides & Data on <span class="text-emerald-400">Everything</span>
+                    </h1>
+                    <p class="text-slate-300 text-base sm:text-lg">
+                        Explore verified articles on tax calculations, medical facts, step-by-step how-tos, interactive converters, and smart living advice.
+                    </p>
+
+                    <!-- Real-Time Search Bar -->
+                    <div class="relative max-w-2xl mx-auto">
+                        <div class="flex items-center bg-white rounded-2xl p-2 shadow-2xl border border-slate-200">
+                            <i class="fa-solid fa-magnifying-glass text-slate-400 ml-3 text-lg"></i>
+                            <input type="text" id="live-search-input" onkeyup="handleSearch(this.value)" placeholder="Search any topic (e.g. roth ira, tax brackets, tire change, symptoms)..." class="w-full px-4 py-2 text-slate-800 focus:outline-none text-base placeholder:text-slate-400">
+                            <button onclick="handleSearch(document.getElementById('live-search-input').value)" class="px-5 py-2.5 bg-emerald-600 text-white font-semibold rounded-xl text-sm hover:bg-emerald-700 transition">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8 Main Categories Grid -->
+            <section class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Browse Categories</h2>
+                        <p class="text-sm text-slate-500">Explore structured pillars across 3,100+ analyzed high-demand queries</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3" id="categories-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </section>
+
+            <!-- Articles Feed -->
+            <section class="space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 tracking-tight" id="feed-title">Latest Articles</h2>
+                        <p class="text-sm text-slate-500" id="feed-subtitle">Freshly published insights with natural semantic / LSI keywords</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-500">Auto-Syncing to:</span>
+                        <a href="https://docs.google.com/spreadsheets/d/1IDS7DUc4PrlYbxhKwlqsoeQK70JH10-M_Qq80zm_-b0/edit?gid=758476499" target="_blank" class="text-xs font-semibold text-emerald-600 hover:underline flex items-center gap-1">
+                            <i class="fa-solid fa-file-excel"></i> Google Sheet
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Articles Cards Container -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="articles-feed">
+                    <!-- Dynamically injected -->
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= ARTICLE VIEW ================= -->
+        <article id="article-view" class="hidden max-w-4xl mx-auto space-y-8 bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm">
+            <!-- Breadcrumbs -->
+            <nav class="flex items-center gap-2 text-xs font-medium text-slate-500">
+                <button onclick="showHomeView()" class="hover:text-slate-800">Home</button>
+                <span>/</span>
+                <span id="art-category-crumb" class="text-emerald-600 font-semibold">Category</span>
+                <span>/</span>
+                <span id="art-slug-crumb" class="truncate max-w-xs">Article</span>
+            </nav>
+
+            <!-- Article Header -->
+            <div class="space-y-4 border-b border-slate-100 pb-6">
+                <div class="flex flex-wrap items-center gap-3">
+                    <span id="art-category-badge" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">Category</span>
+                    <span class="text-slate-400 text-sm">•</span>
+                    <span id="art-read-time" class="text-slate-500 text-sm font-medium"><i class="fa-regular fa-clock"></i> 5 min read</span>
+                    <span class="text-slate-400 text-sm">•</span>
+                    <span id="art-date" class="text-slate-500 text-sm font-medium">Date</span>
+                </div>
+                <h1 id="art-title" class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+                    Article Title
+                </h1>
+                <p id="art-meta" class="text-slate-600 text-base leading-relaxed">
+                    Meta description
+                </p>
+                <div class="flex items-center justify-between text-xs text-slate-500 pt-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center">G</span>
+                        <span>Published by <strong>GeneralPedia Editorial Board</strong></span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span>Search Vol: <strong id="art-vol">0</strong></span>
+                        <span>KD: <strong id="art-kd">0</strong></span>
+                        <span id="art-cpc-wrap">CPC: <strong id="art-cpc">$0.00</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Article HTML Body -->
+            <div id="art-content" class="text-slate-800">
+                <!-- Content inserted dynamically -->
+            </div>
+
+            <!-- Tags Section -->
+            <div class="pt-6 border-t border-slate-200">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Topic Tags</h4>
+                <div class="flex flex-wrap gap-2" id="art-tags">
+                    <!-- Tags -->
+                </div>
+            </div>
+
+            <div class="pt-4 flex justify-between items-center">
+                <button onclick="showHomeView()" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back to All Articles
+                </button>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Automation Modal (Control Center) -->
+    <div id="auto-modal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-6">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg font-bold">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">GeneralPedia Automation Engine</h3>
+                        <p class="text-xs text-slate-500">Autonomous content generation & Google Sheets synchronization</p>
+                    </div>
+                </div>
+                <button onclick="closeAutomationModal()" class="text-slate-400 hover:text-slate-600 text-xl font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Controls -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Trigger Immediate Post</span>
+                    <p class="text-xs text-slate-600">Picks the next high-volume clustered keyword and publishes instantly.</p>
+                    <button onclick="triggerAutoPublish()" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Run Post Generator Now
+                    </button>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Google Sheets Integration</span>
+                    <p class="text-xs text-slate-600">Syncs Keywords, Category, Tags, Status, Post URL, and Date/Time.</p>
+                    <a href="https://docs.google.com/spreadsheets/d/1IDS7DUc4PrlYbxhKwlqsoeQK70JH10-M_Qq80zm_-b0/edit?gid=758476499" target="_blank" class="w-full py-2.5 px-4 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-semibold text-sm transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-table"></i> Open Google Sheet
+                    </a>
+                </div>
+            </div>
+
+            <!-- Live Status Logs -->
+            <div class="space-y-2">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Engine Activity Log</span>
+                <div id="engine-logs" class="h-44 overflow-y-auto bg-slate-950 text-emerald-400 p-4 rounded-2xl font-mono text-xs space-y-1">
+                    <div>[System Init] GeneralPedia.com automation engine online.</div>
+                    <div>[Keywords Pool] 3,108 filtered clusters loaded from Google Sheet repository.</div>
+                    <div>[Ready] Engine awaiting command.</div>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <button onclick="closeAutomationModal()" class="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-sm">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-16 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg">G</div>
+                <div>
+                    <span class="font-bold text-slate-800 text-base">GeneralPedia.com</span>
+                    <p class="text-xs text-slate-500">© 2026 GeneralPedia. Autonomous Content System.</p>
+                </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-600 font-medium">
+                <button onclick="filterByCategory('how-to')" class="hover:text-emerald-600">How-To</button>
+                <button onclick="filterByCategory('finance')" class="hover:text-emerald-600">Finance</button>
+                <button onclick="filterByCategory('health')" class="hover:text-emerald-600">Health</button>
+                <button onclick="filterByCategory('tools')" class="hover:text-emerald-600">Tools</button>
+                <button onclick="filterByCategory('automotive')" class="hover:text-emerald-600">Automotive</button>
+                <button onclick="filterByCategory('lifestyle')" class="hover:text-emerald-600">Lifestyle</button>
+                <a href="https://docs.google.com/spreadsheets/d/1IDS7DUc4PrlYbxhKwlqsoeQK70JH10-M_Qq80zm_-b0/edit?gid=758476499" target="_blank" class="hover:text-emerald-600 font-semibold text-emerald-600">Sheet Sync</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Script -->
+    <script>
+        const CATEGORIES_DATA = {
+            "how-to": { name: "How-To & Guides", icon: "fa-book-open", color: "emerald" },
+            "finance": { name: "Finance & Money", icon: "fa-coins", color: "amber" },
+            "health": { name: "Health & Wellness", icon: "fa-heart-pulse", color: "rose" },
+            "tools": { name: "Calculators", icon: "fa-calculator", color: "indigo" },
+            "automotive": { name: "Automotive", icon: "fa-car", color: "cyan" },
+            "tech": { name: "Tech & Digital", icon: "fa-microchip", color: "blue" },
+            "lifestyle": { name: "Home & Life", icon: "fa-house", color: "teal" },
+            "culture": { name: "Culture", icon: "fa-masks-theater", color: "purple" }
+        };
+
+        let articlesList = [];
+        let activeCategory = 'all';
+
+        // Load Initial Posts from server API / data
+        async function fetchPosts() {
+            try {
+                const res = await fetch('/api/posts');
+                if (res.ok) {
+                    articlesList = await res.json();
+                }
+            } catch (e) {
+                console.log("Using cached demo posts:", e);
+            }
+            renderCategoriesGrid();
+            renderArticlesFeed();
+            updateCounts();
+        }
+
+        function renderCategoriesGrid() {
+            const container = document.getElementById('categories-grid');
+            container.innerHTML = '';
+            for (const [slug, info] of Object.entries(CATEGORIES_DATA)) {
+                const btn = document.createElement('button');
+                btn.onclick = () => filterByCategory(slug);
+                btn.className = `p-4 rounded-2xl border text-center transition hover:shadow-md group ${activeCategory === slug ? 'border-emerald-500 bg-emerald-50/50' : 'border-slate-200 bg-white hover:border-slate-300'}`;
+                btn.innerHTML = `
+                    <div class="w-10 h-10 mx-auto rounded-xl bg-slate-100 group-hover:bg-emerald-100 group-hover:text-emerald-700 text-slate-600 flex items-center justify-center text-lg mb-2 transition">
+                        <i class="fa-solid ${info.icon}"></i>
+                    </div>
+                    <span class="block text-xs font-bold text-slate-800 leading-tight">${info.name}</span>
+                `;
+                container.appendChild(btn);
+            }
+        }
+
+        function renderArticlesFeed(filtered = null) {
+            const feed = document.getElementById('articles-feed');
+            const items = filtered || (activeCategory === 'all' ? articlesList : articlesList.filter(a => a.category_slug === activeCategory));
+            feed.innerHTML = '';
+
+            if (items.length === 0) {
+                feed.innerHTML = `
+                    <div class="col-span-full text-center py-16 bg-white rounded-3xl border border-slate-200 p-8 space-y-4">
+                        <div class="w-14 h-14 mx-auto rounded-2xl bg-slate-100 flex items-center justify-center text-slate-400 text-2xl">
+                            <i class="fa-regular fa-folder-open"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-800">No articles yet in this category</h3>
+                        <p class="text-sm text-slate-500">Click below to let the automation engine generate one immediately!</p>
+                        <button onclick="triggerAutoPublish()" class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700 transition">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i> Auto-Generate Post
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach(art => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-3xl border border-slate-200 hover:border-slate-300 p-6 shadow-sm hover:shadow-md transition flex flex-col justify-between group cursor-pointer";
+                card.onclick = () => openArticle(art.id);
+                
+                const semBadges = (art.semantic_keywords || []).slice(0, 3).map(sk => 
+                    `<span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-medium">${sk}</span>`
+                ).join(' ');
+
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="px-3 py-1 rounded-full font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700">${art.category_name}</span>
+                            <span class="text-slate-400 font-medium">${art.display_date || 'Recently'}</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition leading-snug">
+                            ${art.title}
+                        </h3>
+                        <p class="text-slate-600 text-sm line-clamp-3 leading-relaxed">
+                            ${art.meta_description}
+                        </p>
+                    </div>
+
+                    <div class="mt-5 pt-4 border-t border-slate-100 space-y-3">
+                        <div class="flex flex-wrap gap-1">
+                            ${semBadges}
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-slate-500 font-medium">
+                            <span><i class="fa-solid fa-chart-line text-emerald-600"></i> ${Number(art.search_volume || 0).toLocaleString()} vol</span>
+                            <span class="text-emerald-600 font-semibold group-hover:translate-x-1 transition inline-flex items-center gap-1">Read Guide <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+        }
+
+        function filterByCategory(slug) {
+            activeCategory = slug;
+            document.querySelectorAll('.category-nav-btn').forEach(b => {
+                if (b.dataset.cat === slug) {
+                    b.classList.add('text-emerald-600', 'bg-emerald-50');
+                } else {
+                    b.classList.remove('text-emerald-600', 'bg-emerald-50');
+                }
+            });
+            const catName = slug === 'all' ? 'Latest Articles' : (CATEGORIES_DATA[slug]?.name || slug);
+            document.getElementById('feed-title').innerText = catName;
+            renderCategoriesGrid();
+            renderArticlesFeed();
+        }
+
+        function handleSearch(query) {
+            if (!query.trim()) {
+                renderArticlesFeed();
+                return;
+            }
+            const q = query.toLowerCase();
+            const matches = articlesList.filter(a => 
+                a.title.toLowerCase().includes(q) ||
+                a.primary_keyword.toLowerCase().includes(q) ||
+                (a.semantic_keywords && a.semantic_keywords.some(sk => sk.toLowerCase().includes(q)))
+            );
+            renderArticlesFeed(matches);
+        }
+
+        async function openArticle(id) {
+            try {
+                const res = await fetch(`/api/post/${id}`);
+                const data = await res.json();
+                
+                document.getElementById('art-title').innerText = data.title;
+                document.getElementById('art-meta').innerText = data.meta_description;
+                document.getElementById('art-category-crumb').innerText = data.category_name;
+                document.getElementById('art-slug-crumb').innerText = data.primary_keyword;
+                document.getElementById('art-category-badge').innerText = data.category_name;
+                document.getElementById('art-date').innerText = data.display_date || 'Recently';
+                document.getElementById('art-vol').innerText = Number(data.search_volume || 0).toLocaleString();
+                document.getElementById('art-kd').innerText = data.difficulty || 0;
+                document.getElementById('art-cpc').innerText = `$${Number(data.cpc || 0).toFixed(2)}`;
+                document.getElementById('art-content').innerHTML = data.content_html;
+                
+                const tagsCont = document.getElementById('art-tags');
+                tagsCont.innerHTML = '';
+                (data.tags || []).forEach(t => {
+                    const sp = document.createElement('span');
+                    sp.className = "px-3 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold";
+                    sp.innerText = t;
+                    tagsCont.appendChild(sp);
+                });
+
+                document.getElementById('home-view').classList.add('hidden');
+                document.getElementById('article-view').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch(e) {
+                console.error("Error loading article:", e);
+            }
+        }
+
+        function showHomeView() {
+            document.getElementById('article-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function triggerAutoPublish() {
+            const btn = document.getElementById('quick-publish-btn');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Generating & Syncing...</span>`;
+            btn.disabled = true;
+            
+            appendLog("Generating next optimized article...");
+            try {
+                const res = await fetch('/api/publish-next', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    appendLog(`[SUCCESS] Published "${data.article.title}" in Category "${data.article.category_name}"`);
+                    appendLog(`[GOOGLE SHEET SYNC] Keywords, Category, Tags, Status, Post URL, and Date/Time logged!`);
+                    await fetchPosts();
+                } else {
+                    appendLog(`[NOTICE] ${data.message || data.error}`);
+                }
+            } catch(e) {
+                appendLog(`[ERROR] Server communication error: ${e.message}`);
+            } finally {
+                btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> <span>Auto-Publish Next</span>`;
+                btn.disabled = false;
+            }
+        }
+
+        function updateCounts() {
+            document.getElementById('top-published-count').innerText = articlesList.length;
+        }
+
+        function openAutomationModal() {
+            document.getElementById('auto-modal').classList.remove('hidden');
+            document.getElementById('auto-modal').classList.add('flex');
+        }
+
+        function closeAutomationModal() {
+            document.getElementById('auto-modal').classList.add('hidden');
+            document.getElementById('auto-modal').classList.remove('flex');
+        }
+
+        function appendLog(msg) {
+            const log = document.getElementById('engine-logs');
+            const d = document.createElement('div');
+            const t = new Date().toLocaleTimeString();
+            d.innerText = `[${t}] ${msg}`;
+            log.appendChild(d);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        // Initialize on page load
+        fetchPosts();
+    </script>
+</body>
+</html>
