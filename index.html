@@ -603,6 +603,78 @@
       color: var(--text-subtle);
     }
 
+    /* Main Content Top Spacing */
+    #main-content {
+      padding-top: 24px;
+    }
+
+    /* Category Archive Header Banner (MoreNews Magazine Style) */
+    .category-header-banner {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 28px 32px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-sm);
+      border-left: 5px solid var(--secondary);
+    }
+    .category-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: var(--text-subtle);
+      margin-bottom: 12px;
+    }
+    .category-breadcrumbs a, .category-breadcrumbs button {
+      color: var(--text-muted);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-size: inherit;
+    }
+    .category-breadcrumbs a:hover, .category-breadcrumbs button:hover {
+      color: var(--primary);
+    }
+    .category-header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .category-header-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin: 0;
+    }
+    .category-header-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 6px;
+      margin-bottom: 0;
+      max-width: 820px;
+    }
+    .category-header-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
     /* ==================== 6. MAGAZINE 2-COLUMN LAYOUT ==================== */
     .magazine-layout {
       display: grid;
@@ -1408,6 +1480,25 @@
       <section class="trending-banner-row" id="home-trending-section" aria-label="Trending Guides">
         <div class="trending-mini-grid" id="trending-mini-container">
           <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- Dedicated Category Archive Header Banner -->
+      <section id="category-header-banner" class="category-header-banner hidden" aria-label="Category Overview">
+        <div class="category-breadcrumbs">
+          <button onclick="showHomeView()">Home</button>
+          <span>/</span>
+          <span>Topics</span>
+          <span>/</span>
+          <span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">Calculators</span>
+        </div>
+        <div class="category-header-top">
+          <h1 class="category-header-title" id="category-banner-title">Category Title</h1>
+        </div>
+        <p class="category-header-desc" id="category-banner-desc">Curated editorial manuals, in-depth breakdowns, and interactive references.</p>
+        <div class="category-header-meta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="category-banner-meta">Showing 0 verified guides</span>
         </div>
       </section>
 
@@ -2306,6 +2397,8 @@
     const homeHeroSection = document.getElementById('home-hero-section');
     const homeTrendingSection = document.getElementById('home-trending-section');
 
+    const categoryHeaderBanner = document.getElementById('category-header-banner');
+
     function hideAllViews() {
       homeView.classList.add('hidden');
       articleView.classList.add('hidden');
@@ -2318,6 +2411,7 @@
       homeView.classList.remove('hidden');
       if (homeHeroSection) homeHeroSection.classList.remove('hidden');
       if (homeTrendingSection) homeTrendingSection.classList.remove('hidden');
+      if (categoryHeaderBanner) categoryHeaderBanner.classList.add('hidden');
       currentCategorySlug = 'all';
       updateNavHighlight('all');
       document.getElementById('mag-feed-heading').innerText = "Latest Published Reports";
@@ -2332,22 +2426,6 @@
       hideAllViews();
       homeView.classList.remove('hidden');
       
-      // On category pages, hide top home hero banner to show pure category feed
-      if (slug === 'all') {
-        if (homeHeroSection) homeHeroSection.classList.remove('hidden');
-        if (homeTrendingSection) homeTrendingSection.classList.remove('hidden');
-      } else {
-        if (homeHeroSection) homeHeroSection.classList.add('hidden');
-        if (homeTrendingSection) homeTrendingSection.classList.add('hidden');
-      }
-
-      currentCategorySlug = slug;
-      updateNavHighlight(slug);
-
-      const filtered = slug === 'all' 
-        ? ARTICLES_DATA 
-        : ARTICLES_DATA.filter(a => a.category_slug === slug);
-
       const titleMap = {
         'how-to': 'How-To & Practical Guides',
         'finance': 'Personal Finance & Tax Analysis',
@@ -2358,8 +2436,46 @@
         'culture': 'Culture, Sports & Entertainment'
       };
 
+      const descMap = {
+        'how-to': 'Step-by-step verified procedures, expert DIY walk-throughs, troubleshooting playbooks, and procedural solutions.',
+        'finance': 'Fact-checked tax guidance, banking rates, business analysis, retirement planning, and monetary calculations.',
+        'health': 'Evidence-based health information, nutritional summaries, medical reference charts, and wellness guides.',
+        'tools': 'Interactive mathematical utilities, date/age calculators, unit converters, and decision-support algorithms.',
+        'automotive': 'Diagnostic codes, vehicle care schedules, specifications, mechanics guides, and buying advice.',
+        'lifestyle': 'Home organization, gardening advice, pet nutrition, living essentials, and daily lifestyle improvements.',
+        'culture': 'Historical retrospectives, global traditions, literature reviews, athletic milestones, and media insights.'
+      };
+
       const catTitle = titleMap[slug] || (slug.charAt(0).toUpperCase() + slug.slice(1));
-      document.getElementById('mag-feed-heading').innerText = slug === 'all' ? "Latest Published Reports" : catTitle;
+      const catDesc = descMap[slug] || 'Curated editorial manuals, in-depth breakdowns, and interactive references.';
+
+      if (slug === 'all') {
+        if (homeHeroSection) homeHeroSection.classList.remove('hidden');
+        if (homeTrendingSection) homeTrendingSection.classList.remove('hidden');
+        if (categoryHeaderBanner) categoryHeaderBanner.classList.add('hidden');
+        document.getElementById('mag-feed-heading').innerText = "Latest Published Reports";
+      } else {
+        if (homeHeroSection) homeHeroSection.classList.add('hidden');
+        if (homeTrendingSection) homeTrendingSection.classList.add('hidden');
+        if (categoryHeaderBanner) {
+          categoryHeaderBanner.classList.remove('hidden');
+          document.getElementById('category-crumb-current').innerText = catTitle;
+          document.getElementById('category-banner-title').innerText = catTitle;
+          document.getElementById('category-banner-desc').innerText = catDesc;
+        }
+        document.getElementById('mag-feed-heading').innerText = `${catTitle} Feed`;
+      }
+
+      currentCategorySlug = slug;
+      updateNavHighlight(slug);
+
+      const filtered = slug === 'all' 
+        ? ARTICLES_DATA 
+        : ARTICLES_DATA.filter(a => a.category_slug === slug);
+
+      if (slug !== 'all' && categoryHeaderBanner) {
+        document.getElementById('category-banner-meta').innerText = `Showing ${filtered.length} verified ${filtered.length === 1 ? 'guide' : 'guides'}`;
+      }
       document.getElementById('mag-feed-count').innerText = `Showing ${filtered.length} articles in this topic`;
       document.title = `${catTitle} — GeneralPedia`;
       renderFeed(filtered);
