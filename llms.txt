@@ -1,0 +1,16 @@
+# GeneralPedia.com
+
+> The Premier Everyday Knowledge Hub & Comprehensive Digital Encyclopedia
+
+## Overview
+GeneralPedia provides verified, in-depth informational articles, financial calculators, tax rate guides, medical symptom analysis, automotive reviews, and actionable how-to tutorials.
+
+## Categories
+- [How-To & Guides](https://generalpedia.com/how-to): Practical guides, everyday problem-solving, and explanations.
+- [Finance & Money](https://generalpedia.com/finance): Federal tax brackets, Roth IRA contribution limits, 401(k), and loan calculators.
+- [Health & Wellness](https://generalpedia.com/health): Medically referenced symptom breakdowns, sinus care, and natural remedies.
+- [Calculators & Tools](https://generalpedia.com/tools): Interactive calculators, unit converters (oz to gallon), and calendars.
+- [Automotive](https://generalpedia.com/automotive): Vehicle maintenance, used car valuation, and hybrid specs (Toyota Camry).
+- [Tech & Digital](https://generalpedia.com/tech): Cybersecurity concepts, software algorithms, and hardware fundamentals.
+- [Home & Lifestyle](https://generalpedia.com/lifestyle): Home safety, dryer vent fire prevention, and pet nutrition.
+- [Entertainment & Culture](https://generalpedia.com/culture): Olympic games, major world sporting events, and cultural analyses.
