@@ -1,105 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
   <url>
-    <loc>https://generalpedia.com/</loc>
+    <loc>https://general-pedia.vercel.app/</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+
   <!-- Category Silos -->
   <url>
-    <loc>https://generalpedia.com/how-to</loc>
+    <loc>https://general-pedia.vercel.app/category/how-to</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/finance</loc>
+    <loc>https://general-pedia.vercel.app/category/finance</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/health</loc>
+    <loc>https://general-pedia.vercel.app/category/health</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/tools</loc>
+    <loc>https://general-pedia.vercel.app/category/tools</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/automotive</loc>
+    <loc>https://general-pedia.vercel.app/category/automotive</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/tech</loc>
+    <loc>https://general-pedia.vercel.app/category/lifestyle</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/lifestyle</loc>
+    <loc>https://general-pedia.vercel.app/category/culture</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+
+  <!-- Informational / Static Trust Pages -->
   <url>
-    <loc>https://generalpedia.com/culture</loc>
+    <loc>https://general-pedia.vercel.app/about</loc>
     <lastmod>2026-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
-  <!-- Core Clustered Pillar Articles -->
   <url>
-    <loc>https://generalpedia.com/finance/tax-brackets-2025</loc>
+    <loc>https://general-pedia.vercel.app/write-for-us</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://general-pedia.vercel.app/contact</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://general-pedia.vercel.app/privacy-policy</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://general-pedia.vercel.app/terms</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://general-pedia.vercel.app/editorial-guidelines</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <!-- Published Articles -->
+  <url>
+    <loc>https://general-pedia.vercel.app/queen-of-wands</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/finance/roth-ira-calculator</loc>
+    <loc>https://general-pedia.vercel.app/january-2026-calendar</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/health/sinus-infection-symptoms</loc>
+    <loc>https://general-pedia.vercel.app/atlanta-hawks-vs-knicks-match-player-stats</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/how-to/how-to-change-a-tire</loc>
+    <loc>https://general-pedia.vercel.app/2025-toyota-camry</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/tools/january-2026-calendar</loc>
+    <loc>https://general-pedia.vercel.app/can-dogs-eat-bananas</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/automotive/2025-toyota-camry</loc>
+    <loc>https://general-pedia.vercel.app/sinus-infection-symptoms</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/lifestyle/dryer-vent-cleaning</loc>
+    <loc>https://general-pedia.vercel.app/the-wizard-of-oz</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://generalpedia.com/culture/2026-winter-olympics</loc>
+    <loc>https://general-pedia.vercel.app/2026-winter-olympics</loc>
     <lastmod>2026-09-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

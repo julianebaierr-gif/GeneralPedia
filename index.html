@@ -2396,6 +2396,17 @@
       searchView.classList.add('hidden');
     }
 
+    function updateSeoMetadata(title, description, path) {
+      document.title = title;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc && description) metaDesc.setAttribute('content', description);
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) {
+        const cleanPath = path ? (path.startsWith('/') ? path : '/' + path) : '/';
+        canonical.setAttribute('href', `https://general-pedia.vercel.app${cleanPath}`);
+      }
+    }
+
     function showHomeView(push = true) {
       hideAllViews();
       homeView.classList.remove('hidden');
@@ -2406,7 +2417,11 @@
       updateNavHighlight('all');
       document.getElementById('mag-feed-heading').innerText = "Latest Published Reports";
       document.getElementById('mag-feed-count').innerText = `Showing all ${ARTICLES_DATA.length} entries`;
-      document.title = "GeneralPedia — The Digital Knowledge Hub & Magazine";
+      updateSeoMetadata(
+        "GeneralPedia — The Digital Knowledge Hub & Magazine",
+        "GeneralPedia is a premier digital news, encyclopedia, and magazine publication delivering verified guides, personal finance, health insights, and expert tutorials.",
+        "/"
+      );
       renderFeed(ARTICLES_DATA);
       if (push) history.pushState({ view: 'home' }, '', '/');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2463,7 +2478,7 @@
         document.getElementById('category-banner-meta').innerText = `Showing ${filtered.length} verified ${filtered.length === 1 ? 'guide' : 'guides'}`;
       }
       document.getElementById('mag-feed-count').innerText = `Showing ${filtered.length} articles in this topic`;
-      document.title = `${catTitle} — GeneralPedia`;
+      updateSeoMetadata(`${catTitle} — GeneralPedia`, catDesc, `/category/${slug}`);
       renderFeed(filtered);
       if (push) history.pushState({ view: 'category', slug: slug }, '', `/category/${slug}`);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2592,7 +2607,11 @@
       document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
       document.getElementById('art-read-time').innerText = post.read_time || '5 min read';
       document.getElementById('art-content').innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
-      document.title = `${post.title} — GeneralPedia`;
+      updateSeoMetadata(
+        `${post.title} — GeneralPedia`,
+        post.meta_description || 'Comprehensive factual reference guide and breakdown on GeneralPedia.',
+        `/${id}`
+      );
 
       hideAllViews();
       articleView.classList.remove('hidden');
@@ -2606,7 +2625,12 @@
 
       document.getElementById('static-crumb').innerText = page.title;
       document.getElementById('static-content').innerHTML = page.content;
-      document.title = `${page.title.replace('&amp;', '&')} — GeneralPedia`;
+      const cleanTitle = page.title.replace('&amp;', '&');
+      updateSeoMetadata(
+        `${cleanTitle} — GeneralPedia`,
+        `Official ${cleanTitle} document and informational guide for GeneralPedia publication.`,
+        `/${slug}`
+      );
 
       hideAllViews();
       staticView.classList.remove('hidden');
@@ -2636,7 +2660,11 @@
       searchView.classList.remove('hidden');
       document.getElementById('search-query-title').innerText = `Search: "${query.trim()}"`;
       document.getElementById('search-count-meta').innerText = `${results.length} result${results.length === 1 ? '' : 's'} identified`;
-      document.title = `Search: "${query.trim()}" — GeneralPedia`;
+      updateSeoMetadata(
+        `Search: "${query.trim()}" — GeneralPedia`,
+        `Explore verified search results for "${query.trim()}" across GeneralPedia knowledge hub.`,
+        `/?q=${encodeURIComponent(query.trim())}`
+      );
       if (push) history.pushState({ view: 'search', q: query.trim() }, '', `/?q=${encodeURIComponent(query.trim())}`);
 
       const grid = document.getElementById('search-results-grid');
