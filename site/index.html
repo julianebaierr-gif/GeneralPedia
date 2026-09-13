@@ -1,189 +1,2191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="seo-page-title">GeneralPedia | The Digital Knowledge Hub & Magazine</title>
-  <meta name="description" id="seo-meta-desc" content="GeneralPedia is a premier digital news, encyclopedia, and magazine publication delivering verified guides, personal finance, health insights, and expert tutorials.">
-  <link rel="canonical" id="seo-canonical" href="https://generalpedia.org/">
+  <title>GeneralPedia | The Digital Knowledge Hub & Magazine</title>
+  <meta name="description" content="GeneralPedia is a premier digital news, encyclopedia, and magazine publication delivering verified guides, personal finance, health insights, and expert tutorials.">
+  <meta name="keywords" content="generalpedia, knowledge hub, encyclopedia, digital magazine, personal finance, tutorials, tax guides, automotive reviews">
+  <meta name="author" content="GeneralPedia Editorial Board">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://generalpedia.com">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://generalpedia.com">
+  <meta property="og:title" content="GeneralPedia | Digital Knowledge Magazine">
+  <meta property="og:description" content="Research-backed articles, trending news, and tools across finance, health, tech, automotive, and everyday living.">
   <meta property="og:site_name" content="GeneralPedia">
-  <meta property="og:type" id="og-type" content="website">
-  <meta property="og:title" id="og-title" content="GeneralPedia | The Digital Knowledge Hub & Magazine">
-  <meta property="og:description" id="og-desc" content="GeneralPedia is a premier digital news, encyclopedia, and magazine publication.">
-  <meta property="og:url" id="og-url" content="https://generalpedia.org/">
+
+  <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/theme.css">
+  <meta name="twitter:title" content="GeneralPedia | Digital Knowledge Magazine">
+  <meta name="twitter:description" content="Research-backed articles, trending news, and tools across finance, health, tech, automotive, and everyday living.">
+
+  <!-- Favicon / Brand Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%230f172a'/%3E%3Cpath d='M10 26V14h9.5c3.5 0 6 2 6 5.5s-2.5 5.5-6 5.5H15v-5h4.2c1.2 0 2-.6 2-1.8 0-1.1-.8-1.7-2-1.7h-5.2v9H10z' fill='%23ffffff'/%3E%3Cpath d='M25 14h5v12h-5z' fill='%23e63946'/%3E%3C/svg%3E">
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "name": "GeneralPedia",
+    "alternateName": "GeneralPedia.com",
+    "url": "https://generalpedia.com",
+    "description": "Premier Digital Knowledge Magazine & Fact-Checked Encyclopedia",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://generalpedia.com/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <style>
+    /* ==========================================================================
+       THEME: MORENEWS MAGAZINE DESIGN SYSTEM (AF THEMES INITIATIVE)
+       Clean contrast, sharp editorial typography, red/blue magazine accents,
+       magazine hero grid, breaking news ticker, 2-column layout with sidebar.
+       ========================================================================== */
+    :root {
+      --primary: #0056b3;         /* MoreNews Classic Blue */
+      --primary-dark: #003d82;
+      --secondary: #c52233;       /* High-contrast Crimson Accent (> 4.8:1 contrast on white & light bg) */
+      --secondary-hover: #9f1725;
+      
+      --bg-body: #f4f6f9;         /* Magazine body light grey */
+      --bg-card: #ffffff;
+      --bg-subtle: #f8fafc;
+      --bg-header: #ffffff;
+      --bg-nav: #1e293b;          /* MoreNews dark navy navbar */
+      
+      --text-main: #111827;       /* Deep obsidian text */
+      --text-muted: #374151;      /* Secondary editorial text (meets 7:1) */
+      --text-subtle: #475569;     /* Meta dates & credits (meets 5.2:1 contrast) */
+      --border-color: #e5e7eb;    /* Crisp divider borders */
+      
+      --font-heading: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      
+      --radius-sm: 3px;
+      --radius-md: 6px;
+      --radius-lg: 10px;
+      --container-max: 1240px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+    }
+
+    [data-theme="dark"] {
+      --bg-body: #0f172a;
+      --bg-card: #1e293b;
+      --bg-subtle: #192231;
+      --bg-header: #0f172a;
+      --bg-nav: #0b1120;
+      
+      --text-main: #f3f4f6;
+      --text-muted: #cbd5e1;
+      --text-subtle: #94a3b8;
+      --border-color: #334155;
+      
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.5);
+    }
+
+    /* Global Resets */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      -webkit-font-smoothing: antialiased;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    button, input {
+      font-family: inherit;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Skip link */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 10px;
+      background: var(--secondary);
+      color: #fff;
+      padding: 8px 16px;
+      z-index: 1000;
+      border-radius: var(--radius-sm);
+      transition: top 0.15s;
+    }
+    .skip-link:focus {
+      top: 10px;
+    }
+
+    /* ==================== 1. TOP BAR (MORENEWS TICKER & DATE) ==================== */
+    .top-bar {
+      background: #0b1120;
+      color: #94a3b8;
+      font-size: 0.8125rem;
+      border-bottom: 1px solid #1e293b;
+    }
+    .top-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 38px;
+    }
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .top-date {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+    .breaking-label {
+      background: var(--secondary);
+      color: #fff;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 0.6875rem;
+      padding: 3px 8px;
+      border-radius: 2px;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .breaking-ticker {
+      display: inline-block;
+      color: #cbd5e1;
+      cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 480px;
+    }
+    .breaking-ticker:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .top-links {
+      display: flex;
+      gap: 16px;
+      list-style: none;
+      align-items: center;
+    }
+    .top-links a {
+      color: #cbd5e1;
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 6px 4px;
+      transition: color 0.15s;
+    }
+    .top-links a:hover {
+      color: #ffffff;
+    }
+    .theme-toggle-btn {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .theme-toggle-btn:hover {
+      background: #334155;
+    }
+
+    /* ==================== 2. MAIN HEADER (EDITORIAL LOGO + 728x90 BANNER) ==================== */
+    .main-header {
+      background: var(--bg-header);
+      border-bottom: 1px solid var(--border-color);
+      padding: 22px 0;
+    }
+    .header-layout {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .site-logo {
+      font-size: 2.125rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      line-height: 1;
+    }
+    .brand-symbol {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      display: inline-flex;
+    }
+    .logo-text-wrap {
+      display: inline-flex;
+      align-items: baseline;
+      letter-spacing: -0.04em;
+    }
+    .logo-title-main {
+      font-weight: 900;
+      color: var(--text-main);
+    }
+    .logo-title-sub {
+      font-weight: 800;
+      color: var(--primary);
+    }
+    [data-theme="dark"] .logo-title-main {
+      color: #f8fafc;
+    }
+    [data-theme="dark"] .logo-title-sub {
+      color: #38bdf8;
+    }
+    .site-tagline {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      margin-top: 6px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    /* Editorial Sponsor Banner Area (728x90 Magazine slot) */
+    .header-banner {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      max-width: 680px;
+      width: 100%;
+      border: 1px solid #334155;
+    }
+    .banner-text h4 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .banner-text p {
+      font-size: 0.8125rem;
+      color: #94a3b8;
+    }
+    .banner-badge {
+      background: var(--secondary);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .banner-badge:hover {
+      background: var(--secondary-hover);
+    }
+
+    /* ==================== 3. STICKY NAV BAR (MORENEWS ICONIC DARK/NAV BAR) ==================== */
+    .main-nav-bar {
+      background: var(--bg-nav);
+      color: #f8fafc;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    .nav-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 50px;
+    }
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      gap: 2px;
+      height: 100%;
+    }
+    .nav-item-btn {
+      background: none;
+      border: none;
+      color: #cbd5e1;
+      padding: 0 16px;
+      height: 50px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      position: relative;
+    }
+    .nav-item-btn:hover {
+      color: #ffffff;
+      background: rgba(255,255,255,0.06);
+    }
+    .nav-item-btn.active {
+      color: #ffffff;
+      background: var(--secondary);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-search-form {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    .nav-search-input {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: var(--radius-sm);
+      color: #ffffff;
+      padding: 7px 36px 7px 12px;
+      font-size: 0.8125rem;
+      width: 180px;
+      outline: none;
+      transition: width 0.2s, background 0.2s, border-color 0.2s;
+    }
+    .nav-search-input::placeholder {
+      color: #94a3b8;
+    }
+    .nav-search-input:focus {
+      width: 240px;
+      background: rgba(255,255,255,0.2);
+      border-color: #38bdf8;
+    }
+    .nav-search-submit {
+      position: absolute;
+      right: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #cbd5e1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+    }
+    .nav-search-submit:hover {
+      color: #ffffff;
+    }
+    .nav-guest-btn {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: none;
+      transition: background 0.15s;
+    }
+    .nav-guest-btn:hover {
+      background: var(--primary-dark);
+    }
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 1.25rem;
+      cursor: pointer;
+      padding: 6px;
+    }
+
+    /* ==================== 4. MORENEWS MAGAZINE HERO GRID ==================== */
+    .magazine-hero-section {
+      padding: 24px 0 16px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 240px 240px;
+      gap: 16px;
+    }
+    .hero-main-card {
+      grid-row: span 2;
+      position: relative;
+      background: #0f172a;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px 32px;
+      box-shadow: var(--shadow-md);
+      background-size: cover;
+      background-position: center;
+      border: 1px solid var(--border-color);
+    }
+    /* Gradient overlay for hero cards */
+    .hero-main-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15,23,42,0.1) 0%, rgba(15,23,42,0.92) 80%, rgba(15,23,42,0.98) 100%);
+      transition: background 0.2s;
+    }
+    .hero-main-card:hover::before {
+      background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(15,23,42,0.95) 75%, #0f172a 100%);
+    }
+    .hero-sub-card {
+      position: relative;
+      background: #1e293b;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px 24px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+    }
+    .hero-sub-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(30,41,59,0.2) 0%, rgba(15,23,42,0.94) 85%);
+      transition: background 0.2s;
+    }
+    .hero-sub-card:hover::before {
+      background: linear-gradient(180deg, rgba(30,41,59,0.3) 0%, rgba(15,23,42,0.98) 80%);
+    }
+    .hero-card-content {
+      position: relative;
+      z-index: 2;
+      color: #ffffff;
+    }
+    .category-badge {
+      display: inline-block;
+      background: var(--secondary);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .category-badge.blue { background: #0284c7; }
+    .category-badge.green { background: #059669; }
+    .category-badge.purple { background: #7c3aed; }
+    .category-badge.amber { background: #d97706; }
+
+    .hero-main-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+    .hero-sub-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 8px;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.8125rem;
+      color: #cbd5e1;
+    }
+
+    /* ==================== 5. SUB-BANNER / TICKER ROW (4 CARDS) ==================== */
+    .trending-banner-row {
+      padding: 16px 0 28px;
+    }
+    .trending-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .mini-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    }
+    .mini-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary);
+    }
+    .mini-card-tag {
+      font-size: 0.6875rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--secondary);
+      margin-bottom: 6px;
+    }
+    .mini-card-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .mini-card-date {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+    }
+
+    /* Main Content Top Spacing */
+    #main-content {
+      padding-top: 24px;
+    }
+
+    /* Category Archive Header Banner (MoreNews Magazine Style) */
+    .category-header-banner {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 28px 32px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-sm);
+      border-left: 5px solid var(--secondary);
+    }
+    .category-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: var(--text-subtle);
+      margin-bottom: 12px;
+    }
+    .category-breadcrumbs a, .category-breadcrumbs button {
+      color: var(--text-muted);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-size: inherit;
+    }
+    .category-breadcrumbs a:hover, .category-breadcrumbs button:hover {
+      color: var(--primary);
+    }
+    .category-header-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .category-header-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.25;
+      margin: 0;
+    }
+    .category-header-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-top: 6px;
+      margin-bottom: 0;
+      max-width: 820px;
+    }
+    .category-header-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 14px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ==================== 6. MAGAZINE 2-COLUMN LAYOUT ==================== */
+    .magazine-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      margin-bottom: 48px;
+    }
+
+    /* Section Header bar in MoreNews style */
+    .mag-section-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--text-main);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    .mag-section-title {
+      font-size: 1.1875rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mag-section-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      background: var(--secondary);
+      display: inline-block;
+      border-radius: 1px;
+    }
+    .mag-section-extra {
+      font-size: 0.8125rem;
+      color: var(--text-subtle);
+      font-weight: 600;
+    }
+
+    /* Article Feed Grid in MoreNews style (2 columns) */
+    .mag-feed-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .mag-article-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    }
+    .mag-article-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--primary);
+    }
+    .mag-card-header {
+      background: var(--bg-subtle);
+      border-bottom: 1px solid var(--border-color);
+      padding: 18px 20px 14px;
+    }
+    .mag-card-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+    .mag-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      margin-bottom: 8px;
+    }
+    .mag-card-title {
+      font-size: 1.125rem;
+      font-weight: 800;
+      line-height: 1.35;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+    .mag-card-excerpt {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .mag-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+      color: var(--primary);
+      font-weight: 700;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    /* ==================== 7. MAGAZINE SIDEBAR ==================== */
+    .mag-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+    .sidebar-widget {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .widget-title {
+      font-size: 1.0625rem;
+      font-weight: 800;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    /* Popular Posts numbered list */
+    .popular-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      list-style: none;
+    }
+    .popular-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+    }
+    .popular-num {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #64748b;
+      line-height: 1;
+      width: 24px;
+      text-align: center;
+    }
+    .popular-item:hover .popular-num {
+      color: var(--secondary);
+    }
+    .popular-content .popular-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+    .popular-content span {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+    }
+
+    /* Category List Widget */
+    .cat-tax-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      list-style: none;
+    }
+    .cat-tax-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: var(--bg-subtle);
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: background 0.15s, color 0.15s;
+    }
+    .cat-tax-item:hover {
+      background: var(--primary);
+      color: #ffffff;
+    }
+    .cat-count {
+      background: rgba(0,0,0,0.06);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+    }
+
+    /* Guest post callout widget */
+    .guest-cta-widget {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 24px;
+      border: 1px solid #334155;
+    }
+    .guest-cta-widget h4 {
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+    .guest-cta-widget p {
+      font-size: 0.875rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .btn-widget-cta {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: var(--secondary);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 0.875rem;
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-widget-cta:hover {
+      background: var(--secondary-hover);
+    }
+
+    /* ==================== 8. ARTICLE VIEW & STATIC PAGES ==================== */
+    .article-view-layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 32px;
+      padding: 24px 0 60px;
+    }
+    .article-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 40px;
+      box-shadow: var(--shadow-sm);
+    }
+    .breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8125rem;
+      color: var(--text-subtle);
+      margin-bottom: 20px;
+      list-style: none;
+    }
+    .breadcrumbs button {
+      background: none;
+      border: none;
+      color: var(--text-subtle);
+      cursor: pointer;
+      font-size: inherit;
+    }
+    .breadcrumbs button:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    .art-header-block {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 28px;
+    }
+    .art-title-text {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      color: var(--text-main);
+      margin: 12px 0;
+    }
+    .art-excerpt-lead {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .art-byline-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+      font-size: 0.8125rem;
+      color: var(--text-subtle);
+    }
+    .art-author-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .art-avatar-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+    .article-body {
+      font-size: 1.0625rem;
+      line-height: 1.8;
+      color: var(--text-main);
+    }
+    .article-body h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 36px 0 16px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+    .article-body h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 28px 0 12px;
+    }
+    .article-body p {
+      margin-bottom: 20px;
+    }
+    .article-body ul, .article-body ol {
+      margin: 16px 0 24px 28px;
+    }
+    .article-body li {
+      margin-bottom: 8px;
+    }
+    .article-body table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 28px 0;
+      font-size: 0.9375rem;
+    }
+    .article-body th, .article-body td {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      text-align: left;
+    }
+    .article-body th {
+      background: var(--bg-subtle);
+      font-weight: 700;
+    }
+    .article-body blockquote {
+      border-left: 4px solid var(--secondary);
+      background: var(--bg-subtle);
+      padding: 16px 20px;
+      margin: 24px 0;
+      font-style: italic;
+      color: var(--text-muted);
+    }
+
+    /* ==================== 9. 4-COLUMN MAGAZINE FOOTER ==================== */
+    .magazine-footer {
+      background: #0b1120;
+      color: #cbd5e1;
+      padding: 56px 0 24px;
+      border-top: 4px solid var(--primary);
+      margin-top: 40px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 36px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+      position: relative;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #1e293b;
+    }
+    .footer-col h4::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 32px;
+      height: 2px;
+      background: var(--secondary);
+    }
+    .footer-col p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: #94a3b8;
+      margin-bottom: 16px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-links a, .footer-links button {
+      color: #cbd5e1;
+      font-size: 0.875rem;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      padding: 0;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover, .footer-links button:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+    .footer-bottom {
+      border-top: 1px solid #1e293b;
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+      color: #cbd5e1;
+    }
+
+    /* Utility */
+    /* Utility */
+    .hidden { display: none !important; }
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    /* Buttons & Actions */
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    .btn-secondary {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card);
+      border-color: var(--primary);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.15s;
+    }
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--bg-subtle);
+    }
+    .btn-contribute {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s, transform 0.1s;
+      text-decoration: none;
+    }
+    .btn-contribute:hover {
+      background: var(--primary-dark);
+      color: #ffffff;
+    }
+
+    /* Forms & Contact Desk Styles */
+    .editorial-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: block;
+      letter-spacing: 0.02em;
+    }
+    .form-control {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      color: var(--text-main);
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+    }
+    [data-theme="dark"] .form-control:focus {
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    select.form-control {
+      cursor: pointer;
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* Callout & Highlight Boxes */
+    .callout-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      margin: 28px 0;
+    }
+    .article-category-badge {
+      display: inline-block;
+      background: var(--secondary);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    /* ==================== RESPONSIVE BREAKPOINTS ==================== */
+    @media (max-width: 1024px) {
+      .magazine-layout {
+        grid-template-columns: 1fr;
+      }
+      .article-view-layout {
+        grid-template-columns: 1fr;
+      }
+      .trending-mini-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .header-layout {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-banner {
+        max-width: 100%;
+      }
+    }
+    @media (max-width: 768px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .hero-main-card {
+        grid-row: span 1;
+        min-height: 280px;
+      }
+      .hero-sub-card {
+        min-height: 200px;
+      }
+      .mag-feed-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-menu {
+        display: none;
+      }
+      .mobile-menu-toggle {
+        display: block;
+      }
+      .top-bar-left .breaking-ticker {
+        display: none;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .article-wrapper {
+        padding: 24px 16px;
+      }
+      .art-title-text {
+        font-size: 1.75rem;
+      }
+    }
+
+  </style>
 </head>
 <body>
-  <!-- Header / Navigation -->
-  <header class="site-header">
-    <div class="header-top-bar">
-      <div class="header-inner" style="padding:0;">
-        <div class="header-ticker">
-          <span class="ticker-label"><span class="pulse-dot"></span> LIVE BRIEFING</span>
-          <span id="ticker-text" class="ticker-content">Comprehensive intelligence and analytical field reports across all sectors.</span>
-        </div>
-        <div class="edition-badge">GLOBAL EDITION • INDEPENDENT EDITORIAL</div>
-      </div>
-    </div>
 
-    <div class="header-main">
-      <div class="header-inner">
-        <div class="brand-area" onclick="showHomeView()">
-          <span class="brand-icon">GP</span>
-          <div class="brand-text">
-            <span class="brand-title">GENERAL<span>PEDIA</span></span>
-            <span class="brand-tagline">Knowledge & Reference Magazine</span>
-          </div>
-        </div>
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main editorial content</a>
 
-        <div class="header-search">
-          <input type="text" id="header-search-input" placeholder="Search guides, reports, diagnostics..." oninput="handleSearch(this.value)" autocomplete="off">
-          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </div>
-
-        <div class="header-actions">
-          <button class="nav-btn btn-ghost" onclick="showStaticPage('about')">About</button>
-          <button class="nav-btn btn-primary" onclick="showStaticPage('editorial-policy')">Editorial Board</button>
+  <!-- ==================== 1. TOP BAR (MORENEWS TICKER & DATE) ==================== -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-left">
+        <div class="top-date">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="current-date-display">Sunday, September 13, 2026</span>
         </div>
       </div>
-    </div>
-
-    <nav class="nav-bar">
-      <div class="header-inner">
-        <ul class="nav-list">
-          <li><button class="nav-link active" data-cat="all" onclick="filterCategory('all')">All Desks</button></li>
-          <li><button class="nav-link" data-cat="how-to" onclick="filterCategory('how-to')">How-To & Guides</button></li>
-          <li><button class="nav-link" data-cat="finance" onclick="filterCategory('finance')">Finance & Tax</button></li>
-          <li><button class="nav-link" data-cat="health" onclick="filterCategory('health')">Health & Medicine</button></li>
-          <li><button class="nav-link" data-cat="tools" onclick="filterCategory('tools')">Interactive Tools</button></li>
-          <li><button class="nav-link" data-cat="automotive" onclick="filterCategory('automotive')">Automotive</button></li>
-          <li><button class="nav-link" data-cat="lifestyle" onclick="filterCategory('lifestyle')">Lifestyle & Home</button></li>
-          <li><button class="nav-link" data-cat="culture" onclick="filterCategory('culture')">Culture & Media</button></li>
+      <div class="top-bar-right">
+        <ul class="top-links">
+          <li><a href="#" onclick="showStaticPage('about'); return false;">About</a></li>
+          <li><a href="#" onclick="showStaticPage('write-for-us'); return false;">Write For Us</a></li>
+          <li><a href="#" onclick="showStaticPage('contact'); return false;">Contact</a></li>
         </ul>
+        <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Switch Dark/Light Theme">
+          <span id="theme-icon">🌙</span> <span id="theme-label">Dark</span>
+        </button>
       </div>
-    </nav>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN HEADER (EDITORIAL LOGO + SPONSOR/EDITORIAL BANNER) ==================== -->
+  <header class="main-header" role="banner">
+    <div class="container header-layout">
+      <!-- Top-Notch Modern Editorial Logo -->
+      <div class="brand-group">
+        <a href="#" onclick="showHomeView(); return false;" class="site-logo" aria-label="GeneralPedia Magazine Home">
+          <svg class="brand-symbol" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="42" height="42" rx="9" fill="#0f172a"/>
+            <!-- Stylized Bold G Book/Compass geometry -->
+            <path d="M22 11C15.9249 11 11 15.9249 11 22C11 28.0751 15.9249 33 22 33C27.2 33 31.5 29.4 32.7 24.5H22V19.5H37.8C37.9 20.3 38 21.1 38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C26.5 6 30.5 7.9 33.3 10.9L29.7 14.5C27.8 12.3 25.1 11 22 11Z" fill="#ffffff"/>
+            <!-- Editorial Crimson Accent Spark -->
+            <circle cx="29.5" cy="22" r="3.5" fill="#e63946"/>
+          </svg>
+          <div class="logo-text-wrap">
+            <span class="logo-title-main">General</span><span class="logo-title-sub">Pedia</span>
+          </div>
+        </a>
+        <span class="site-tagline">The Digital Knowledge Hub & Magazine</span>
+      </div>
+
+      <!-- Removed duplicate banner as requested to keep layout clean and unified -->
+    </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="page-container" id="main-content">
-    <!-- Home View -->
+  <!-- ==================== 3. STICKY NAV BAR ==================== -->
+  <nav class="main-nav-bar" aria-label="Primary Navigation">
+    <div class="container nav-bar-inner">
+      <ul class="nav-menu" id="primary-nav">
+        <li><button onclick="showHomeView()" class="nav-item-btn active" data-cat="all">Home</button></li>
+        <li><button onclick="filterCategory('how-to')" class="nav-item-btn" data-cat="how-to">How-To</button></li>
+        <li><button onclick="filterCategory('finance')" class="nav-item-btn" data-cat="finance">Finance</button></li>
+        <li><button onclick="filterCategory('health')" class="nav-item-btn" data-cat="health">Health</button></li>
+        <li><button onclick="filterCategory('tools')" class="nav-item-btn" data-cat="tools">Calculators</button></li>
+        <li><button onclick="filterCategory('automotive')" class="nav-item-btn" data-cat="automotive">Automotive</button></li>
+        <li><button onclick="filterCategory('lifestyle')" class="nav-item-btn" data-cat="lifestyle">Lifestyle</button></li>
+        <li><button onclick="filterCategory('culture')" class="nav-item-btn" data-cat="culture">Culture</button></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Direct embedded search bar (no popup prompt) -->
+        <form class="nav-search-form" onsubmit="event.preventDefault(); executeSearch(document.getElementById('nav-search-input').value);">
+          <input type="text" id="nav-search-input" class="nav-search-input" placeholder="Search guides..." autocomplete="off">
+          <button type="submit" class="nav-search-submit" aria-label="Submit search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+        </form>
+        <button class="nav-guest-btn" onclick="showStaticPage('write-for-us')">
+          Write for Us
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main id="main-content" role="main" class="container">
+
+    <!-- ==================== HOME VIEW ==================== -->
     <div id="home-view">
-      <!-- Category Banner (Dynamic) -->
-      <div id="category-header-banner" class="category-header-banner hidden">
-        <div class="category-banner-tag" id="cat-banner-tag">Category Desk</div>
-        <h1 class="category-banner-title" id="cat-banner-title">Category Title</h1>
-        <p class="category-banner-desc" id="cat-banner-desc">Category Description</p>
+
+      <!-- 4. MORENEWS MAGAZINE HERO GRID (1 BIG + 2 TILES) -->
+      <section class="magazine-hero-section" id="home-hero-section" aria-label="Top Featured Stories">
+        <div class="hero-grid" id="hero-grid-container">
+        </div>
+      </section>
+
+      <!-- 5. TRENDING / QUICK READ ROW -->
+      <section class="trending-banner-row" id="home-trending-section" aria-label="Trending Guides">
+        <div class="trending-mini-grid" id="trending-mini-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- Dedicated Category Archive Header Banner -->
+      <section id="category-header-banner" class="category-header-banner hidden" aria-label="Category Overview">
+        <div class="category-breadcrumbs">
+          <button onclick="showHomeView()">Home</button>
+          <span>/</span>
+          <span>Topics</span>
+          <span>/</span>
+          <span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">Calculators</span>
+        </div>
+        <div class="category-header-top">
+          <h1 class="category-header-title" id="category-banner-title">Category Title</h1>
+        </div>
+        <p class="category-header-desc" id="category-banner-desc">Curated editorial manuals, in-depth breakdowns, and interactive references.</p>
+        <div class="category-header-meta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="category-banner-meta">Showing 0 verified guides</span>
+        </div>
+      </section>
+
+      <!-- 6. 2-COLUMN MAGAZINE CONTENT + SIDEBAR -->
+      <div class="magazine-layout">
+        
+        <!-- Left Main Column (~70%) -->
+        <div class="mag-main-col">
+          <div class="mag-section-bar">
+            <h2 class="mag-section-title" id="mag-feed-heading">Latest Published Reports</h2>
+            <span class="mag-section-extra" id="mag-feed-count">Showing verified guides</span>
+          </div>
+
+          <!-- 2-Column Article Card Feed -->
+          <div class="mag-feed-grid" id="articles-feed" role="feed">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Right Sidebar Column (~30%) -->
+        <aside class="mag-sidebar" role="complementary" aria-label="Magazine Sidebar">
+          
+          <!-- Widget: Top Popular Stories (Numbered 1-5) -->
+          <div class="sidebar-widget">
+            <h3 class="widget-title">
+              <span>Popular Guides</span>
+              <span style="font-size: 0.75rem; color: var(--secondary);">TOP 5</span>
+            </h3>
+            <div class="popular-list" id="popular-posts-list">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Widget: Categories Taxonomy -->
+          <div class="sidebar-widget">
+            <h3 class="widget-title">Categories</h3>
+            <ul class="cat-tax-list">
+              <li class="cat-tax-item" onclick="filterCategory('how-to')"><span>How-To &amp; Tutorials</span> <span class="cat-count">4</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('finance')"><span>Finance &amp; Tax</span> <span class="cat-count">3</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('health')"><span>Health &amp; Wellness</span> <span class="cat-count">3</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('tools')"><span>Calculators &amp; Tools</span> <span class="cat-count">3</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('automotive')"><span>Automotive</span> <span class="cat-count">2</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('lifestyle')"><span>Lifestyle &amp; Living</span> <span class="cat-count">3</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('culture')"><span>Culture &amp; Tarot</span> <span class="cat-count">2</span></li>
+            </ul>
+          </div>
+
+          <!-- Widget: Guest Contributor CTA -->
+          <div class="guest-cta-widget">
+            <h4>Become a Contributor</h4>
+            <p>
+              We welcome guest writers, subject specialists, and industry analysts. Get your authoritative research published.
+            </p>
+            <button onclick="showStaticPage('write-for-us')" class="btn-widget-cta">
+              Write for GeneralPedia →
+            </button>
+          </div>
+
+        </aside>
+
       </div>
 
-      <!-- Hero Grid Section (100% Dynamic) -->
-      <section class="hero-section" id="home-hero-section">
-        <div class="hero-grid" id="hero-grid-container">
-          <!-- Dynamic Hero Cards Rendered by JS -->
-        </div>
-      </section>
-
-      <!-- Mini Trending Row -->
-      <section class="trending-mini-row" id="home-trending-section">
-        <div class="trending-mini-label"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg> DESK BRIEFS</div>
-        <div class="trending-mini-list" id="trending-mini-items"></div>
-      </section>
-
-      <!-- Magazine 2-Column Feed -->
-      <section class="magazine-layout">
-        <div class="mag-feed-column">
-          <div class="section-title-bar">
-            <h2 class="feed-heading" id="mag-feed-heading">Latest Published Reports</h2>
-            <span class="feed-count-badge" id="mag-feed-count">Showing entries</span>
-          </div>
-          <div id="articles-feed" class="articles-feed-grid"></div>
-        </div>
-
-        <aside class="sidebar-column">
-          <div class="sidebar-widget">
-            <div class="widget-header"><span class="pulse-dot"></span><h3 class="widget-title">Most Read Reports</h3></div>
-            <div id="sidebar-popular-list" class="popular-list"></div>
-          </div>
-          <div class="sidebar-widget quote-widget">
-            <div class="widget-header"><h3 class="widget-title">Standards & Verification</h3></div>
-            <p class="quote-text">"Every dossier and factual report published by GeneralPedia is subjected to rigorous multi-source verification and strict editorial standards."</p>
-            <div class="quote-author">GeneralPedia Standards Group</div>
-          </div>
-        </aside>
-      </section>
     </div>
 
-    <!-- Article Detail View -->
-    <article id="article-view" class="article-view-wrap hidden">
-      <div class="article-back-nav"><button onclick="showHomeView()" class="btn-back">← Back to Overview</button></div>
-      <div id="article-render-area"></div>
-    </article>
+    <!-- ==================== ARTICLE VIEW ==================== -->
+    <div id="article-view" class="hidden">
+      <div class="article-view-layout">
+        
+        <!-- Main Article Reading Column -->
+        <article class="article-wrapper" aria-labelledby="art-title">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumbs">
+              <li><button onclick="showHomeView()">Home</button></li>
+              <li>/</li>
+              <li><button id="art-category-crumb" onclick="filterCategory(currentCategorySlug)">Category</button></li>
+              <li>/</li>
+              <li id="art-title-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Article</li>
+            </ol>
+          </nav>
 
-    <!-- Static Page View -->
-    <section id="static-page-view" class="static-page-wrap hidden">
-      <div class="article-back-nav"><button onclick="showHomeView()" class="btn-back">← Back to Home</button></div>
-      <div id="static-page-render-area"></div>
-    </section>
+          <header class="art-header-block">
+            <span id="art-category-badge" class="category-badge">Category</span>
+            <h1 id="art-title" class="art-title-text">Article Title</h1>
+            <p id="art-meta" class="art-excerpt-lead">Article Excerpt</p>
+            
+            <div class="art-byline-bar">
+              <div class="art-author-info">
+                <div class="art-avatar-circle" id="art-avatar">G</div>
+                <div>
+                  <div style="font-weight: 700; color: var(--text-main);">GeneralPedia Editorial Board</div>
+                  <div id="art-date">September 13, 2026</div>
+                </div>
+              </div>
+              <div style="font-weight: 600;" id="art-read-time">5 min read</div>
+            </div>
+          </header>
+
+          <div id="art-content" class="article-body">
+            <!-- Article HTML inserted here -->
+          </div>
+
+          <!-- Back button -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
+            <button onclick="showStaticPage('write-for-us')" class="btn-secondary">Submit a Story</button>
+          </div>
+        </article>
+
+        <!-- Article Sidebar -->
+        <aside class="mag-sidebar">
+          <div class="sidebar-widget">
+            <h3 class="widget-title">Fact-Check Notice</h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+              This publication undergoes multi-stage editorial verification to adhere to accuracy, Google helpful content guidelines, and standard safety policies.
+            </p>
+            <button onclick="showStaticPage('editorial-guidelines')" class="nav-guest-btn" style="width: 100%; text-align: center; margin-top: 12px; background: var(--secondary);">
+              Read Editorial Policy
+            </button>
+          </div>
+
+          <div class="sidebar-widget">
+            <h3 class="widget-title">Trending in Category</h3>
+            <div class="popular-list" id="art-sidebar-trending">
+              <!-- JS -->
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- ==================== STATIC PAGES VIEW ==================== -->
+    <div id="static-view" class="hidden">
+      <div class="article-view-layout">
+        <article class="article-wrapper">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumbs">
+              <li><button onclick="showHomeView()">Home</button></li>
+              <li>/</li>
+              <li id="static-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Information Page</li>
+            </ol>
+          </nav>
+          
+          <div id="static-content" class="article-body">
+            <!-- Static page HTML populated here -->
+          </div>
+          
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+            <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
+          </div>
+        </article>
+
+        <aside class="mag-sidebar">
+          <div class="sidebar-widget">
+            <h3 class="widget-title">Policy &amp; Legal</h3>
+            <ul class="footer-links">
+              <li><button onclick="showStaticPage('about')">About Us</button></li>
+              <li><button onclick="showStaticPage('write-for-us')">Write For Us</button></li>
+              <li><button onclick="showStaticPage('editorial-guidelines')">Editorial Guidelines</button></li>
+              <li><button onclick="showStaticPage('privacy-policy')">Privacy Policy</button></li>
+              <li><button onclick="showStaticPage('terms')">Terms of Service</button></li>
+              <li><button onclick="showStaticPage('contact')">Contact Desk</button></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ==================== SEARCH VIEW ==================== -->
+    <div id="search-view" class="hidden" style="padding: 24px 0 60px;">
+      <div class="mag-section-bar">
+        <h2 class="mag-section-title" id="search-query-title">Search Results</h2>
+        <span class="mag-section-extra" id="search-count-meta">0 results identified</span>
+      </div>
+
+      <div class="mag-feed-grid" id="search-results-grid" style="margin-top: 24px;">
+        <!-- Injected via JS -->
+      </div>
+      
+      <div style="margin-top: 40px; text-align: center;">
+        <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
+      </div>
+    </div>
+
   </main>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <div class="brand-area">
-            <span class="brand-icon">GP</span>
-            <div class="brand-text"><span class="brand-title">GENERAL<span>PEDIA</span></span><span class="brand-tagline">The Digital Knowledge Hub & Magazine</span></div>
+  <!-- ==================== 9. 4-COLUMN MAGAZINE FOOTER ==================== -->
+  <footer class="magazine-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        
+        <!-- Col 1: About GeneralPedia -->
+        <div class="footer-col">
+          <div class="site-logo" style="color: #ffffff; margin-bottom: 14px; font-size: 1.75rem;">
+            <svg class="brand-symbol" style="width: 34px; height: 34px;" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="42" height="42" rx="9" fill="#1e293b"/>
+              <path d="M22 11C15.9249 11 11 15.9249 11 22C11 28.0751 15.9249 33 22 33C27.2 33 31.5 29.4 32.7 24.5H22V19.5H37.8C37.9 20.3 38 21.1 38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C26.5 6 30.5 7.9 33.3 10.9L29.7 14.5C27.8 12.3 25.1 11 22 11Z" fill="#ffffff"/>
+              <circle cx="29.5" cy="22" r="3.5" fill="#e63946"/>
+            </svg>
+            <div class="logo-text-wrap">
+              <span style="color: #ffffff;">General</span><span style="color: #38bdf8;">Pedia</span>
+            </div>
           </div>
-          <p class="footer-desc">GeneralPedia provides comprehensive research, investigative insights, practical procedures, and verified information across science, technology, personal finance, health, and law.</p>
+          <p>
+            GeneralPedia is an independent digital knowledge magazine and open reference hub delivering fact-checked how-to guides, automotive specs, wellness breakthroughs, and comprehensive guest analysis.
+          </p>
         </div>
-        <div class="footer-links-group">
-          <h4>Editorial Desks</h4>
-          <ul>
-            <li><a href="javascript:void(0)" onclick="filterCategory('how-to')">How-To & Guides</a></li>
-            <li><a href="javascript:void(0)" onclick="filterCategory('finance')">Finance & Tax</a></li>
-            <li><a href="javascript:void(0)" onclick="filterCategory('health')">Health & Medicine</a></li>
-            <li><a href="javascript:void(0)" onclick="filterCategory('tools')">Calculators & Tools</a></li>
-            <li><a href="javascript:void(0)" onclick="filterCategory('automotive')">Automotive Diagnostics</a></li>
-            <li><a href="javascript:void(0)" onclick="filterCategory('lifestyle')">Lifestyle & Home</a></li>
-            <li><a href="javascript:void(0)" onclick="filterCategory('culture')">Culture & Sports</a></li>
+
+        <!-- Col 2: Publication Sections -->
+        <div class="footer-col">
+          <h4>Magazine Sections</h4>
+          <ul class="footer-links">
+            <li><button onclick="filterCategory('how-to')">How-To &amp; Tutorials</button></li>
+            <li><button onclick="filterCategory('finance')">Finance &amp; Tax</button></li>
+            <li><button onclick="filterCategory('health')">Health &amp; Medicine</button></li>
+            <li><button onclick="filterCategory('tools')">Calculators &amp; Reference</button></li>
+            <li><button onclick="filterCategory('automotive')">Automotive Reviews</button></li>
+            <li><button onclick="filterCategory('lifestyle')">Lifestyle &amp; Living</button></li>
           </ul>
         </div>
-        <div class="footer-links-group">
-          <h4>Editorial & Governance</h4>
-          <ul>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('about')">About GeneralPedia</a></li>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('editorial-policy')">Editorial Policy</a></li>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('author')">Editorial Team & Contributors</a></li>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('corrections-policy')">Corrections & Fact-Checking</a></li>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('contact')">Contact Bureau</a></li>
+
+        <!-- Col 3: Editorial & Submissions -->
+        <div class="footer-col">
+          <h4>Editorial Desk</h4>
+          <ul class="footer-links">
+            <li><button onclick="showStaticPage('write-for-us')">Write for Us (Guest Post)</button></li>
+            <li><button onclick="showStaticPage('editorial-guidelines')">Editorial Guidelines</button></li>
+            <li><button onclick="showStaticPage('about')">About Our Team</button></li>
+            <li><button onclick="showStaticPage('contact')">Contact &amp; Press</button></li>
           </ul>
         </div>
-        <div class="footer-links-group">
-          <h4>Legal & Compliance</h4>
-          <ul>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('privacy-policy')">Privacy Policy</a></li>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('terms-of-service')">Terms of Service</a></li>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('cookie-policy')">Cookie Policy</a></li>
-            <li><a href="javascript:void(0)" onclick="showStaticPage('disclaimer')">General Disclaimer</a></li>
+
+        <!-- Col 4: Trust & Compliance -->
+        <div class="footer-col">
+          <h4>Policy &amp; Trust</h4>
+          <ul class="footer-links">
+            <li><button onclick="showStaticPage('privacy-policy')">Privacy Policy</button></li>
+            <li><button onclick="showStaticPage('terms')">Terms of Service</button></li>
+            <li><button onclick="showStaticPage('editorial-guidelines')">Fact-Checking Policy</button></li>
           </ul>
         </div>
+
       </div>
+
       <div class="footer-bottom">
-        <div>© 2026 GeneralPedia. All editorial rights reserved.</div>
-        <div class="footer-meta-tags"><span>Global Distribution</span> • <span>Indexed Knowledge</span> • <span>Independent Editorial</span></div>
+        <div>
+          &copy; 2026 GeneralPedia. All rights reserved.
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- Embedded Data -->
+  <!-- ==================== CLIENT SCRIPTS ==================== -->
   <script>
     const ARTICLES_DATA = [{"id": "memorial-day-2026", "title": "Memorial Day 2026: Comprehensive Guide & Key Insights", "primary_keyword": "memorial day 2026", "semantic_keywords": ["partidos del mundial 2026", "when is ramadan", "when is st patrick's day 2026", "estad�sticas de mundial", "when is pride month", "the dead sea", "pokemon day 2026", "partidos de hoy mundial 2026", "when is sweetest day", "partidos de hoy del mundial 2026", "horarios de los partidos del mundial 2026", "estad�sticas de jugadores de partidos de knicks contra spurs", "when is dia de los muertos", "el tiempo de hoy", "tabla del mundial 2026", "el tiempo para hoy", "when is the day of the dead", "this is the day the lord has made", "calendario del mundial"], "category_slug": "how-to", "category_name": "How-To & Guides", "tags": ["Estadsticas De Mundial", "When Is Ramadan", "When Is", "How-To & Guides", "Partidos Del", "Memorial Day 2026"], "status": "Published", "post_url": "https://general-pedia.vercel.app/memorial-day-2026", "slug": "memorial-day-2026", "meta_description": "Everything you need to know about memorial day 2026. Explore detailed breakdowns, key insights, and expert analysis on GeneralPedia.", "published_at": "2026-09-13 21:00:13", "display_date": "September 13, 2026", "read_time": "6 min read", "search_volume": 1400000, "difficulty": 0, "cpc": 0.04, "content_html": "\n            <figure style=\"margin: 24px 0;\">\n                <img src=\"https://images.unsplash.com/photo-1714828196863-212245d075a9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8bWVtb3JpYWwlMjBkYXklMjAyMDI2fGVufDB8MHx8fDE3ODkzMTUxMzd8MA&ixlib=rb-4.1.0&q=80&w=1080\" alt=\"a group of red flowers sitting in front of a memorial\" style=\"width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px;\" />\n                <figcaption style=\"font-size: 0.825rem; color: #64748b; margin-top: 8px;\">Photo via Unsplash (chris robert)</figcaption>\n            </figure>\n            <h2>Memorial Day 2026: Essential Guide, Dates, and Historical Context</h2>\n\n<p>Memorial Day stands as one of the most solemn and significant federal holidays in the United States. Established to honor the men and women who died while serving in the U.S. Armed Forces, it serves as a moment of national reflection, unity, and solemn tribute. In 2026, Memorial Day will be observed on <strong>Monday, May 25, 2026</strong>. Beyond its profound military origin, the holiday weekend marks the unofficial start of summer, anchoring a pivotal place on the 2026 global cultural and travel calendars.</p>\n\n<p>This reference guide offers a complete overview of Memorial Day 2026, detailing its historical background, ceremonial protocols, and practical planning advice for travelers navigating a busy global calendar.</p>\n\n<h2>Observing Memorial Day 2026: History and Core Protocols</h2>\n\n<p>Originally known as Decoration Day, the holiday emerged in the years following the American Civil War, a conflict that claimed more American lives than any other in history. In 1968, Congress passed the Uniform Monday Holiday Act, establishing Memorial Day on the last Monday of May to ensure a three-day weekend for federal employees. It officially took effect as a federal holiday in 1971.</p>\n\n<h3>Key Traditions and National Protocols</h3>\n<ul>\n    <li><strong>The National Moment of Remembrance:</strong> At 3:00 p.m. local time on Memorial Day, Americans are encouraged to pause for one minute of silence to honor those who died in service.</li>\n    <li><strong>Flag Etiquette:</strong> The United States flag is flown at half-staff from sunrise until noon, then raised to full-staff for the remainder of the day to symbolize the living national spirit.</li>\n    <li><strong>Gravesite Decoration:</strong> Volunteers across the nation place American flags and floral wreaths on gravesites at national cemeteries, including Arlington National Cemetery.</li>\n</ul>\n\n<blockquote>\n    <p>\"To remember those who gave everything is not merely a duty of state, but a fundamental act of civic gratitude that preserves the moral health of a nation.\"</p>\n</blockquote>\n\n<h2>The 2026 Cultural and Travel Landscape</h2>\n\n<p>The 2026 calendar year features a dense cluster of significant international events and holiday observances. Understanding how Memorial Day 2026 aligns with these events helps families and travelers plan logistics effectively.</p>\n\n<h3>Spring Observances Leading into May 2026</h3>\n<p>The path to late spring in 2026 features several key national and religious milestones across the global calendar:</p>\n<ul>\n    <li><strong>When is Ramadan?</strong> In 2026, the holy month of Ramadan is expected to begin in mid-February (around February 17) and conclude with Eid al-Fitr in mid-March, shaping early spring travel across the Middle East and global Islamic communities.</li>\n    <li><strong>When is St. Patrick's Day 2026?</strong> St. Patrick's Day takes place on Tuesday, March 17, 2026, opening the spring festival season.</li>\n    <li><strong>When is Pride Month?</strong> Pride Month begins on Monday, June 1, 2026, immediately following Memorial Day weekend, making the late-May holiday a gateway into a month of global celebrations.</li>\n</ul>\n\n<h3>Major International Events in Summer 2026</h3>\n<p>Memorial Day 2026 serves as the operational threshold for a historic summer. Just two weeks after Memorial Day weekend, North America will host the largest international sporting event in history. Football fans analyzing the upcoming <em>partidos del mundial 2026</em> (2026 World Cup matches) and reviewing past <em>estadísticas de mundial</em> (World Cup statistics) are expecting record-breaking crowd movements across the host nations: the United States, Mexico, and Canada.</p>\n\n<p>At the same time, late May represents the final comfortable window for international eco-tourism destinations such as <strong>the Dead Sea</strong>, where severe summer heat sets in by early June. Consequently, air travel around May 25, 2026, is projected to see elevated demand combining domestic holiday trips and international vacation arrivals.</p>\n\n<h2>Practical Guidelines for Planning Memorial Day 2026</h2>\n\n<p>To maximize the holiday weekend while keeping its core purpose in mind, consider these recommended action steps:</p>\n\n<ol>\n    <li><strong>Book Domestic Travel Early:</strong> Because Memorial Day 2026 directly precedes major events like the 2026 World Cup, airfares and hotel bookings are anticipated to fill faster than usual. Secure flights and hotel arrangements at least three to four months in advance.</li>\n    <li><strong>Participate in Local Remembrances:</strong> Seek out community parades, memorial services at municipal parks, or volunteer flag-placement programs hosted by local veterans groups.</li>\n    <li><strong>Prepare for Highway Congestion:</strong> The Thursday and Friday preceding Memorial Day weekend routinely rank among the busiest road travel days of the year. Plan highway trips during off-peak morning hours.</li>\n</ol>\n\n<h2>Frequently Asked Questions (FAQ)</h2>\n\n<h3>When exactly is Memorial Day 2026?</h3>\n<p>Memorial Day 2026 takes place on Monday, May 25, 2026. Under federal law, the holiday is always observed on the final Monday of May.</p>\n\n<h3>What is the difference between Memorial Day and Veterans Day?</h3>\n<p>Memorial Day specifically honors members of the military who lost their lives in service to their country. Veterans Day, observed annually on November 11, recognizes all military veterans who have served in the U.S. Armed Forces, both living and deceased.</p>\n\n<h3>How will travel conditions look during Memorial Day weekend 2026?</h3>\n<p>Travel volumes during Memorial Day 2026 are expected to reach high levels due to the holiday weekend coinciding with early preparations for the FIFA World Cup in June and the arrival of summer tourism worldwide. Travelers are advised to plan itineraries early and allow extra time at airports and border crossings.</p>"}, {"id": "used-cars-for-sale", "title": "Used Cars For Sale: Comprehensive Guide & Key Insights", "primary_keyword": "used cars for sale", "semantic_keywords": ["home equity loan rates", "suv for sale", "car for sale", "used car loan rates", "new cars for sale", "used car dealers", "auto loan pre approval", "jeep for sale", "buy used cars", "porsche for sale", "used car for sale", "best used car websites", "usaa auto loan rates", "f80 m3 for sale", "auto loan rates today", "used electric cars", "electric cars for sale", "mobile home for sale", "alabai dog for sale", "best suv for family"], "category_slug": "automotive", "category_name": "Automotive", "tags": ["Used Cars", "Suv For Sale", "New Cars", "Used Car", "Home Equity", "Automotive"], "status": "Published", "post_url": "https://general-pedia.vercel.app/used-cars-for-sale", "slug": "used-cars-for-sale", "meta_description": "Everything you need to know about used cars for sale. Explore detailed breakdowns, key insights, and expert analysis on GeneralPedia.", "published_at": "2026-09-13 20:59:51", "display_date": "September 13, 2026", "read_time": "6 min read", "search_volume": 185000, "difficulty": 5, "cpc": 0.6, "content_html": "\n            <figure style=\"margin: 24px 0;\">\n                <img src=\"https://images.unsplash.com/photo-1553986782-9f6de60b51b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8dXNlZHxlbnwwfDB8fHwxNzg5MzE1MTMzfDA&ixlib=rb-4.1.0&q=80&w=1080\" alt=\"gray stainless steel armor\" style=\"width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px;\" />\n                <figcaption style=\"font-size: 0.825rem; color: #64748b; margin-top: 8px;\">Photo via Unsplash (Nik Shuliahin 💛💙)</figcaption>\n            </figure>\n            <h2>The Modern Market for Used Cars for Sale: A Strategic Buyer's Guide</h2>\n<p>Navigating the pre-owned vehicle market has evolved from a simple budget-conscious choice into a strategic financial planning decision. As the automotive industry balances supply chain resets and fluctuating market values, consumers evaluating <strong>used cars for sale</strong> find themselves in a unique position. Purchasing a pre-owned model allows drivers to bypass the steep initial depreciation curve associated with brand-new inventory while securing advanced safety, technology, and performance features at a fraction of the cost.</p>\n\n<p>Understanding the modern pre-owned market requires analyzing vehicle selection, sourcing avenues, financing structures, and thorough inspection protocols. Whether you are searching for a compact commuter vehicle or a family-sized <strong>suv for sale</strong>, conducting strategic research ensures maximum value for your capital investment.</p>\n\n<h2>Market Dynamics: Used Cars vs. New Inventory</h2>\n<p>The primary driver behind the pre-owned market is the mitigation of rapid depreciation. A brand-new vehicle typically loses between 15% and 20% of its value within its first year on the road, and up to 50% by its fifth year. By focusing on high-quality pre-owned options, buyers let the original owner absorb that initial loss.</p>\n\n<p>While exploring options among <strong>new cars for sale</strong> provides access to the latest factory tech and full manufacturer warranties, the pre-owned sector offers significantly more feature flexibility for a given budget. For instance, a budget that might only cover a base trim level in a new vehicle can often secure a fully loaded, premium trim level in a model that is three to four years old.</p>\n\n<h2>Evaluating Buying Channels: Dealers vs. Private Parties</h2>\n<p>When searching for a quality pre-owned <strong>car for sale</strong>, buyers generally choose between two primary sales channels, each presenting distinct advantages and risks:</p>\n\n<ul>\n  <li><strong>Franchised and Independent Used Car Dealers:</strong> Established <strong>used car dealers</strong> offer consumer protection advantages, including return policies, state-mandated warranties, and access to Certified Pre-Owned (CPO) programs. CPO vehicles undergo rigorous multi-point inspections and carry extended factory-backed warranties, bridging the gap between new and used ownership.</li>\n  <li><strong>Private Sellers:</strong> Buying directly from an individual owner can yield a lower purchase price, as private sellers lack the overhead costs of a commercial dealership. However, these transactions are almost universally as-is, requiring the buyer to manage their own due diligence, vehicle history verification, and registration paperwork.</li>\n</ul>\n\n<h2>Understanding Financing Mechanics and Interest Rates</h2>\n<p>Securing capital for a pre-owned vehicle requires a clear understanding of borrowing costs. Historically, <strong>used car loan rates</strong> run higher than those for new vehicles. Lenders view older assets as carrying slightly higher risk profiles due to potential maintenance demands and variable resale values. Consequently, securing a competitive Interest rate requires maintaining a strong credit score, limiting the loan term to 48 or 60 months, and providing a substantial down payment.</p>\n\n<p>Buyers looking for alternative funding strategies sometimes evaluate non-traditional lending structures. In high-interest rate environments, homeowners occasionally compare auto loan terms against prevailing <strong>home equity loan rates</strong> to determine if leveraging real estate equity offers a lower APR or more favorable repayment terms. However, securing a short-term depreciating asset like a vehicle against your personal residence carries distinct risks, making traditional auto financing or direct cash reserves the preferred route for most buyers.</p>\n\n<h2>Essential Pre-Purchase Inspection Checklist</h2>\n<p>To ensure a pre-owned vehicle is mechanically sound, prospective buyers should follow a disciplined verification process before signing any purchase contract:</p>\n\n<ol>\n  <li><strong>Vehicle History Report (VHR):</strong> Always run a comprehensive VHR using the vehicle identification number (VIN). Check for recorded accidents, frame damage, title brands (such as salvage or lemon status), maintenance history, and the number of previous owners.</li>\n  <li><strong>Independent Pre-Purchase Inspection (PPI):</strong> Hire an ASE-certified mechanic independent of the seller to inspect the vehicle. A professional PPI will identify hidden fluid leaks, suspension wear, brake degradation, and undisclosed body work.</li>\n  <li><strong>Comprehensive Road Test:</strong> Test the vehicle across diverse driving conditions, including highway acceleration, stop-and-go traffic, and sharp turns. Listen for unusual engine noise, monitor transmission shift smoothness, and verify that all electronic systems function properly.</li>\n</ol>\n\n<h2>Frequently Asked Questions</h2>\n\n<h3>How do used car loan rates differ from new car loan rates?</h3>\n<p>Used car loan rates are typically 1% to 3% higher than new car loan rates. Lenders charge higher interest on used vehicles because older cars have less predictable resale values if repossessed. However, because the total loan amount on a used car is usually lower than on a new car, the overall interest paid over the life of the loan may still be lower.</p>\n\n<h3>Is it better to buy a Certified Pre-Owned (CPO) car or a standard used car?</h3>\n<p>A Certified Pre-Owned car is ideal for buyers seeking factory-backed warranty coverage and guaranteed mechanical standards. While CPO vehicles cost more than standard used cars, the included multi-point inspection and extended coverage offer peace of mind similar to buying new. Standard used cars cost less upfront but require deeper individual inspection.</p>\n\n<h3>What mileage range is considered safe when buying used cars for sale?</h3>\n<p>Modern vehicles are built to last well beyond 150,000 miles when properly maintained. Rather than focusing solely on mileage, prioritize a documented service history. A well-maintained car with 80,000 highway miles often represents a better, more reliable investment than a neglected car with only 40,000 city miles.</p>"}, {"id": "queen-of-wands", "title": "Queen Of Wands: Complete Comprehensive Guide & Insights", "primary_keyword": "queen of wands", "semantic_keywords": ["page of pentacles", "6 of cups", "4 of cups", "8 of swords", "6 of swords", "10 of wands", "two of swords", "ten of swords", "two of cups", "3 of swords", "3 of pentacles", "five of swords", "five of wands", "10 of cups", "5 of pentacles", "seven of cups", "seven of pentacles", "nine of swords", "six of pentacles", "ten of wands", "six of cups", "eight of cups", "nine of pentacles"], "category_slug": "how-to", "category_name": "How-To & Guides", "tags": ["6 Of Cups", "4 Of Cups", "How-To & Guides", "6 Of Swords", "8 Of Swords", "Queen Of Wands"], "status": "Published", "post_url": "https://generalpedia.com/how-to/queen-of-wands", "slug": "queen-of-wands", "meta_description": "Everything you need to know about queen of wands. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia.", "published_at": "2026-09-13 17:54:36", "display_date": "September 13, 2026", "read_time": "5 min read", "search_volume": 25000, "difficulty": 0, "cpc": 0.1}, {"id": "january-2026-calendar", "title": "January 2026 Calendar: Complete Comprehensive Guide & Insights", "primary_keyword": "january 2026 calendar", "semantic_keywords": ["june 2026 calendar", "march 2026 calendar", "september 2025 calendar", "august 2026 calendar", "july calendar 2026", "january calendar 2026", "august calendar 2026", "august calendar 2025", "october 2026 calendar", "june calendar 2026", "february calendar 2026", "sephora advent calendar", "uscis visa bulletin", "calendar july 2026", "calendar march 2026", "calendar 2026 printable", "visa bulletin march 2026", "broward county school calendar", "nyc school calendar", "nyc school calendar 2026 to 2027", "ulta advent calendar 2025", "april 2026 calendar printable", "july 2026 calendar printable", "visa bulletin september 2025"], "category_slug": "tools", "category_name": "Calculators & Tools", "tags": ["Calculators & Tools", "January Calendar 2026", "January 2026 Calendar", "August 2026 Calendar", "June 2026 Calendar", "July Calendar 2026", "March 2026 Calendar"], "status": "Published", "post_url": "https://generalpedia.com/tools/january-2026-calendar", "slug": "january-2026-calendar", "meta_description": "Everything you need to know about january 2026 calendar. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia.", "published_at": "2026-09-13 17:48:11", "display_date": "September 13, 2026", "read_time": "5 min read", "search_volume": 224000, "difficulty": 4, "cpc": 0.04}, {"id": "atlanta-hawks-vs-knicks-match-player-stats", "title": "Atlanta Hawks Vs Knicks Match Player Stats: Complete Comprehensive Guide & Insights", "primary_keyword": "atlanta hawks vs knicks match player stats", "semantic_keywords": ["orlando magic vs detroit pistons match player stats", "san antonio spurs vs dallas mavericks match player stats", "knicks vs san antonio spurs stats", "lakers vs dallas mavericks match player stats", "san antonio spurs vs timberwolves timeline", "detroit lions vs green bay packers match player stats", "dallas mavericks standings", "houston rockets vs golden state warriors match player stats", "detroit tigers vs cleveland guardians match player stats", "san francisco giants vs dodgers match player stats", "76ers vs lakers match player stats", "san antonio spurs vs houston rockets match player stats", "chicago sky vs las vegas aces match player stats", "atlanta hawks vs chicago bulls match player stats", "washington wizards vs dallas mavericks match player stats", "utah jazz vs boston celtics match player stats", "dallas mavericks vs washington wizards match player stats", "houston rockets standings", "brooklyn nets vs detroit pistons match player stats", "cleveland cavaliers standings", "washington wizards players", "san antonio spurs vs cleveland cavaliers match player stats", "charlotte hornets vs golden state warriors match player stats", "lake las vegas", "rockets vs mavericks", "las vegas aces vs chicago sky match player stats", "memphis grizzlies vs atlanta hawks match player stats", "green bay vs chicago", "cleveland cavaliers vs charlotte hornets timeline"], "category_slug": "automotive", "category_name": "Automotive", "tags": ["Knicks Vs", "San Antonio", "Automotive", "Lakers Vs", "Orlando Magic", "Detroit Lions", "Atlanta Hawks"], "status": "Published", "post_url": "https://generalpedia.com/automotive/atlanta-hawks-vs-knicks-match-player-stats", "slug": "atlanta-hawks-vs-knicks-match-player-stats", "meta_description": "Everything you need to know about atlanta hawks vs knicks match player stats. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia.", "published_at": "2026-09-13 17:48:11", "display_date": "September 13, 2026", "read_time": "5 min read", "search_volume": 219000, "difficulty": 0, "cpc": 0.4}, {"id": "2025-toyota-camry", "title": "2025 Toyota Camry: Complete Comprehensive Guide & Insights", "primary_keyword": "2025 toyota camry", "semantic_keywords": ["toyota camry price", "2025 toyota rav4", "toyota sequoia 2025", "2025 toyota corolla", "corolla cross hybrid", "toyota camry trd", "2026 toyota 4runner", "2022 toyota camry", "2025 toyota sequoia", "toyota 4runner price", "toyota 4 runner 2025", "2025 toyota highlander", "2019 toyota camry", "toyota sequoia 2026", "toyota highlander 2025", "2022 toyota corolla", "toyota corolla 2026", "toyota corolla 2025", "toyota corolla cross 2026", "2024 toyota 4runner", "toyota sienna 2026", "used toyota corolla", "toyota 4runner 2024", "2026 toyota sequoia", "2014 toyota camry", "used toyota tundra", "toyota sienna price", "2022 toyota corolla cross", "toyota corolla cross 2025", "rav 4 prime", "2025 rav 4", "2025 toyota corolla cross", "toyota rav4 prime", "toyota 4 runner 2024", "used toyota sienna", "2021 toyota 4runner", "2024 toyota highlander", "2023 toyota sequoia"], "category_slug": "automotive", "category_name": "Automotive", "tags": ["2025 Toyota Camry", "Toyota Camry Trd", "2025 Toyota Rav4", "Automotive", "Toyota Camry Price", "Toyota Sequoia 2025", "Corolla Cross Hybrid"], "status": "Published", "post_url": "https://generalpedia.com/automotive/2025-toyota-camry", "slug": "2025-toyota-camry", "meta_description": "Everything you need to know about 2025 toyota camry. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia.", "published_at": "2026-09-13 17:48:11", "display_date": "September 13, 2026", "read_time": "5 min read", "search_volume": 192000, "difficulty": 0, "cpc": 0.8}, {"id": "can-dogs-eat-bananas", "title": "Can Dogs Eat Bananas: Complete Comprehensive Guide & Insights", "primary_keyword": "can dogs eat bananas", "semantic_keywords": ["can dogs have strawberries", "can dogs have watermelon", "can dogs have cinnamon", "can dogs eat avocado", "can dogs eat shrimp", "can dogs eat potatoes", "can dogs have raspberries", "cerenia for dogs", "can dogs have avocado", "can dogs have cantaloupe", "are blueberries good for dogs", "can dogs have broccoli", "can dogs eat peanuts", "can dogs eat blackberries", "can dogs eat almonds", "is honey good for you", "can dogs have shrimp", "can dogs eat cinnamon", "can dogs eat bread", "are zyns bad for you", "can dogs have blackberries", "what is ashwagandha good for", "can dogs have almonds", "is good friday a federal holiday", "can dogs have cheese", "are carrots good for dogs", "can dogs have mushrooms", "what is ginger good for", "can dogs have cashews", "is cinnamon bad for dogs", "is fluoride bad for you", "can dogs eat lettuce", "can dogs eat turkey", "are grapes bad for dogs", "can dogs eat ham", "is broccoli good for dogs", "can dogs eat papaya", "can dogs eat cat food", "can dogs eat nuts", "are strawberries good for you", "what is good for cold", "what vegetables can dogs eat", "dr. gary's best breed cat diet dry cat food", "is sauerkraut good for you", "are banks open on good friday", "are oranges good for dogs", "is coconut oil good for dogs", "is yogurt good for dogs", "is cantaloupe good for you", "is celery good for you"], "category_slug": "finance", "category_name": "Finance & Money", "tags": ["Finance & Money", "Can Dogs"], "status": "Published", "post_url": "https://generalpedia.com/finance/can-dogs-eat-bananas", "slug": "can-dogs-eat-bananas", "meta_description": "Everything you need to know about can dogs eat bananas. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia.", "published_at": "2026-09-13 17:48:11", "display_date": "September 13, 2026", "read_time": "5 min read", "search_volume": 113000, "difficulty": 0, "cpc": 0.03}, {"id": "sinus-infection-symptoms", "title": "Sinus Infection Symptoms: Complete Comprehensive Guide & Insights", "primary_keyword": "sinus infection symptoms", "semantic_keywords": ["high blood pressure symptoms", "ear infection symptoms", "galaxy a52 to buy", "what's the temperature", "signs of dehydration", "how to remove rust from metal", "how to remove duplicates in excel", "symptoms of strep throat", "symptoms of high blood pressure", "signs of autism", "dog ear infection", "sinus infection treatment", "why does my eye keep twitching", "lease a car", "lower right abdominal pain", "short bible verses", "stretches for lower back pain", "signs of sepsis", "signs of strep throat", "signs of preeclampsia", "why does my lower back hurt", "how to remove acrylic nails", "lower right back pain", "strep throat pictures", "signs of anxiety", "what's a normal blood pressure", "signs of liver damage", "what's the price of gold today", "signs of uti", "best time to buy a car", "what causes lower back pain in females", "staph infection symptoms", "early signs of pregnancy before missed period", "sharp pain in chest", "why does my dog eat grass", "lower back pain stretches", "signs of low blood pressure", "symptoms of high cholesterol in females", "central time to eastern time", "bible verses for anxiety", "signs of ear infection", "upper left abdominal pain", "how to take off acrylic nails", "signs of pcos", "hyperthyroidism symptoms in females", "best time to take lexapro for anxiety", "why does caffeine make me tired", "is sinus infection contagious", "antibiotics for ear infection", "strep throat rash", "signs of pancreatitis", "dog eating grass", "how to take blood pressure"], "category_slug": "health", "category_name": "Health & Wellness", "tags": ["Health & Wellness", "Ear Infection Symptoms", "High Blood", "Sinus Infection Symptoms", "Signs Of Dehydration", "Galaxy A52", "What'S The Temperature"], "status": "Published", "post_url": "https://generalpedia.com/health/sinus-infection-symptoms", "slug": "sinus-infection-symptoms", "meta_description": "Everything you need to know about sinus infection symptoms. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia.", "published_at": "2026-09-13 17:48:11", "display_date": "September 13, 2026", "read_time": "5 min read", "search_volume": 314000, "difficulty": 0, "cpc": 0.02}, {"id": "the-wizard-of-oz", "title": "The Wizard Of Oz: Complete Comprehensive Guide & Insights", "primary_keyword": "the wizard of oz", "semantic_keywords": ["how long does the flu last", "pink eye symptoms", "what does poison ivy look like", "can you drink distilled water", "pink eye treatment", "what is distilled water", "air fryer bacon", "how to get rid of fleas", "countries of the world", "how do you get pink eye", "most spoken language in the world", "tallest mountain in the world", "bed bug treatment", "hand\"", "\" foot and mouth disease symptoms", "1900 military time", "pink eye drops", "the-sun", "longest river in the world", "what do cavities look like", "what is it called", "bbl before and after", "what does dry socket look like", "how to get rid of carpet beetles", "symptoms of kidney disease", "pink eye vs allergies", "page rehab and healthcare center", "bed bug eggs", "what does athlete's foot look like", "moxifloxacin eye drops", "korean lash lift", "the house in the cerulean sea", "can you die from acid reflux in your sleep", "what time is it in military time", "can you get pregnant from precum", "how long does flu last", "lip filler before and after", "chin filler before and after", "do you need a passport to go to the bahamas", "cheek filler before and after", "how long does lip filler last", "what time does it get dark today", "how long does a period last", "star fox switch 2", "non toxic air fryer", "how long is pink eye contagious", "veneers before and after", "how long is a baseball game", "how to get rid of a hickey", "what time does the sun go down", "sermorelin before and after", "how long does it take to get pregnant", "how to lose weight fast naturally and permanently", "how to get rid of cold sores", "how long does meth stay in your system for urine sample", "2000 military time", "how to get rid of a cold fast", "page rehab and healthcare", "how to get rid of fleas in house", "restasis eye drops", "dry eye symptoms", "biggest house in the world", "can you play switch 1 games on switch 2", "tooth crown before and after", "viral pink eye", "most expensive thing in the world", "what does hand foot and mouth look like", "2300 military time", "what is the tallest mountain in the world", "cold sores on lip", "how long is rsv contagious", "how long does rice last in the fridge", "dr dabber switch 2", "most expensive states to live in", "how to get rid of fleas in the house fast naturally", "buccal fat removal before and after", "how long does a lash lift last", "get rid of external hemorrhoids in 48 hours", "how to get rid of pink eye", "bed bug bites look like", "can you put foil in an air fryer", "how long does benadryl last", "how long does rsv last", "what do spider bites look like", "chronic kidney disease symptoms", "under eye filler before and after", "what does bed bugs look like", "how long is the wizard of oz at the sphere", "oldest university in the world", "lip filler cost", "nefertiti neck lift", "how to get money", "how long is 72 hours", "hand\"", "\" foot and mouth disease treatments", "neck lift before and after", "how to get rid of athlete's foot", "oven to air fryer conversion"], "category_slug": "finance", "category_name": "Finance & Money", "tags": ["Pink Eye Treatment", "What Is", "What Does", "How Long", "Pink Eye Symptoms", "Finance & Money", "Can You"], "status": "Published", "post_url": "https://generalpedia.com/finance/the-wizard-of-oz", "slug": "the-wizard-of-oz", "meta_description": "Everything you need to know about the wizard of oz. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia.", "published_at": "2026-09-13 17:48:11", "display_date": "September 13, 2026", "read_time": "5 min read", "search_volume": 165000, "difficulty": 0, "cpc": 0.3}, {"id": "2026-winter-olympics", "title": "2026 Winter Olympics: Complete Comprehensive Guide & Insights", "primary_keyword": "2026 winter olympics", "semantic_keywords": ["how many quarts in a gallon", "what are peptides", "auto insurance quote", "i'm a skincare beginner. is nivea a good starting brand compared to garnier?", "what is a prenup", "lymph nodes in neck", "full coverage car insurance", "how many hours in a year", "allstate renters insurance", "renters insurance quote", "what is a lien on a house", "i have sensitive skin. how gentle are nivea\u0019 s creams compared to aveeno?", "how many bones are in the human body", "what is a bbl", "how many oz in a liter", "pinched nerve in neck", "i\u0019 m a 30-year-old working mom. how do olay moisturizers perform compared to l\u0019 or�al\u0019 s skincare line?", "why do cats make biscuits", "how much protein do i need", "how much does a gallon of water weigh", "how many calories in a pound", "how many days until thanksgiving", "how many calories in an egg", "how many hours are in a week", "cost of full mouth dental implants", "state farm car insurance", "does green tea have caffeine", "carpal tunnel surgery", "how much protein a day", "what are the seven deadly sins", "a house of dynamite ending", "blood clot symptoms", "how much is a stamp", "what are veneers", "what are the 10 commandments", "how much are stamps", "what are dental implants", "state farm renters insurance", "full mouth dental implants cost", "what causes tonsil stones", "types of cancer", "state farm home insurance", "ounces in a quart", "what are the 7 deadly sins", "what are tonsil stones", "how much are braces", "what are hip dips", "how many oz of water a day", "how long until christmas", "house of dynamite ending", "green tea shots", "how many days till thanksgiving", "oz in cup", "whats a bbl", "how many ounces of water should i drink a day", "renters insurance michigan", "cheap renters insurance", "how much are veneers", "how much do braces cost", "renters insurance georgia", "specific heat of water", "how long do dogs live", "how much is canva pro", "cost of goods sold", "types of cars", "rental car insurance", "types of ants", "internet in my area", "car insurance calculator", "why do i feel like i have mucus stuck in my throat all the time", "what does magnesium do", "types of noses", "state farm car insurance quote", "oz in a quart", "what are lymph nodes", "types of ducks", "whats a prenup", "how long do bearded dragons live", "what are hormones", "how many ml in a teaspoon", "free car insurance quotes", "types of dresses", "20 an hour is how much a year", "$40 an hour is how much a year", "types of wine", "renters insurance ohio", "auto and home insurance", "what are chitlins", "what does a blood clot feel like", "types of dental implants", "i need money today for free", "how many quarters in a roll", "what are enzymes", "is frequent diarrhea a sign of cancer", "what does magnesium glycinate do", "what does a panic attack feel like", "how many countries in europe", "calories in strawberries", "types of adhd", "cost of ozempic", "how much water should i drink in a day", "symptoms of blood clot in leg", "types of car insurance", "how long do colds last", "calories in an avocado", "how much is homeowners insurance", "where are lymph nodes located", "how long do migraines last", "how many amino acids are there", "how many weeks till christmas", "when are the winter olympics", "m&a", "how much sugar per day", "why do dogs howl", "how much does lasik cost", "types of butterflies", "how much do physical therapists make", "whats a hernia", "what does carpal tunnel feel like", "how much magnesium glycinate per day", "how long do hemorrhoids last", "swollen lymph nodes armpit", "how many people", "what are integers", "online auto insurance", "renters insurance pa", "how much is a zip", "22 an hour is how much a year", "blood clot in leg symptoms", "state farm auto insurance quote", "types of bias", "how many calories do i need", "travelers home insurance", "how much does botox cost", "how long do mosquitoes live", "21 an hour is how much a year", "how long do spiders live", "how much caffeine in green tea", "types of motorcycles", "how much caffeine is dangerous", "how much is a bbl", "types of conflict", "how much is a down payment on a house", "affordable car insurance quotes", "types of knives", "types of boats", "how long do hickeys last", "tonsil stones cause"], "category_slug": "finance", "category_name": "Finance & Money", "tags": ["I'M A", "What Are Peptides", "Finance & Money", "Lymph Nodes", "Auto Insurance Quote", "2026 Winter Olympics", "What Is"], "status": "Published", "post_url": "https://generalpedia.com/finance/2026-winter-olympics", "slug": "2026-winter-olympics", "meta_description": "Everything you need to know about 2026 winter olympics. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia.", "published_at": "2026-09-13 17:47:14", "display_date": "September 13, 2026", "read_time": "5 min read", "search_volume": 5060000, "difficulty": 0, "cpc": 1.2}];
     const STATIC_PAGES = {};
+
+
+    function renderHeroGrid() {
+      const heroContainer = document.getElementById('hero-grid-container');
+      if (!heroContainer || typeof ARTICLES_DATA === 'undefined' || ARTICLES_DATA.length === 0) return;
+      const p1 = ARTICLES_DATA[0];
+      const p2 = ARTICLES_DATA[1] || p1;
+      const p3 = ARTICLES_DATA[2] || p1;
+
+      function getImg(art) {
+        if (!art || !art.content_html) return '';
+        const m = art.content_html.match(/<img[^>]+src=["']([^"']+)["']/);
+        return m ? m[1] : '';
+      }
+
+      heroContainer.innerHTML = `
+        <div class="hero-main-card" onclick="openArticle('${p1.id}')" style="${getImg(p1) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p1)}');` : ''}">
+          <div class="hero-card-content">
+            <span class="category-badge">${escapeHtml(p1.category_name || 'Featured')}</span>
+            <h2 class="hero-main-title">${escapeHtml(p1.title)}</h2>
+            <div class="hero-meta">
+              <span>By Editorial Staff</span><span>•</span>
+              <span>${p1.display_date || 'Recent'}</span><span>•</span>
+              <span>${p1.read_time || '6 min read'}</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-sub-card" onclick="openArticle('${p2.id}')" style="${getImg(p2) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p2)}');` : ''}">
+          <div class="hero-card-content">
+            <span class="category-badge blue">${escapeHtml(p2.category_name || 'Guide')}</span>
+            <h3 class="hero-sub-title">${escapeHtml(p2.title)}</h3>
+            <div class="hero-meta"><span>${p2.display_date || 'Recent'}</span><span>•</span><span>${p2.read_time || '5 min'}</span></div>
+          </div>
+        </div>
+        <div class="hero-sub-card" onclick="openArticle('${p3.id}')" style="${getImg(p3) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p3)}');` : ''}">
+          <div class="hero-card-content">
+            <span class="category-badge green">${escapeHtml(p3.category_name || 'Analysis')}</span>
+            <h3 class="hero-sub-title">${escapeHtml(p3.title)}</h3>
+            <div class="hero-meta"><span>${p3.display_date || 'Recent'}</span><span>•</span><span>${p3.read_time || '5 min'}</span></div>
+          </div>
+        </div>
+      `;
+    }
+
+    let currentCategorySlug = 'all';
+
+    // Views
+    const homeView = document.getElementById('home-view');
+    const articleView = document.getElementById('article-view');
+    const staticView = document.getElementById('static-view');
+    const searchView = document.getElementById('search-view');
+    const articlesFeed = document.getElementById('articles-feed');
+    const trendingMiniContainer = document.getElementById('trending-mini-container');
+    const popularPostsList = document.getElementById('popular-posts-list');
+
+    const homeHeroSection = document.getElementById('home-hero-section');
+    const homeTrendingSection = document.getElementById('home-trending-section');
+
+    const categoryHeaderBanner = document.getElementById('category-header-banner');
+
+    function hideAllViews() {
+      homeView.classList.add('hidden');
+      articleView.classList.add('hidden');
+      staticView.classList.add('hidden');
+      searchView.classList.add('hidden');
+    }
+
+    function updateSeoMetadata(title, description, path) {
+      document.title = title;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc && description) metaDesc.setAttribute('content', description);
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) {
+        const cleanPath = path ? (path.startsWith('/') ? path : '/' + path) : '/';
+        canonical.setAttribute('href', `https://general-pedia.vercel.app${cleanPath}`);
+      }
+    }
+
+    function showHomeView(push = true) {
+      renderHeroGrid();
+      hideAllViews();
+      homeView.classList.remove('hidden');
+      if (homeHeroSection) homeHeroSection.classList.remove('hidden');
+      if (homeTrendingSection) homeTrendingSection.classList.remove('hidden');
+      if (categoryHeaderBanner) categoryHeaderBanner.classList.add('hidden');
+      currentCategorySlug = 'all';
+      updateNavHighlight('all');
+      document.getElementById('mag-feed-heading').innerText = "Latest Published Reports";
+      document.getElementById('mag-feed-count').innerText = `Showing all ${ARTICLES_DATA.length} entries`;
+      updateSeoMetadata(
+        "GeneralPedia | The Digital Knowledge Hub & Magazine",
+        "GeneralPedia is a premier digital news, encyclopedia, and magazine publication delivering verified guides, personal finance, health insights, and expert tutorials.",
+        "/"
+      );
+      renderFeed(ARTICLES_DATA);
+      if (push) history.pushState({ view: 'home' }, '', '/');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterCategory(slug, push = true) {
+      if (slug === 'all' || !slug) {
+        showHomeView(push);
+        return;
+      }
+
+      hideAllViews();
+      homeView.classList.remove('hidden');
+      
+      const titleMap = {
+        'how-to': 'How-To & Practical Guides',
+        'finance': 'Personal Finance & Tax Analysis',
+        'health': 'Health, Medicine & Wellness Insights',
+        'tools': 'Calculators & Interactive Reference',
+        'automotive': 'Automotive Reviews & Diagnostics',
+        'lifestyle': 'Home, Pet Care & Living',
+        'culture': 'Culture, Sports & Entertainment'
+      };
+
+      const descMap = {
+        'how-to': 'Step-by-step verified procedures, expert DIY walk-throughs, troubleshooting playbooks, and procedural solutions.',
+        'finance': 'Fact-checked tax guidance, banking rates, business analysis, retirement planning, and monetary calculations.',
+        'health': 'Evidence-based health information, nutritional summaries, medical reference charts, and wellness guides.',
+        'tools': 'Interactive mathematical utilities, date/age calculators, unit converters, and decision-support algorithms.',
+        'automotive': 'Diagnostic codes, vehicle care schedules, specifications, mechanics guides, and buying advice.',
+        'lifestyle': 'Home organization, gardening advice, pet nutrition, living essentials, and daily lifestyle improvements.',
+        'culture': 'Historical retrospectives, global traditions, literature reviews, athletic milestones, and media insights.'
+      };
+
+      const catTitle = titleMap[slug] || (slug.charAt(0).toUpperCase() + slug.slice(1));
+      const catDesc = descMap[slug] || 'Curated editorial manuals, in-depth breakdowns, and interactive references.';
+
+      if (homeHeroSection) homeHeroSection.classList.add('hidden');
+      if (homeTrendingSection) homeTrendingSection.classList.add('hidden');
+      if (categoryHeaderBanner) {
+        categoryHeaderBanner.classList.remove('hidden');
+        document.getElementById('category-crumb-current').innerText = catTitle;
+        document.getElementById('category-banner-title').innerText = catTitle;
+        document.getElementById('category-banner-desc').innerText = catDesc;
+      }
+      document.getElementById('mag-feed-heading').innerText = `${catTitle} Feed`;
+
+      currentCategorySlug = slug;
+      updateNavHighlight(slug);
+
+      const filtered = ARTICLES_DATA.filter(a => a.category_slug === slug);
+
+      if (categoryHeaderBanner) {
+        document.getElementById('category-banner-meta').innerText = `Showing ${filtered.length} verified ${filtered.length === 1 ? 'guide' : 'guides'}`;
+      }
+      document.getElementById('mag-feed-count').innerText = `Showing ${filtered.length} articles in this topic`;
+      updateSeoMetadata(`${catTitle} | GeneralPedia`, catDesc, `/category/${slug}`);
+      renderFeed(filtered);
+      if (push) history.pushState({ view: 'category', slug: slug }, '', `/category/${slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateNavHighlight(slug) {
+      document.querySelectorAll('.nav-item-btn').forEach(btn => {
+        if (btn.dataset.cat === slug) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function renderFeed(items) {
+      articlesFeed.innerHTML = '';
+      if (!items || items.length === 0) {
+        articlesFeed.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 48px 24px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            <p style="font-weight: 700; font-size: 1.125rem; margin-bottom: 6px;">No articles currently in this section</p>
+            <p style="font-size: 0.875rem; color: var(--text-subtle);">Additional editorial guides are continually published by our research team.</p>
+          </div>
+        `;
+        return;
+      }
+
+      items.forEach(art => {
+        const card = document.createElement('article');
+        card.className = 'mag-article-card';
+        card.tabIndex = 0;
+        card.onclick = () => openArticle(art.id);
+        card.onkeydown = (e) => { if (e.key === 'Enter') openArticle(art.id); };
+
+        card.innerHTML = `
+          <div class="mag-card-header">
+            <div class="mag-card-meta">
+              <span class="category-badge" style="font-size: 0.6875rem; padding: 2px 6px;">${escapeHtml(art.category_name || 'Guide')}</span>
+              <span>•</span>
+              <span>${art.display_date || 'Recent'}</span>
+            </div>
+            <h3 class="mag-card-title">${escapeHtml(art.title)}</h3>
+          </div>
+          <div class="mag-card-body">
+            <p class="mag-card-excerpt">${escapeHtml(art.meta_description || '')}</p>
+            <div class="mag-card-footer">
+              <span>Read Full Story →</span>
+              <span style="color: var(--text-subtle); font-weight: 500;">${art.read_time || '5 min read'}</span>
+            </div>
+          </div>
+        `;
+        articlesFeed.appendChild(card);
+      });
+    }
+
+    function renderTrendingMini() {
+      if (!trendingMiniContainer) return;
+      trendingMiniContainer.innerHTML = '';
+      
+      const sample = ARTICLES_DATA.slice(0, 4);
+      sample.forEach(art => {
+        const div = document.createElement('div');
+        div.className = 'mini-card';
+        div.tabIndex = 0;
+        div.onclick = () => openArticle(art.id);
+        div.onkeydown = (e) => { if (e.key === 'Enter') openArticle(art.id); };
+        div.innerHTML = `
+          <div>
+            <div class="mini-card-tag">${escapeHtml(art.category_name || 'Trending')}</div>
+            <h4 class="mini-card-title">${escapeHtml(art.title)}</h4>
+          </div>
+          <div class="mini-card-date">${art.display_date || 'Updated'} • ${art.read_time || '4 min'}</div>
+        `;
+        trendingMiniContainer.appendChild(div);
+      });
+    }
+
+    function renderPopularSidebar() {
+      if (!popularPostsList) return;
+      popularPostsList.innerHTML = '';
+      
+      // Select 5 varied stories
+      const top5 = ARTICLES_DATA.slice(0, 5);
+      top5.forEach((art, idx) => {
+        const div = document.createElement('div');
+        div.className = 'popular-item';
+        div.tabIndex = 0;
+        div.onclick = () => openArticle(art.id);
+        div.onkeydown = (e) => { if (e.key === 'Enter') openArticle(art.id); };
+        div.innerHTML = `
+          <div class="popular-num">0${idx + 1}</div>
+          <div class="popular-content">
+            <div class="popular-title">${escapeHtml(art.title)}</div>
+            <span>${art.display_date || 'Recent'} • ${escapeHtml(art.category_name || 'Guide')}</span>
+          </div>
+        `;
+        popularPostsList.appendChild(div);
+      });
+
+      // Also render in article view sidebar
+      const artSidebarTrending = document.getElementById('art-sidebar-trending');
+      if (artSidebarTrending) {
+        artSidebarTrending.innerHTML = popularPostsList.innerHTML;
+        // reattach click handlers
+        Array.from(artSidebarTrending.children).forEach((child, idx) => {
+          child.onclick = () => openArticle(top5[idx].id);
+        });
+      }
+    }
+
+    async function openArticle(id, push = true) {
+      let post = ARTICLES_DATA.find(a => a.id === id);
+      if (!post || !post.content_html) {
+        try {
+          const res = await fetch(`/api/post/${id}`);
+          if (res.ok) post = await res.json();
+        } catch(e) {}
+      }
+      if (!post) return;
+
+      document.getElementById('art-title').innerText = post.title;
+      document.getElementById('art-meta').innerText = post.meta_description || '';
+      document.getElementById('art-category-badge').innerText = post.category_name || 'Knowledge Guide';
+      document.getElementById('art-category-crumb').innerText = post.category_name || 'Category';
+      if (post.category_slug) {
+        currentCategorySlug = post.category_slug;
+        updateNavHighlight(post.category_slug);
+        const catCrumb = document.getElementById('art-category-crumb');
+        if (catCrumb) {
+          catCrumb.onclick = () => filterCategory(post.category_slug);
+        }
+      }
+      document.getElementById('art-title-crumb').innerText = post.primary_keyword || post.title;
+      document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
+      document.getElementById('art-read-time').innerText = post.read_time || '5 min read';
+      document.getElementById('art-content').innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
+      updateSeoMetadata(
+        `${post.title} | GeneralPedia`,
+        post.meta_description || 'Comprehensive factual reference guide and breakdown on GeneralPedia.',
+        `/${id}`
+      );
+
+      hideAllViews();
+      articleView.classList.remove('hidden');
+      if (push) history.pushState({ view: 'article', id: id }, '', `/${id}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showStaticPage(slug, push = true) {
+      updateNavHighlight(null);
+      const page = STATIC_PAGES[slug];
+      if (!page) return;
+
+      document.getElementById('static-crumb').innerText = page.title;
+      document.getElementById('static-content').innerHTML = page.content;
+      const cleanTitle = page.title.replace('&amp;', '&');
+      updateSeoMetadata(
+        `${cleanTitle} | GeneralPedia`,
+        `Official ${cleanTitle} document and informational guide for GeneralPedia publication.`,
+        `/${slug}`
+      );
+
+      hideAllViews();
+      staticView.classList.remove('hidden');
+      if (push) history.pushState({ view: 'static', slug: slug }, '', `/${slug}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function triggerSearchFocus() {
+      const searchInput = document.getElementById('nav-search-input');
+      if (searchInput) {
+        searchInput.focus();
+        searchInput.select();
+      }
+    }
+
+    function executeSearch(query, push = true) {
+      if (!query || !query.trim()) return;
+      updateNavHighlight(null);
+      const q = query.trim().toLowerCase();
+      const results = ARTICLES_DATA.filter(a => 
+        a.title.toLowerCase().includes(q) ||
+        (a.primary_keyword && a.primary_keyword.toLowerCase().includes(q)) ||
+        (a.semantic_keywords && a.semantic_keywords.some(sk => sk.toLowerCase().includes(q))) ||
+        (a.category_name && a.category_name.toLowerCase().includes(q))
+      );
+
+      hideAllViews();
+      searchView.classList.remove('hidden');
+      document.getElementById('search-query-title').innerText = `Search: "${query.trim()}"`;
+      document.getElementById('search-count-meta').innerText = `${results.length} result${results.length === 1 ? '' : 's'} identified`;
+      updateSeoMetadata(
+        `Search: "${query.trim()}" | GeneralPedia`,
+        `Explore verified search results for "${query.trim()}" across GeneralPedia knowledge hub.`,
+        `/?q=${encodeURIComponent(query.trim())}`
+      );
+      if (push) history.pushState({ view: 'search', q: query.trim() }, '', `/?q=${encodeURIComponent(query.trim())}`);
+
+      const grid = document.getElementById('search-results-grid');
+      grid.innerHTML = '';
+      if (results.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 48px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            <h3>No matching reports found for "${escapeHtml(query)}"</h3>
+            <p style="color: var(--text-muted); margin-top: 8px;">Try broader terms such as "tax", "camry", "symptoms", or explore our category directory.</p>
+          </div>
+        `;
+        return;
+      }
+
+      results.forEach(art => {
+        const card = document.createElement('article');
+        card.className = 'mag-article-card';
+        card.tabIndex = 0;
+        card.onclick = () => openArticle(art.id);
+        card.innerHTML = `
+          <div class="mag-card-header">
+            <div class="mag-card-meta">
+              <span class="category-badge" style="font-size: 0.6875rem; padding: 2px 6px;">${escapeHtml(art.category_name || 'Guide')}</span>
+              <span>•</span>
+              <span>${art.display_date || 'Recent'}</span>
+            </div>
+            <h3 class="mag-card-title">${escapeHtml(art.title)}</h3>
+          </div>
+          <div class="mag-card-body">
+            <p class="mag-card-excerpt">${escapeHtml(art.meta_description || '')}</p>
+            <div class="mag-card-footer">
+              <span>Read Full Story →</span>
+              <span style="color: var(--text-subtle);">${art.read_time || '5 min read'}</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleTheme() {
+      const htmlEl = document.documentElement;
+      const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      htmlEl.setAttribute('data-theme', newTheme);
+      document.getElementById('theme-icon').innerText = isDark ? '🌙' : '☀️';
+      document.getElementById('theme-label').innerText = isDark ? 'Dark' : 'Light';
+      localStorage.setItem('gp_theme', newTheme);
+    }
+
+    // Check saved theme
+    (function() {
+      const saved = localStorage.getItem('gp_theme');
+      if (saved) {
+        document.documentElement.setAttribute('data-theme', saved);
+        const btnIcon = document.getElementById('theme-icon');
+        const btnLabel = document.getElementById('theme-label');
+        if (btnIcon && btnLabel) {
+          btnIcon.innerText = saved === 'dark' ? '☀️' : '🌙';
+          btnLabel.innerText = saved === 'dark' ? 'Light' : 'Dark';
+        }
+      }
+    })();
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Handle URL routing on load and history navigation
+    function handleRoute() {
+      const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
+      const searchParams = new URLSearchParams(window.location.search);
+      const query = searchParams.get('q');
+
+      if (query) {
+        executeSearch(query, false);
+        return;
+      }
+
+      if (!path) {
+        showHomeView(false);
+        return;
+      }
+
+      if (path.startsWith('category/')) {
+        const catSlug = path.replace('category/', '');
+        filterCategory(catSlug, false);
+        return;
+      }
+
+      if (STATIC_PAGES[path]) {
+        showStaticPage(path, false);
+        return;
+      }
+
+      const foundArticle = ARTICLES_DATA.find(a => a.id === path);
+      if (foundArticle) {
+        openArticle(path, false);
+        return;
+      }
+
+      // Fallback
+      showHomeView(false);
+    }
+
+    window.addEventListener('popstate', (e) => {
+      handleRoute();
+    });
+
+    // Init
+    renderHeroGrid();
+    renderTrendingMini();
+    renderPopularSidebar();
+    handleRoute();
+
   </script>
-  <script src="/app.js"></script>
 </body>
 </html>
