@@ -1041,6 +1041,7 @@
     }
 
     /* Utility */
+    /* Utility */
     .hidden { display: none !important; }
     .visually-hidden {
       position: absolute;
@@ -1051,6 +1052,160 @@
       overflow: hidden;
       clip: rect(0, 0, 0, 0);
       border: 0;
+    }
+
+    /* Buttons & Actions */
+    .btn-primary {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.875rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    .btn-secondary {
+      background: var(--bg-subtle);
+      color: var(--text-main);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card);
+      border-color: var(--primary);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.15s;
+    }
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--bg-subtle);
+    }
+    .btn-contribute {
+      background: var(--primary);
+      color: #ffffff;
+      font-size: 0.9375rem;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.15s, transform 0.1s;
+      text-decoration: none;
+    }
+    .btn-contribute:hover {
+      background: var(--primary-dark);
+      color: #ffffff;
+    }
+
+    /* Forms & Contact Desk Styles */
+    .editorial-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 640px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: block;
+      letter-spacing: 0.02em;
+    }
+    .form-control {
+      width: 100%;
+      padding: 11px 14px;
+      font-size: 0.875rem;
+      font-family: inherit;
+      color: var(--text-main);
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      box-sizing: border-box;
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+    }
+    [data-theme="dark"] .form-control:focus {
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+    select.form-control {
+      cursor: pointer;
+    }
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* Callout & Highlight Boxes */
+    .callout-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 28px;
+      margin: 28px 0;
+    }
+    .article-category-badge {
+      display: inline-block;
+      background: var(--secondary);
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 2px;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
     }
 
     /* ==================== RESPONSIVE BREAKPOINTS ==================== */
@@ -1204,7 +1359,7 @@
     <div id="home-view">
 
       <!-- 4. MORENEWS MAGAZINE HERO GRID (1 BIG + 2 TILES) -->
-      <section class="magazine-hero-section" aria-label="Top Featured Stories">
+      <section class="magazine-hero-section" id="home-hero-section" aria-label="Top Featured Stories">
         <div class="hero-grid">
           <!-- Main Hero Story -->
           <div class="hero-main-card" id="hero-feature-1" onclick="openArticle('queen-of-wands')">
@@ -1250,7 +1405,7 @@
       </section>
 
       <!-- 5. TRENDING / QUICK READ ROW -->
-      <section class="trending-banner-row" aria-label="Trending Guides">
+      <section class="trending-banner-row" id="home-trending-section" aria-label="Trending Guides">
         <div class="trending-mini-grid" id="trending-mini-container">
           <!-- Injected via JS -->
         </div>
@@ -1366,9 +1521,9 @@
           </div>
 
           <!-- Back button -->
-          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between;">
-            <button onclick="showHomeView()" class="nav-guest-btn">← Back to Frontpage</button>
-            <button onclick="showStaticPage('write-for-us')" class="nav-search-btn" style="color: var(--text-main); border-color: var(--border-color);">Submit a Story</button>
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
+            <button onclick="showStaticPage('write-for-us')" class="btn-secondary">Submit a Story</button>
           </div>
         </article>
 
@@ -1412,7 +1567,7 @@
           </div>
           
           <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color);">
-            <button onclick="showHomeView()" class="nav-guest-btn">← Back to Frontpage</button>
+            <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
           </div>
         </article>
 
@@ -1444,7 +1599,7 @@
       </div>
       
       <div style="margin-top: 40px; text-align: center;">
-        <button onclick="showHomeView()" class="nav-guest-btn">← Back to Frontpage</button>
+        <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
       </div>
     </div>
 
@@ -2148,6 +2303,9 @@
     const trendingMiniContainer = document.getElementById('trending-mini-container');
     const popularPostsList = document.getElementById('popular-posts-list');
 
+    const homeHeroSection = document.getElementById('home-hero-section');
+    const homeTrendingSection = document.getElementById('home-trending-section');
+
     function hideAllViews() {
       homeView.classList.add('hidden');
       articleView.classList.add('hidden');
@@ -2158,6 +2316,8 @@
     function showHomeView(push = true) {
       hideAllViews();
       homeView.classList.remove('hidden');
+      if (homeHeroSection) homeHeroSection.classList.remove('hidden');
+      if (homeTrendingSection) homeTrendingSection.classList.remove('hidden');
       currentCategorySlug = 'all';
       updateNavHighlight('all');
       document.getElementById('mag-feed-heading').innerText = "Latest Published Reports";
@@ -2171,6 +2331,16 @@
     function filterCategory(slug, push = true) {
       hideAllViews();
       homeView.classList.remove('hidden');
+      
+      // On category pages, hide top home hero banner to show pure category feed
+      if (slug === 'all') {
+        if (homeHeroSection) homeHeroSection.classList.remove('hidden');
+        if (homeTrendingSection) homeTrendingSection.classList.remove('hidden');
+      } else {
+        if (homeHeroSection) homeHeroSection.classList.add('hidden');
+        if (homeTrendingSection) homeTrendingSection.classList.add('hidden');
+      }
+
       currentCategorySlug = slug;
       updateNavHighlight(slug);
 
@@ -2188,7 +2358,7 @@
         'culture': 'Culture, Sports & Entertainment'
       };
 
-      const catTitle = titleMap[slug] || slug;
+      const catTitle = titleMap[slug] || (slug.charAt(0).toUpperCase() + slug.slice(1));
       document.getElementById('mag-feed-heading').innerText = slug === 'all' ? "Latest Published Reports" : catTitle;
       document.getElementById('mag-feed-count').innerText = `Showing ${filtered.length} articles in this topic`;
       document.title = `${catTitle} — GeneralPedia`;
