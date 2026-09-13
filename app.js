@@ -182,20 +182,33 @@
         card.onclick = () => openArticle(art.id);
         card.onkeydown = (e) => { if (e.key === 'Enter') openArticle(art.id); };
 
+        function extractThumb(article) {
+          if (article.featured_image) return article.featured_image;
+          if (article.content_html) {
+            const m = article.content_html.match(/<img[^>]+src=["']([^"']+)["']/);
+            if (m) return m[1];
+          }
+          return 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80';
+        }
+
+        const thumbUrl = extractThumb(art);
+
         card.innerHTML = `
-          <div class="mag-card-header">
-            <div class="mag-card-meta">
-              <span class="category-badge" style="font-size: 0.6875rem; padding: 2px 6px;">${escapeHtml(art.category_name || 'Guide')}</span>
-              <span>•</span>
-              <span>${art.display_date || 'Recent'}</span>
-            </div>
-            <h3 class="mag-card-title">${escapeHtml(art.title)}</h3>
+          <div class="mag-card-thumb">
+            <span class="category-badge" style="font-size: 0.6875rem; padding: 3px 8px;">${escapeHtml(art.category_name || 'Guide')}</span>
+            <img src="${thumbUrl}" alt="${escapeHtml(art.title)}" loading="lazy">
           </div>
           <div class="mag-card-body">
+            <div class="mag-card-meta">
+              <span>${art.display_date || 'Recent'}</span>
+              <span>•</span>
+              <span>${art.read_time || '5 min read'}</span>
+            </div>
+            <h3 class="mag-card-title">${escapeHtml(art.title)}</h3>
             <p class="mag-card-excerpt">${escapeHtml(art.meta_description || '')}</p>
             <div class="mag-card-footer">
               <span>Read Full Story →</span>
-              <span style="color: var(--text-subtle); font-weight: 500;">${art.read_time || '5 min read'}</span>
+              <span style="color: var(--text-subtle); font-weight: 500;">Editorial Report</span>
             </div>
           </div>
         `;
