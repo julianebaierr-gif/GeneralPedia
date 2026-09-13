@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeneralPedia - The Premier Everyday Knowledge Hub & Encyclopedia</title>
     <meta name="description" content="GeneralPedia is your definitive digital encyclopedia for trusted guides, tax calculations, verified medical insights, interactive tools, and expert how-to tutorials.">
-    <meta name="keywords" content="encyclopedia, general knowledge, tax brackets, roth ira calculator, health symptoms, how to guides, automotive reviews, calculators">
+    <meta name="keywords" content="encyclopedia, general knowledge, write for us, guest post, tax brackets, roth ira calculator, health symptoms, how to guides, automotive reviews, calculators">
     <meta name="author" content="GeneralPedia Editorial Board">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://generalpedia.com">
@@ -99,19 +99,24 @@
 
                 <!-- Desktop Navigation Menu (8 Categories) -->
                 <nav class="hidden lg:flex items-center gap-1 text-sm font-semibold text-slate-700">
-                    <button onclick="filterByCategory('all')" class="category-nav-btn px-3.5 py-2 rounded-xl hover:bg-slate-100 text-emerald-600 bg-emerald-50 transition" data-cat="all">All</button>
-                    <button onclick="filterByCategory('how-to')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="how-to">How-To</button>
-                    <button onclick="filterByCategory('finance')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="finance">Finance</button>
-                    <button onclick="filterByCategory('health')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="health">Health</button>
-                    <button onclick="filterByCategory('tools')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="tools">Calculators</button>
-                    <button onclick="filterByCategory('automotive')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="automotive">Automotive</button>
-                    <button onclick="filterByCategory('lifestyle')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="lifestyle">Lifestyle</button>
-                    <button onclick="filterByCategory('culture')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="culture">Culture</button>
+                    <button onclick="filterByCategory('all')" class="category-nav-btn px-3 py-2 rounded-xl hover:bg-slate-100 text-emerald-600 bg-emerald-50 transition" data-cat="all">All</button>
+                    <button onclick="filterByCategory('how-to')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="how-to">How-To</button>
+                    <button onclick="filterByCategory('finance')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="finance">Finance</button>
+                    <button onclick="filterByCategory('health')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="health">Health</button>
+                    <button onclick="filterByCategory('tools')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="tools">Calculators</button>
+                    <button onclick="filterByCategory('automotive')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="automotive">Automotive</button>
+                    <button onclick="filterByCategory('lifestyle')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="lifestyle">Lifestyle</button>
+                    <button onclick="filterByCategory('culture')" class="category-nav-btn px-2.5 py-2 rounded-xl hover:bg-slate-100 transition" data-cat="culture">Culture</button>
+                    
+                    <span class="h-4 w-px bg-slate-200 mx-1"></span>
+                    <button onclick="showStaticPage('write-for-us')" class="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 font-bold hover:bg-emerald-100 transition flex items-center gap-1.5 text-xs">
+                        <i class="fa-solid fa-pen-nib"></i> Write for Us
+                    </button>
                 </nav>
 
                 <!-- Clean Search Quick Action -->
                 <div class="flex items-center gap-3">
-                    <div class="relative hidden sm:block w-48">
+                    <div class="relative hidden sm:block w-44">
                         <input type="text" onkeyup="handleSearch(this.value)" placeholder="Quick search..." class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-100/80 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
                     </div>
@@ -236,30 +241,73 @@
             </div>
         </article>
 
+        <!-- ================= STATIC PAGES VIEW (About, Write for Us, Privacy, Terms, Contact) ================= -->
+        <div id="static-page-view" class="hidden max-w-4xl mx-auto space-y-8 bg-white p-6 sm:p-12 rounded-3xl border border-slate-200 shadow-sm">
+            <nav class="flex items-center gap-2 text-xs font-medium text-slate-500">
+                <button onclick="showHomeView()" class="hover:text-slate-800">Home</button>
+                <span>/</span>
+                <span id="static-page-crumb" class="text-emerald-600 font-semibold">Page</span>
+            </nav>
+
+            <div id="static-page-content" class="prose max-w-none text-slate-700 leading-relaxed">
+                <!-- Injected via showStaticPage -->
+            </div>
+
+            <div class="pt-6 border-t border-slate-200">
+                <button onclick="showHomeView()" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition">
+                    <i class="fa-solid fa-arrow-left mr-2"></i> Back to Homepage
+                </button>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Clean Footer with Professional Logo -->
+    <!-- Clean Footer with Professional Logo & Essential Pages -->
     <footer class="bg-white border-t border-slate-200/80 mt-16 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-700 to-teal-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-700 to-teal-500 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-slate-900 text-lg">General<span class="text-emerald-600">Pedia</span>.com</span>
+                        <p class="text-xs text-slate-500 font-medium">The Premier Everyday Knowledge Hub & Encyclopedia</p>
+                    </div>
                 </div>
-                <div>
-                    <span class="font-extrabold text-slate-900 text-base">General<span class="text-emerald-600">Pedia</span>.com</span>
-                    <p class="text-xs text-slate-500 font-medium">The Premier Everyday Knowledge Hub & Encyclopedia</p>
+                
+                <!-- Essential Policy & Guest Post Navigation Links -->
+                <div class="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-slate-600">
+                    <button onclick="showStaticPage('about')" class="hover:text-emerald-600 transition">About Us</button>
+                    <button onclick="showStaticPage('write-for-us')" class="hover:text-emerald-600 font-bold text-emerald-700 transition">Write for Us (Guest Post)</button>
+                    <button onclick="showStaticPage('contact')" class="hover:text-emerald-600 transition">Contact Us</button>
+                    <button onclick="showStaticPage('editorial-guidelines')" class="hover:text-emerald-600 transition">Editorial Guidelines</button>
+                    <button onclick="showStaticPage('privacy-policy')" class="hover:text-emerald-600 transition">Privacy Policy</button>
+                    <button onclick="showStaticPage('terms')" class="hover:text-emerald-600 transition">Terms of Service</button>
                 </div>
             </div>
-            <div class="flex flex-wrap items-center gap-6 text-xs text-slate-600 font-medium">
-                <button onclick="filterByCategory('how-to')" class="hover:text-emerald-600">How-To</button>
-                <button onclick="filterByCategory('finance')" class="hover:text-emerald-600">Finance</button>
-                <button onclick="filterByCategory('health')" class="hover:text-emerald-600">Health</button>
-                <button onclick="filterByCategory('tools')" class="hover:text-emerald-600">Tools</button>
-                <button onclick="filterByCategory('automotive')" class="hover:text-emerald-600">Automotive</button>
-                <button onclick="filterByCategory('lifestyle')" class="hover:text-emerald-600">Lifestyle</button>
-                <button onclick="filterByCategory('culture')" class="hover:text-emerald-600">Culture</button>
+
+            <!-- Categories Bar in Footer -->
+            <div class="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500 font-medium">
+                <button onclick="filterByCategory('how-to')" class="hover:text-slate-800">How-To & Guides</button>
+                <span>•</span>
+                <button onclick="filterByCategory('finance')" class="hover:text-slate-800">Finance & Money</button>
+                <span>•</span>
+                <button onclick="filterByCategory('health')" class="hover:text-slate-800">Health & Wellness</button>
+                <span>•</span>
+                <button onclick="filterByCategory('tools')" class="hover:text-slate-800">Calculators</button>
+                <span>•</span>
+                <button onclick="filterByCategory('automotive')" class="hover:text-slate-800">Automotive</button>
+                <span>•</span>
+                <button onclick="filterByCategory('lifestyle')" class="hover:text-slate-800">Home & Lifestyle</button>
+                <span>•</span>
+                <button onclick="filterByCategory('culture')" class="hover:text-slate-800">Culture & Sports</button>
+            </div>
+
+            <div class="text-center text-xs text-slate-400">
+                © 2026 GeneralPedia.com. All rights reserved. Content is for informational purposes only.
             </div>
         </div>
     </footer>
@@ -275,6 +323,142 @@
             "tech": { name: "Tech & Digital", icon: "fa-microchip", color: "blue" },
             "lifestyle": { name: "Home & Life", icon: "fa-house", color: "teal" },
             "culture": { name: "Culture", icon: "fa-masks-theater", color: "purple" }
+        };
+
+        const STATIC_PAGES_DATA = {
+            "about": {
+                title: "About GeneralPedia",
+                content: `
+                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">About GeneralPedia.com</h1>
+                    <p class="text-lg text-slate-600 mb-6">
+                        <strong>GeneralPedia.com</strong> is a premier digital encyclopedia and universal knowledge repository dedicated to making complex, high-value information accessible, reliable, and actionable for readers worldwide.
+                    </p>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Our Mission</h2>
+                    <p class="mb-4">
+                        In an era saturated with fragmented information, GeneralPedia provides structured, expert-verified, and data-backed coverage across finance, health, lifestyle, technology, and practical how-to tutorials. Every article is crafted according to strict editorial benchmarks to answer real reader questions concisely.
+                    </p>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">What We Cover</h2>
+                    <ul class="list-disc pl-6 space-y-2 mb-6">
+                        <li><strong>Personal Finance & Taxes:</strong> Unpacking complex IRS brackets, Roth IRAs, retirement limits, insurance terms, and loans.</li>
+                        <li><strong>Health & Wellness:</strong> Evidence-grounded symptom explanations, natural remedies, and lifestyle longevity tips.</li>
+                        <li><strong>Actionable How-To Guides:</strong> Step-by-step everyday problem-solving tutorials.</li>
+                        <li><strong>Automotive & Tech:</strong> Comprehensive vehicle valuations, specs breakdowns, and digital safety principles.</li>
+                        <li><strong>Utility Tools:</strong> Precision calculators and measurement converters for daily productivity.</li>
+                    </ul>
+                `
+            },
+            "write-for-us": {
+                title: "Write for Us - Guest Posting Guidelines",
+                content: `
+                    <div class="p-6 bg-emerald-50 rounded-2xl border border-emerald-200 mb-8">
+                        <span class="px-3 py-1 bg-emerald-600 text-white rounded-full text-xs font-bold uppercase tracking-wider">Accepting Submissions</span>
+                        <h1 class="text-3xl font-extrabold text-slate-900 mt-3 mb-2">Write for Us (Guest Posting & Sponsored Content)</h1>
+                        <p class="text-slate-700">Contribute your expert perspective to GeneralPedia.com and reach our growing audience of global readers and searchers.</p>
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-slate-900 mt-6 mb-4">Why Publish on GeneralPedia?</h2>
+                    <ul class="list-disc pl-6 space-y-2 mb-6">
+                        <li><strong>High Authority Context:</strong> Your content is hosted on a structured digital encyclopedia with strict topical silo architecture.</li>
+                        <li><strong>Permanent Placement:</strong> All published guest articles receive permanent do-follow indexation with fast search crawler discovery.</li>
+                        <li><strong>Contextual Relevance:</strong> We accept contributions across Business, Finance, Health, Technology, Home Improvement, Automotive, and Lifestyle.</li>
+                    </ul>
+
+                    <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Editorial & Submission Guidelines</h2>
+                    <div class="space-y-4 mb-8">
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <h4 class="font-bold text-slate-800 mb-1">1. Originality & Depth</h4>
+                            <p class="text-sm text-slate-600">Articles must be 100% unique, human-readable, and minimum 1,000 to 1,500 words. We do not accept unedited automated content or spun articles.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <h4 class="font-bold text-slate-800 mb-1">2. Clear Structure</h4>
+                            <p class="text-sm text-slate-600">Include descriptive sub-headings (H2, H3), bulleted takeaways, and concise paragraphs (15-20 words per sentence) for optimal readability.</p>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl">
+                            <h4 class="font-bold text-slate-800 mb-1">3. Linking Policy</h4>
+                            <p class="text-sm text-slate-600">You may include 1 to 2 authoritative, relevant editorial links. We reject spammy, gambling, adult, or deceptive links.</p>
+                        </div>
+                    </div>
+
+                    <div class="p-8 bg-slate-900 text-white rounded-2xl text-center space-y-4">
+                        <h3 class="text-2xl font-bold">Ready to Submit Your Pitch?</h3>
+                        <p class="text-slate-300 text-sm max-w-xl mx-auto">Send your article pitch or draft along with target anchor links to our editorial desk for review within 24 hours.</p>
+                        <div class="pt-2">
+                            <a href="mailto:contact@generalpedia.com?subject=Guest Post Submission - GeneralPedia" class="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold rounded-xl transition">
+                                <i class="fa-solid fa-envelope"></i> Submit Guest Post (contact@generalpedia.com)
+                            </a>
+                        </div>
+                    </div>
+                `
+            },
+            "contact": {
+                title: "Contact Us",
+                content: `
+                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Contact GeneralPedia</h1>
+                    <p class="text-slate-600 mb-8">We welcome inquiries regarding editorial submissions, advertising partnerships, factual corrections, and general feedback.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg font-bold mb-3">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-900 mb-1">Editorial & Guest Posts</h3>
+                            <p class="text-sm text-slate-500 mb-2">For article proposals, guest contributions, and content pitches.</p>
+                            <a href="mailto:contact@generalpedia.com" class="text-sm font-semibold text-emerald-600 hover:underline">contact@generalpedia.com</a>
+                        </div>
+
+                        <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+                            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg font-bold mb-3">
+                                <i class="fa-solid fa-handshake"></i>
+                            </div>
+                            <h3 class="font-bold text-slate-900 mb-1">Partnerships & Advertising</h3>
+                            <p class="text-sm text-slate-500 mb-2">For brand sponsorships, display advertising, and syndication.</p>
+                            <a href="mailto:advertising@generalpedia.com" class="text-sm font-semibold text-emerald-600 hover:underline">advertising@generalpedia.com</a>
+                        </div>
+                    </div>
+
+                    <div class="p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+                        <h3 class="font-bold text-slate-900 mb-3">Response Time</h3>
+                        <p class="text-sm text-slate-600">Our editorial and management team reviews all messages within 24 to 48 business hours.</p>
+                    </div>
+                `
+            },
+            "privacy-policy": {
+                title: "Privacy Policy",
+                content: `
+                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Privacy Policy</h1>
+                    <p class="text-sm text-slate-400 mb-6">Last Updated: September 13, 2026</p>
+                    <p class="mb-4">At GeneralPedia.com, accessible from https://generalpedia.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected and recorded by GeneralPedia and how we use it.</p>
+                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">Log Files</h2>
+                    <p class="mb-4">GeneralPedia follows a standard procedure of using log files. These files log visitors when they visit websites. The information collected includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks.</p>
+                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">Cookies and Web Beacons</h2>
+                    <p class="mb-4">Like any other website, GeneralPedia uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
+                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">GDPR and CCPA Privacy Rights</h2>
+                    <p class="mb-4">We respect your rights under the GDPR and CCPA. Users have the right to request access to their data, request rectification of any inaccurate information, and request the deletion of their personal data.</p>
+                `
+            },
+            "terms": {
+                title: "Terms of Service",
+                content: `
+                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Terms of Service</h1>
+                    <p class="text-sm text-slate-400 mb-6">Effective Date: September 13, 2026</p>
+                    <p class="mb-4">Welcome to GeneralPedia.com. By accessing or using this website, you agree to be bound by these Terms of Service.</p>
+                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">1. Informational Disclaimer</h2>
+                    <p class="mb-4">The materials and content on GeneralPedia.com are provided for general informational, educational, and reference purposes only. Nothing on this website constitutes professional medical, financial, tax, or legal advice.</p>
+                    <h2 class="text-xl font-bold text-slate-900 mt-6 mb-3">2. Intellectual Property</h2>
+                    <p class="mb-4">All content, structure, logos, text, and data compilations on GeneralPedia.com are the intellectual property of GeneralPedia unless otherwise noted.</p>
+                `
+            },
+            "editorial-guidelines": {
+                title: "Editorial Guidelines",
+                content: `
+                    <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Editorial Guidelines & Standards</h1>
+                    <p class="text-lg text-slate-600 mb-6">At GeneralPedia, our editorial standards prioritize clarity, factual integrity, and reader utility.</p>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-6 mb-3">Fact Verification & Sourcing</h2>
+                    <p class="mb-4">Every article published on GeneralPedia undergoes rigorous editorial review. We rely exclusively on primary data sources, recognized scientific institutions, official government databases (IRS, NIH, CDC), and accredited academic studies.</p>
+                    <h2 class="text-2xl font-bold text-slate-900 mt-6 mb-3">Independence & Transparency</h2>
+                    <p class="mb-4">Our editorial recommendations are entirely independent. Where sponsored content or guest articles are accepted, they must satisfy our strict quality benchmarks and are clearly labeled for reader transparency.</p>
+                `
+            }
         };
 
         const DEFAULT_ARTICLES = [
@@ -574,6 +758,9 @@
 
         function filterByCategory(slug) {
             activeCategory = slug;
+            hideAllViews();
+            document.getElementById('home-view').classList.remove('hidden');
+
             document.querySelectorAll('.category-nav-btn').forEach(b => {
                 if (b.dataset.cat === slug) {
                     b.classList.add('text-emerald-600', 'bg-emerald-50');
@@ -585,9 +772,13 @@
             document.getElementById('feed-title').innerText = catName;
             renderCategoriesGrid();
             renderArticlesFeed();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function handleSearch(query) {
+            hideAllViews();
+            document.getElementById('home-view').classList.remove('hidden');
+
             if (!query.trim()) {
                 renderArticlesFeed();
                 return;
@@ -631,13 +822,31 @@
                 tagsCont.appendChild(sp);
             });
 
-            document.getElementById('home-view').classList.add('hidden');
+            hideAllViews();
             document.getElementById('article-view').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function showHomeView() {
+        function showStaticPage(pageSlug) {
+            const page = STATIC_PAGES_DATA[pageSlug];
+            if (!page) return;
+
+            document.getElementById('static-page-crumb').innerText = page.title;
+            document.getElementById('static-page-content').innerHTML = page.content;
+
+            hideAllViews();
+            document.getElementById('static-page-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function hideAllViews() {
+            document.getElementById('home-view').classList.add('hidden');
             document.getElementById('article-view').classList.add('hidden');
+            document.getElementById('static-page-view').classList.add('hidden');
+        }
+
+        function showHomeView() {
+            hideAllViews();
             document.getElementById('home-view').classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
