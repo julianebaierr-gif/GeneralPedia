@@ -113,41 +113,115 @@ def build_faq_schema_json(faqs):
     }
     return json.dumps(schema, ensure_ascii=False)
 
+def enrich_semantic_and_visual_terms(primary_kw, existing_semantic_kws):
+    """
+    Intelligently expands semantic/LSI keywords and generates contextual visual search terms.
+    If sheet already has semantic keywords, complements them with topic-specific LSI terms.
+    If sheet has None/empty keywords, generates 6-10 highly relevant LSI keywords and visual queries.
+    """
+    cleaned_existing = [
+        k.strip() for k in existing_semantic_kws
+        if k and k.strip() and k.strip().lower() != 'none (single standalone topic)'
+    ]
+    
+    # Prompt Gemini for accurate semantic terms and stock photo visual queries
+    prompt = f"""For the primary informational topic: "{primary_kw}"
+Existing related keywords: {', '.join(cleaned_existing) if cleaned_existing else 'None'}
+
+Perform two tasks:
+1. Provide 6 to 8 highly relevant, intent-driven LSI/semantic search phrases strictly tied to "{primary_kw}".
+   - Ensure they match real Google search queries (how it works, definitions, causes, solutions, specifications, comparisons).
+2. Provide 3 concrete, descriptive visual search queries for Unsplash stock photography that represent this exact subject (e.g. real-world objects, tools, settings, city scenes - avoid abstract words or numbers alone).
+
+Return strictly a JSON object with no markdown code fences:
+{{"semantic_keywords": ["keyword 1", "keyword 2"], "visual_queries": ["query 1", "query 2"]}}
+"""
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "temperature": 0.2,
+            "thinkingConfig": {"thinkingBudget": 200}
+        }
+    }
+    
+    generated_semantics = []
+    visual_queries = []
+    
+    for model_name in ["gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.5-flash", "gemini-flash-latest"]:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
+        try:
+            req = urllib.request.Request(
+                url,
+                data=json.dumps(payload).encode('utf-8'),
+                headers={'Content-Type': 'application/json', 'User-Agent': 'GeneralPedia-SEO/1.0'}
+            )
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = json.loads(resp.read().decode('utf-8'))
+                raw = data.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', '').strip()
+                raw = re.sub(r'^```(json)?\s*', '', raw)
+                raw = re.sub(r'```$', '', raw).strip()
+                parsed = json.loads(raw)
+                generated_semantics = parsed.get("semantic_keywords", [])
+                visual_queries = parsed.get("visual_queries", [])
+                if generated_semantics:
+                    break
+        except Exception:
+            continue
+
+    # Merge sheet keywords + Gemini LSI keywords
+    combined_semantics = []
+    seen = set()
+    for kw in cleaned_existing + generated_semantics:
+        clean = kw.strip()
+        lower = clean.lower()
+        if clean and lower != primary_kw.lower() and lower not in seen:
+            seen.add(lower)
+            combined_semantics.append(clean)
+
+    # Fallback visual queries if API failed
+    if not visual_queries:
+        visual_queries = [primary_kw, f"{primary_kw} guide", "technology workplace"]
+
+    return combined_semantics, visual_queries
+
 def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
     """
     Generates rich, 800-1200 word authoritative SEO article content dynamically via Gemini API.
     Enforces:
-    - Google Helpful Content & Spam Policies (100% human-first, verified, authentic)
-    - 5 to 8 concise, punchy FAQ questions with direct answers (ideal for Featured Snippets)
-    - Starts and ends with 100% completeness
+    - Google Helpful Content, Spam & Anti-De-Ranking Policies (human-first, high E-E-A-T)
+    - Featured snippet target (40-55 words)
+    - 5 to 8 concise, punchy FAQ questions with direct answers
+    - 100% complete generation
     - Fallback cascade through all Gemini versions
     """
-    prompt = f"""You are an elite editorial journalist and lead SEO strategist for GeneralPedia.
-Write a COMPLETE, comprehensive, and authoritative informational reference guide for a global audience adhering to the latest Google Search Quality Rater & Helpful Content guidelines on:
+    prompt = f"""You are a master editorial researcher, investigative writer, and top-tier SEO copywriter for GeneralPedia.
+Write a COMPLETE, comprehensive, highly authoritative informational reference guide for a global audience on:
 Primary Focus Keyword: "{primary_kw}"
-Related Semantic / LSI Keywords: {', '.join(semantic_kws[:8]) if semantic_kws else 'None'}
+Related Semantic / LSI Keywords: {', '.join(semantic_kws[:12]) if semantic_kws else 'None'}
 Category Desk: {category_name}
 
-STRICT EDITORIAL & SEO POLICIES:
-1. Google Helpful Content & Anti-De-Indexing Standards:
-   - Provide original analysis, comprehensive context, practical value, and verifiable facts.
-   - Do NOT use generic filler, AI buzzwords (e.g., "in conclusion", "tapestry", "delve"), or hollow fluff.
-   - Write in a clean, journalistic, objective tone.
-2. Complete Generation Guarantee: Write the complete article from start to finish. Never stop mid-sentence.
-3. Formatting: Return clean HTML (use <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <details>, <summary>).
+STRICT EDITORIAL, E-E-A-T & ANTI-DE-RANKING POLICIES:
+1. Google Helpful Content & Anti-De-Ranking Quality Guidelines:
+   - Deliver rich, primary-source quality insights, actionable context, real-world examples, and fact-based depth.
+   - ZERO fluff, filler, or robotic throat-clearing. NEVER use cliches like "in conclusion", "tapestry", "delve", "furthermore", "it is important to remember", or "in today's fast-paced world".
+   - Maintain a neutral, professional journalistic tone that immediately demonstrates Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T).
+2. Organic Semantic Integration:
+   - Naturally weave the LSI and semantic keywords throughout headings and body paragraphs without keyword stuffing.
+3. Featured Snippet Optimization (Zero-Click Answer):
+   - Immediately following the first <h2> subheading, provide a direct, concise 40-55 word definitive answer block in <strong> bold tags that answers the core search query with laser accuracy.
+4. Complete Generation Guarantee:
+   - Produce the complete article from introduction to the final FAQ without stopping mid-thought or mid-sentence.
+5. Formatting & Typography:
+   - Return clean semantic HTML (<h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <details>, <summary>).
    - DO NOT wrap in ```html or ``` code fences.
-4. CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use standard hyphens, commas, or parentheses instead.
-5. Content Blueprint:
-   - Engaging opening hook defining the topic and its real-world significance.
-   - Featured Snippet Target (Zero-Click): Under the first <h2>, provide a direct, concise 40-55 word definitive answer block.
-   - In-depth thematic breakdown sections using <h2> and <h3> subheadings covering mechanisms, global comparisons, practical guidelines, and key factors.
-   - Natural, organic integration of all semantic and LSI keywords.
+   - CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use standard commas, parentheses, or simple hyphens instead.
 6. MANDATORY FAQ ACCORDION SECTION (5 to 8 Questions):
    - Include a dedicated section with <h2>Frequently Asked Questions</h2>.
    - Provide EXACTLY between 5 and 8 questions (minimum 5, maximum 8).
-   - Format EACH question and answer using HTML5 <details class="faq-item"><summary class="faq-question">Question?</summary><p class="faq-answer">Concise, direct answer (25-45 words) designed for Google snippet capture.</p></details>.
-   - Questions must address real user search intents and answers must be direct and factual.
-7. Word Count: 800 to 1,200 words.
+   - Format EACH question and answer using HTML5:
+     <details class="faq-item"><summary class="faq-question">Direct User Question?</summary><p class="faq-answer">Direct, factual answer in 25 to 45 words tailored for Google snippet capture.</p></details>
+   - Target real questions users ask on Google Search regarding "{primary_kw}".
+7. Word Count Target: 850 to 1,250 words of pure substance.
 """
     
     payload = {
@@ -197,29 +271,32 @@ STRICT EDITORIAL & SEO POLICIES:
     return None
 
 def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
-    cat_slug = detect_category(primary_kw, semantic_kws)
-    cat_info = CATEGORIES[cat_slug]
-    
     slug = slugify(primary_kw)
     capital_kw = capitalize_keyword(primary_kw)
     post_url = f"https://general-pedia.vercel.app/{slug}"
     post_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     display_date = datetime.now().strftime("%B %d, %Y")
     
+    # 1. Enrich semantic keywords and visual queries
+    all_semantic_kws, visual_queries = enrich_semantic_and_visual_terms(primary_kw, semantic_kws)
+    
+    cat_slug = detect_category(primary_kw, all_semantic_kws)
+    cat_info = CATEGORIES[cat_slug]
+    
     title = f"{capital_kw}: Comprehensive Guide & Key Insights"
     meta_desc = f"Everything you need to know about {capital_kw}. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia."
-    tags = generate_tags(primary_kw, semantic_kws, cat_slug)
+    tags = generate_tags(primary_kw, all_semantic_kws, cat_slug)
     
     safe_vol = int(volume) if volume and not str(volume).lower() == 'nan' else 0
     safe_kd = int(kd) if kd and not str(kd).lower() == 'nan' else 0
     safe_cpc = float(cpc) if cpc and not str(cpc).lower() == 'nan' else 0.0
     
-    # 1. Fetch complete content via Gemini API cascade
-    body_content = generate_article_content_via_gemini_api(capital_kw, semantic_kws, cat_info["name"])
+    # 2. Fetch complete content via Gemini API cascade
+    body_content = generate_article_content_via_gemini_api(capital_kw, all_semantic_kws, cat_info["name"])
     if not body_content:
         body_content = f"<p>Comprehensive analytical briefing on <strong>{capital_kw}</strong> will be available shortly.</p>"
         
-    # 2. Extract 5-8 FAQs for Schema markup
+    # 3. Extract 5-8 FAQs for Schema markup
     faqs = extract_faqs_from_html(body_content)
     faq_schema = build_faq_schema_json(faqs)
     
@@ -228,8 +305,8 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         schema_tag = f'\n<script type="application/ld+json">\n{faq_schema}\n</script>\n'
         body_content = body_content + schema_tag
         
-    # 3. Fetch unique image via Unsplash API by ID
-    img_info = fetch_unique_unsplash_image(primary_kw)
+    # 4. Fetch unique contextual image via Unsplash API by ID using enriched visual queries
+    img_info = fetch_unique_unsplash_image(query=visual_queries, fallback_terms=[primary_kw, cat_info["name"]])
     featured_img_url = ""
     image_id = ""
     
@@ -248,7 +325,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         "id": slug,
         "title": title,
         "primary_keyword": capital_kw,
-        "semantic_keywords": semantic_kws,
+        "semantic_keywords": all_semantic_kws,
         "category_slug": cat_slug,
         "category_name": cat_info["name"],
         "tags": tags,
