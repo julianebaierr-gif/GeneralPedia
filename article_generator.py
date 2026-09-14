@@ -275,6 +275,42 @@ def sanitize_ai_words(text):
     result = result.replace('—', ', ').replace('–', '-')
     return result
 
+def format_crisp_paragraphs(html_text):
+    """
+    Splits long, thick paragraphs into punchy 2-sentence readable blocks.
+    """
+    if not html_text:
+        return ""
+    paragraphs = html_text.split('\n\n')
+    new_paras = []
+    for p in paragraphs:
+        p_clean = p.strip()
+        if (not p_clean or 
+            p_clean.startswith('<h') or 
+            p_clean.startswith('<figure') or 
+            p_clean.startswith('<ul') or 
+            p_clean.startswith('<ol') or 
+            p_clean.startswith('<details') or 
+            p_clean.startswith('<strong') or
+            p_clean.startswith('<div class="gp-interactive-tool-box')):
+            new_paras.append(p)
+            continue
+        
+        has_p = p_clean.startswith('<p>') and p_clean.endswith('</p>')
+        raw = p_clean[3:-4].strip() if has_p else p_clean
+        sentences = [s.strip() for s in re.split(r'(?<=[.!?])\s+(?=[A-Z0-9\"\'\<])', raw) if s.strip()]
+        
+        if len(sentences) <= 2:
+            new_paras.append(f'<p>{raw}</p>' if not has_p else p)
+            continue
+            
+        for i in range(0, len(sentences), 2):
+            chunk = ' '.join(sentences[i:i+2]).strip()
+            if chunk:
+                new_paras.append(f'<p>{chunk}</p>')
+                
+    return '\n\n'.join(new_paras)
+
 def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=None):
     """
     Generates a 100% unique, topic-tailored, high-CTR SEO title (50-60 chars).
@@ -638,6 +674,10 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
 6. Formatting & Typography:
    - Return clean semantic HTML (<h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <details>, <summary>).
    - DO NOT wrap in ```html or ``` code fences.
+   - CRITICAL PARAGRAPH LENGTH RULE (STRICT):
+     * NEVER write huge, thick, intimidating blocks of text or 5+ sentence paragraphs!
+     * Break all content into crisp, bite-sized paragraphs: exactly 2 sentences per paragraph (maximum 35-50 words per paragraph).
+     * Use frequent whitespace, clear subheadings, and short 2-sentence paragraphs so readers on mobile and desktop can read effortlessly.
    - CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use standard commas, parentheses, or simple hyphens instead.
 
 7. MANDATORY FAQ ACCORDION SECTION (5 to 8 Questions):
@@ -727,6 +767,8 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     body_content = generate_article_content_via_gemini_api(capital_kw, all_semantic_kws, cat_info["name"])
     if not body_content:
         body_content = f"<p>A detailed briefing on <strong>{capital_kw}</strong> will be available shortly.</p>"
+    else:
+        body_content = format_crisp_paragraphs(body_content)
         
     # 3. Extract 5-8 FAQs for Schema markup
     faqs = extract_faqs_from_html(body_content)
