@@ -1,0 +1,369 @@
+</head>
+<body>
+
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main editorial content</a>
+
+  <!-- ==================== 1. TOP BAR (MORENEWS TICKER & DATE) ==================== -->
+  <div class="top-bar">
+    <div class="container top-bar-inner">
+      <div class="top-bar-left">
+        <div class="top-date">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="current-date-display">Today</span>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <ul class="top-links">
+          <li><a href="#" onclick="showStaticPage('about'); return false;">About</a></li>
+          <li><a href="#" onclick="showStaticPage('write-for-us'); return false;">Write For Us</a></li>
+          <li><a href="#" onclick="showStaticPage('contact'); return false;">Contact</a></li>
+        </ul>
+        <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Switch Dark/Light Theme">
+          <span id="theme-icon">🌙</span> <span id="theme-label">Dark</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. MAIN HEADER (EDITORIAL LOGO + SPONSOR/EDITORIAL BANNER) ==================== -->
+  <header class="main-header" role="banner">
+    <div class="container header-layout">
+      <!-- Top-Notch Modern Editorial Logo -->
+      <div class="brand-group">
+        <a href="#" onclick="showHomeView(); return false;" class="site-logo" aria-label="GeneralPedia Magazine Home">
+          <svg class="brand-symbol" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="42" height="42" rx="9" fill="#0f172a"/>
+            <!-- Stylized Bold G Book/Compass geometry -->
+            <path d="M22 11C15.9249 11 11 15.9249 11 22C11 28.0751 15.9249 33 22 33C27.2 33 31.5 29.4 32.7 24.5H22V19.5H37.8C37.9 20.3 38 21.1 38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C26.5 6 30.5 7.9 33.3 10.9L29.7 14.5C27.8 12.3 25.1 11 22 11Z" fill="#ffffff"/>
+            <!-- Editorial Crimson Accent Spark -->
+            <circle cx="29.5" cy="22" r="3.5" fill="#e63946"/>
+          </svg>
+          <div class="logo-text-wrap">
+            <span class="logo-title-main">General</span><span class="logo-title-sub">Pedia</span>
+          </div>
+        </a>
+        <span class="site-tagline">The Digital Knowledge Hub & Magazine</span>
+      </div>
+
+      <!-- Removed duplicate banner as requested to keep layout clean and unified -->
+    </div>
+  </header>
+
+  <!-- ==================== 3. STICKY NAV BAR ==================== -->
+  <nav class="main-nav-bar" aria-label="Primary Navigation">
+    <div class="container nav-bar-inner">
+      <ul class="nav-menu" id="primary-nav">
+        <li><button onclick="showHomeView()" class="nav-item-btn active" data-cat="all">Home</button></li>
+        <li><button onclick="filterCategory('how-to')" class="nav-item-btn" data-cat="how-to">How-To</button></li>
+        <li><button onclick="filterCategory('finance')" class="nav-item-btn" data-cat="finance">Finance</button></li>
+        <li><button onclick="filterCategory('health')" class="nav-item-btn" data-cat="health">Health</button></li>
+        <li><button onclick="filterCategory('tools')" class="nav-item-btn" data-cat="tools">Calculators</button></li>
+        <li><button onclick="filterCategory('automotive')" class="nav-item-btn" data-cat="automotive">Automotive</button></li>
+        <li><button onclick="filterCategory('lifestyle')" class="nav-item-btn" data-cat="lifestyle">Lifestyle</button></li>
+        <li><button onclick="filterCategory('culture')" class="nav-item-btn" data-cat="culture">Culture</button></li>
+      </ul>
+
+      <div class="nav-actions">
+        <!-- Direct embedded search bar (no popup prompt) -->
+        <form class="nav-search-form" onsubmit="event.preventDefault(); executeSearch(document.getElementById('nav-search-input').value);">
+          <input type="text" id="nav-search-input" class="nav-search-input" placeholder="Search guides..." autocomplete="off">
+          <button type="submit" class="nav-search-submit" aria-label="Submit search">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+        </form>
+        <button class="nav-guest-btn" onclick="showStaticPage('write-for-us')">
+          Write for Us
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main id="main-content" role="main" class="container">
+
+    <!-- ==================== HOME VIEW ==================== -->
+    <div id="home-view">
+
+      <!-- 4. MORENEWS MAGAZINE HERO GRID (1 BIG + 2 TILES) -->
+      <section class="magazine-hero-section" id="home-hero-section" aria-label="Top Featured Stories">
+        <div class="hero-grid" id="hero-grid-container">
+        </div>
+      </section>
+
+      <!-- 5. TRENDING / QUICK READ ROW -->
+      <section class="trending-banner-row" id="home-trending-section" aria-label="Trending Guides">
+        <div class="trending-mini-grid" id="trending-mini-container">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- Dedicated Category Archive Header Banner -->
+      <section id="category-header-banner" class="category-header-banner hidden" aria-label="Category Overview">
+        <div class="category-breadcrumbs">
+          <button onclick="showHomeView()">Home</button>
+          <span>/</span>
+          <span>Topics</span>
+          <span>/</span>
+          <span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">Calculators</span>
+        </div>
+        <div class="category-header-top">
+          <h1 class="category-header-title" id="category-banner-title">Category Title</h1>
+        </div>
+        <p class="category-header-desc" id="category-banner-desc">Curated editorial manuals, in-depth breakdowns, and interactive references.</p>
+        <div class="category-header-meta">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          <span id="category-banner-meta">Showing 0 verified guides</span>
+        </div>
+      </section>
+
+      <!-- 6. 2-COLUMN MAGAZINE CONTENT + SIDEBAR -->
+      <div class="magazine-layout">
+        
+        <!-- Left Main Column (~70%) -->
+        <div class="mag-main-col">
+          <div class="mag-section-bar">
+            <h2 class="mag-section-title" id="mag-feed-heading">Latest Published Reports</h2>
+            <span class="mag-section-extra" id="mag-feed-count">Showing verified guides</span>
+          </div>
+
+          <!-- 2-Column Article Card Feed -->
+          <div class="mag-feed-grid" id="articles-feed" role="feed">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Right Sidebar Column (~30%) -->
+        <aside class="mag-sidebar" role="complementary" aria-label="Magazine Sidebar">
+          
+          <!-- Widget: Top Popular Stories (Numbered 1-5) -->
+          <div class="sidebar-widget">
+            <h3 class="widget-title">
+              <span>Popular Guides</span>
+              <span style="font-size: 0.75rem; color: var(--secondary);">TOP 5</span>
+            </h3>
+            <div class="popular-list" id="popular-posts-list">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Widget: Categories Taxonomy -->
+          <div class="sidebar-widget">
+            <h3 class="widget-title">Categories</h3>
+            <ul class="cat-tax-list">
+              <li class="cat-tax-item" onclick="filterCategory('how-to')"><span>How-To &amp; Tutorials</span> <span class="cat-count">4</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('finance')"><span>Finance &amp; Tax</span> <span class="cat-count">3</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('health')"><span>Health &amp; Wellness</span> <span class="cat-count">3</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('tools')"><span>Calculators &amp; Tools</span> <span class="cat-count">3</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('automotive')"><span>Automotive</span> <span class="cat-count">2</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('lifestyle')"><span>Lifestyle &amp; Living</span> <span class="cat-count">3</span></li>
+              <li class="cat-tax-item" onclick="filterCategory('culture')"><span>Culture &amp; Tarot</span> <span class="cat-count">2</span></li>
+            </ul>
+          </div>
+
+          <!-- Widget: Guest Contributor CTA -->
+          <div class="guest-cta-widget">
+            <h4>Become a Contributor</h4>
+            <p>
+              We welcome guest writers, subject specialists, and industry analysts. Get your authoritative research published.
+            </p>
+            <button onclick="showStaticPage('write-for-us')" class="btn-widget-cta">
+              Write for GeneralPedia →
+            </button>
+          </div>
+
+        </aside>
+
+      </div>
+
+    </div>
+
+    <!-- ==================== ARTICLE VIEW ==================== -->
+    <div id="article-view" class="hidden">
+      <div class="article-view-layout">
+        
+        <!-- Main Article Reading Column -->
+        <article class="article-wrapper" aria-labelledby="art-title">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumbs">
+              <li><button onclick="showHomeView()">Home</button></li>
+              <li>/</li>
+              <li><button id="art-category-crumb" onclick="filterCategory(currentCategorySlug)">Category</button></li>
+              <li>/</li>
+              <li id="art-title-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Article</li>
+            </ol>
+          </nav>
+
+          <header class="art-header-block">
+            <span id="art-category-badge" class="category-badge">Category</span>
+            <h1 id="art-title" class="art-title-text">Article Title</h1>
+            <p id="art-meta" class="art-excerpt-lead">Article Excerpt</p>
+            
+            <div class="art-byline-bar">
+              <div class="art-author-info">
+                <div class="art-avatar-circle" id="art-avatar">G</div>
+                <div>
+                  <div style="font-weight: 700; color: var(--text-main);">GeneralPedia Editorial Board</div>
+                  <div id="art-date">September 13, 2026</div>
+                </div>
+              </div>
+              <div style="font-weight: 600;" id="art-read-time">5 min read</div>
+            </div>
+          </header>
+
+          <div id="art-content" class="article-body">
+            <!-- Article HTML inserted here -->
+          </div>
+
+          <!-- Back button -->
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+            <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
+            <button onclick="showStaticPage('write-for-us')" class="btn-secondary">Submit a Story</button>
+          </div>
+        </article>
+
+        <!-- Article Sidebar -->
+        <aside class="mag-sidebar">
+          <div class="sidebar-widget">
+            <h3 class="widget-title">Fact-Check Notice</h3>
+            <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
+              This publication undergoes multi-stage editorial verification to adhere to accuracy, Google helpful content guidelines, and standard safety policies.
+            </p>
+            <button onclick="showStaticPage('editorial-guidelines')" class="nav-guest-btn" style="width: 100%; text-align: center; margin-top: 12px; background: var(--secondary);">
+              Read Editorial Policy
+            </button>
+          </div>
+
+          <div class="sidebar-widget">
+            <h3 class="widget-title">Trending in Category</h3>
+            <div class="popular-list" id="art-sidebar-trending">
+              <!-- JS -->
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- ==================== STATIC PAGES VIEW ==================== -->
+    <div id="static-view" class="hidden">
+      <div class="article-view-layout">
+        <article class="article-wrapper">
+          <nav aria-label="Breadcrumb">
+            <ol class="breadcrumbs">
+              <li><button onclick="showHomeView()">Home</button></li>
+              <li>/</li>
+              <li id="static-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Information Page</li>
+            </ol>
+          </nav>
+          
+          <div id="static-content" class="article-body">
+            <!-- Static page HTML populated here -->
+          </div>
+          
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+            <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
+          </div>
+        </article>
+
+        <aside class="mag-sidebar">
+          <div class="sidebar-widget">
+            <h3 class="widget-title">Policy &amp; Legal</h3>
+            <ul class="footer-links">
+              <li><button onclick="showStaticPage('about')">About Us</button></li>
+              <li><button onclick="showStaticPage('write-for-us')">Write For Us</button></li>
+              <li><button onclick="showStaticPage('editorial-guidelines')">Editorial Guidelines</button></li>
+              <li><button onclick="showStaticPage('privacy-policy')">Privacy Policy</button></li>
+              <li><button onclick="showStaticPage('terms')">Terms of Service</button></li>
+              <li><button onclick="showStaticPage('contact')">Contact Desk</button></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ==================== SEARCH VIEW ==================== -->
+    <div id="search-view" class="hidden" style="padding: 24px 0 60px;">
+      <div class="mag-section-bar">
+        <h2 class="mag-section-title" id="search-query-title">Search Results</h2>
+        <span class="mag-section-extra" id="search-count-meta">0 results identified</span>
+      </div>
+
+      <div class="mag-feed-grid" id="search-results-grid" style="margin-top: 24px;">
+        <!-- Injected via JS -->
+      </div>
+      
+      <div style="margin-top: 40px; text-align: center;">
+        <button onclick="showHomeView()" class="btn-primary">← Back to Frontpage</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== 9. 4-COLUMN MAGAZINE FOOTER ==================== -->
+  <footer class="magazine-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        
+        <!-- Col 1: About GeneralPedia -->
+        <div class="footer-col">
+          <div class="site-logo" style="color: #ffffff; margin-bottom: 14px; font-size: 1.75rem;">
+            <svg class="brand-symbol" style="width: 34px; height: 34px;" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="42" height="42" rx="9" fill="#1e293b"/>
+              <path d="M22 11C15.9249 11 11 15.9249 11 22C11 28.0751 15.9249 33 22 33C27.2 33 31.5 29.4 32.7 24.5H22V19.5H37.8C37.9 20.3 38 21.1 38 22C38 30.8366 30.8366 38 22 38C13.1634 38 6 30.8366 6 22C6 13.1634 13.1634 6 22 6C26.5 6 30.5 7.9 33.3 10.9L29.7 14.5C27.8 12.3 25.1 11 22 11Z" fill="#ffffff"/>
+              <circle cx="29.5" cy="22" r="3.5" fill="#e63946"/>
+            </svg>
+            <div class="logo-text-wrap">
+              <span style="color: #ffffff;">General</span><span style="color: #38bdf8;">Pedia</span>
+            </div>
+          </div>
+          <p>
+            GeneralPedia is an independent digital knowledge magazine and open reference hub delivering fact-checked how-to guides, automotive specs, wellness breakthroughs, and comprehensive guest analysis.
+          </p>
+        </div>
+
+        <!-- Col 2: Publication Sections -->
+        <div class="footer-col">
+          <h4>Magazine Sections</h4>
+          <ul class="footer-links">
+            <li><button onclick="filterCategory('how-to')">How-To &amp; Tutorials</button></li>
+            <li><button onclick="filterCategory('finance')">Finance &amp; Tax</button></li>
+            <li><button onclick="filterCategory('health')">Health &amp; Medicine</button></li>
+            <li><button onclick="filterCategory('tools')">Calculators &amp; Reference</button></li>
+            <li><button onclick="filterCategory('automotive')">Automotive Reviews</button></li>
+            <li><button onclick="filterCategory('lifestyle')">Lifestyle &amp; Living</button></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Editorial & Submissions -->
+        <div class="footer-col">
+          <h4>Editorial Desk</h4>
+          <ul class="footer-links">
+            <li><button onclick="showStaticPage('write-for-us')">Write for Us (Guest Post)</button></li>
+            <li><button onclick="showStaticPage('editorial-guidelines')">Editorial Guidelines</button></li>
+            <li><button onclick="showStaticPage('about')">About Our Team</button></li>
+            <li><button onclick="showStaticPage('contact')">Contact &amp; Press</button></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Trust & Compliance -->
+        <div class="footer-col">
+          <h4>Policy &amp; Trust</h4>
+          <ul class="footer-links">
+            <li><button onclick="showStaticPage('privacy-policy')">Privacy Policy</button></li>
+            <li><button onclick="showStaticPage('terms')">Terms of Service</button></li>
+            <li><button onclick="showStaticPage('editorial-guidelines')">Fact-Checking Policy</button></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 GeneralPedia. All rights reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== CLIENT SCRIPTS ==================== -->

@@ -3,140 +3,34 @@
   <!-- Homepage -->
   <url>
     <loc>https://general-pedia.vercel.app/</loc>
-    <lastmod>2026-09-13</lastmod>
+    <lastmod>2026-09-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-
-  <!-- Category Silos -->
-  <url>
-    <loc>https://general-pedia.vercel.app/category/how-to</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/category/finance</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/category/health</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/category/tools</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/category/automotive</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/category/lifestyle</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/category/culture</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Informational / Static Trust Pages -->
-  <url>
-    <loc>https://general-pedia.vercel.app/about</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/write-for-us</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/contact</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/privacy-policy</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/terms</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/editorial-guidelines</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <!-- Published Articles -->
-  <url>
-    <loc>https://general-pedia.vercel.app/queen-of-wands</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/january-2026-calendar</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/atlanta-hawks-vs-knicks-match-player-stats</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/2025-toyota-camry</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/can-dogs-eat-bananas</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/sinus-infection-symptoms</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/the-wizard-of-oz</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://general-pedia.vercel.app/2026-winter-olympics</loc>
-    <lastmod>2026-09-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
+  <!-- Categories -->
+  <url><loc>https://general-pedia.vercel.app/category/how-to</loc><lastmod>2026-09-14</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://general-pedia.vercel.app/category/finance</loc><lastmod>2026-09-14</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://general-pedia.vercel.app/category/health</loc><lastmod>2026-09-14</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://general-pedia.vercel.app/category/tools</loc><lastmod>2026-09-14</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://general-pedia.vercel.app/category/automotive</loc><lastmod>2026-09-14</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://general-pedia.vercel.app/category/tech</loc><lastmod>2026-09-14</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://general-pedia.vercel.app/category/lifestyle</loc><lastmod>2026-09-14</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://general-pedia.vercel.app/category/culture</loc><lastmod>2026-09-14</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <!-- Articles -->
+  <url><loc>https://general-pedia.vercel.app/yellowjackets-season-4-story-cast-legacy-historical</loc><lastmod>2026-09-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/loan-payoff-calculator-free-online-tool-formula</loc><lastmod>2026-09-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/loan-payoff-calculator</loc><lastmod>2026-09-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/honda-crv-2026-price-specs-features-trim</loc><lastmod>2026-09-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/323-area-code-location-cities-served-lookup</loc><lastmod>2026-09-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/where-is-cape-verde-geography-country-map</loc><lastmod>2026-09-14</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/memorial-day-2026-dates-meaning-history-traditions</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/used-cars-for-sale-real-specs-performance</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/queen-of-wands-card-meaning-symbolism-full</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/january-2026-calendar-dates-meaning-history-traditions</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/atlanta-hawks-vs-knicks-match-player-stats</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/2025-toyota-camry-features-fuel-economy-trim</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/can-dogs-eat-bananas-safety-benefits-serving</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/sinus-infection-symptoms-main-causes-diagnosis-recovery</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/the-wizard-of-oz-classic-movie-facts</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://general-pedia.vercel.app/2026-winter-olympics-location-schedule-sports-updates</loc><lastmod>2026-09-13</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
 </urlset>

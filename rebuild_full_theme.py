@@ -1,7 +1,7 @@
 import os
 import json
 
-SCRATCH_DIR = r"C:\Users\Admin\.gemini\antigravity\scratch\generalpedia"
+SCRATCH_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(SCRATCH_DIR, "data", "posts_database.json")
 
 def rebuild_site():
@@ -63,8 +63,12 @@ def rebuild_site():
   </script>
 """
 
-    with open(r"C:\Users\Admin\.gemini\antigravity\brain\d1a13a74-d277-49d6-ac40-02b2abedbf3c\scratch\extracted_html_body.html", "r", encoding="utf-8") as f:
-        body_part = f.read()
+    body_template_path = os.path.join(SCRATCH_DIR, "template_body.html")
+    if os.path.exists(body_template_path):
+        with open(body_template_path, "r", encoding="utf-8") as f:
+            body_part = f.read()
+    else:
+        body_part = "<body><div id='app'></div>"
 
     old_hero_markup = """        <div class="hero-grid">
           <!-- Main Hero Story -->
@@ -145,11 +149,49 @@ def rebuild_site():
     with open(index_file, "w", encoding="utf-8") as f:
         f.write(full_html)
 
-    os.makedirs(os.path.join(SCRATCH_DIR, "site"), exist_ok=True)
-    with open(site_index_file, "w", encoding="utf-8") as f:
-        f.write(full_html)
+    # Update sitemap.xml
+    try:
+        today_str = datetime.now().strftime("%Y-%m-%d")
+    except Exception:
+        from datetime import datetime
+        today_str = datetime.now().strftime("%Y-%m-%d")
 
-    print(f"Successfully rebuilt index.html with {len(posts_data)} posts.")
+    sitemap_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        '  <!-- Homepage -->',
+        '  <url>',
+        '    <loc>https://general-pedia.vercel.app/</loc>',
+        f'    <lastmod>{today_str}</lastmod>',
+        '    <changefreq>daily</changefreq>',
+        '    <priority>1.0</priority>',
+        '  </url>',
+        '  <!-- Categories -->',
+        '  <url><loc>https://general-pedia.vercel.app/category/how-to</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://general-pedia.vercel.app/category/finance</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://general-pedia.vercel.app/category/health</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://general-pedia.vercel.app/category/tools</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://general-pedia.vercel.app/category/automotive</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://general-pedia.vercel.app/category/tech</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://general-pedia.vercel.app/category/lifestyle</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://general-pedia.vercel.app/category/culture</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <!-- Articles -->'
+    ]
+
+    for p in posts_data:
+        p_slug = p.get('slug') or p.get('id')
+        p_date = (p.get('published_at') or today_str)[:10]
+        if p_slug:
+            sitemap_lines.append(f'  <url><loc>https://general-pedia.vercel.app/{p_slug}</loc><lastmod>{p_date}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>')
+
+    sitemap_lines.append('</urlset>\n')
+    sitemap_content = '\n'.join(sitemap_lines)
+
+    sitemap_path = os.path.join(SCRATCH_DIR, "sitemap.xml")
+    with open(sitemap_path, "w", encoding="utf-8") as f:
+        f.write(sitemap_content)
+
+    print(f"Successfully rebuilt index.html and sitemap.xml with {len(posts_data)} posts.")
 
 if __name__ == "__main__":
     rebuild_site()

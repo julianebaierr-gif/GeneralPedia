@@ -4,7 +4,7 @@ SITE_NAME = "GeneralPedia"
 DOMAIN = "https://generalpedia.com"
 TAGLINE = "The Complete Encyclopedia & Everyday Knowledge Hub"
 
-BASE_DIR = r"C:\Users\Admin\.gemini\antigravity\scratch\generalpedia"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 POSTS_DIR = os.path.join(BASE_DIR, "posts")
 DATA_DIR = os.path.join(BASE_DIR, "data")
 SITE_DIR = os.path.join(BASE_DIR, "site")

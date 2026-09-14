@@ -47,14 +47,16 @@ def publish_next_post():
     """
     df = fetch_online_keywords_dataframe()
     posts = get_posts_database()
-    existing_ids = {p.get('id') for p in posts}
+    existing_ids = {str(p.get('id', '')).strip().lower() for p in posts}
+    existing_slugs = {str(p.get('slug', '')).strip().lower() for p in posts}
+    existing_kws = {str(p.get('primary_keyword', '')).strip().lower() for p in posts}
     
     selected_row = None
     for idx, row in df.iterrows():
         primary_kw = str(row['Primary_Focus_Keyword']).strip()
         from article_generator import slugify
-        slug = slugify(primary_kw)
-        if slug not in existing_ids:
+        slug = slugify(primary_kw).lower()
+        if slug not in existing_ids and slug not in existing_slugs and primary_kw.lower() not in existing_kws:
             selected_row = row
             break
             

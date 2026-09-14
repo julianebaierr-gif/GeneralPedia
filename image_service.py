@@ -5,7 +5,8 @@ import urllib.parse
 from env_loader import get_secret
 
 UNSPLASH_ACCESS_KEY = get_secret("UNSPLASH_ACCESS_KEY")
-USED_IMAGES_FILE = r"C:\Users\Admin\.gemini\antigravity\scratch\generalpedia\data\used_images.json"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+USED_IMAGES_FILE = os.path.join(BASE_DIR, "data", "used_images.json")
 
 def get_used_images():
     if os.path.exists(USED_IMAGES_FILE):
