@@ -1064,6 +1064,68 @@
       color: var(--text-muted);
     }
 
+    /* ==================== AUTHOR PROFILE PAGE ==================== */
+    .author-profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 36px 40px;
+      box-shadow: var(--shadow-sm);
+    }
+    .author-profile-header {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .author-profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      flex-shrink: 0;
+    }
+    .author-profile-name {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+    .author-profile-role {
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--primary);
+      letter-spacing: 0.03em;
+      margin-bottom: 10px;
+    }
+    .author-profile-bio {
+      font-size: 0.9375rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 560px;
+    }
+    .art-author-link {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .art-author-link:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      .author-profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+      .author-profile-bio {
+        max-width: 100%;
+      }
+    }
+
     /* ==================== 9. 4-COLUMN MAGAZINE FOOTER ==================== */
     .magazine-footer {
       background: #0b1120;

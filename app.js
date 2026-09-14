@@ -25,7 +25,7 @@
             <span class="category-badge">${escapeHtml(p1.category_name || 'Featured')}</span>
             <h2 class="hero-main-title">${escapeHtml(p1.title)}</h2>
             <div class="hero-meta">
-              <span>By ${escapeHtml(p1.author_name || 'Editorial Staff')}</span><span>•</span>
+              <span>By <a href="/author/${(p1.author_name||'').toLowerCase().replace(/\s+/g,'-')}" class="art-author-link" onclick="event.preventDefault();event.stopPropagation();showAuthorProfile('${p1.category_slug||''}')">${escapeHtml(p1.author_name || 'Editorial Staff')}</a></span><span>•</span>
               <span>${p1.display_date || 'Recent'}</span><span>•</span>
               <span>${p1.read_time || '6 min read'}</span>
             </div>
@@ -58,6 +58,7 @@
     const articlesFeed = document.getElementById('articles-feed');
     const trendingMiniContainer = document.getElementById('trending-mini-container');
     const popularPostsList = document.getElementById('popular-posts-list');
+    const authorView = document.getElementById('author-view');
 
     const homeHeroSection = document.getElementById('home-hero-section');
     const homeTrendingSection = document.getElementById('home-trending-section');
@@ -69,6 +70,7 @@
       articleView.classList.add('hidden');
       staticView.classList.add('hidden');
       searchView.classList.add('hidden');
+      if (authorView) authorView.classList.add('hidden');
     }
 
     function updateSeoMetadata(title, description, path) {
@@ -331,11 +333,17 @@
       document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
       // Set author info
       const authorNameEl = document.getElementById('art-author-name');
-      if (authorNameEl) authorNameEl.innerText = post.author_name || 'Editorial Staff';
+      const authorSlug = getAuthorSlug(post.author_name);
+      const authorCatSlug = post.category_slug || '';
+      if (authorNameEl) {
+        authorNameEl.innerHTML = `<a href="/author/${authorSlug}" class="art-author-link" onclick="event.preventDefault(); showAuthorProfile('${authorCatSlug}')">${escapeHtml(post.author_name || 'Editorial Staff')}</a>`;
+      }
       const avatarImg = document.getElementById('art-avatar-img');
       if (avatarImg && post.author_avatar) {
         avatarImg.src = post.author_avatar;
         avatarImg.alt = post.author_name || 'Author';
+        avatarImg.style.cursor = 'pointer';
+        avatarImg.onclick = function(e) { e.preventDefault(); showAuthorProfile(authorCatSlug); };
       }
       const contentEl = document.getElementById('art-content');
       contentEl.innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
@@ -497,6 +505,66 @@
         .replace(/'/g, '&#039;');
     }
 
+    // Author data for profile pages
+    const AUTHORS_DATA = {
+      'how-to': { name: 'Marcus Reid', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80', bio: 'Senior technical writer specializing in step-by-step troubleshooting guides and practical DIY solutions.', category: 'How-To & Guides' },
+      'finance': { name: 'Sarah Mitchell', avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&h=120&q=80', bio: 'Certified financial analyst covering tax strategy, retirement planning, and personal budgeting insights.', category: 'Finance & Money' },
+      'health': { name: 'Elena Torres', avatar: 'https://images.unsplash.com/photo-1594824476967-48c8b964ac31?auto=format&fit=crop&w=120&h=120&q=80', bio: 'Health science researcher and medical journalist writing evidence-based wellness and symptom guides.', category: 'Health & Wellness' },
+      'tools': { name: 'James Carter', avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=120&h=120&q=80', bio: 'Data engineer and calculator developer building interactive financial and measurement reference tools.', category: 'Calculators & Tools' },
+      'automotive': { name: 'David Chen', avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=120&h=120&q=80', bio: 'Automotive journalist with ten years of experience in vehicle diagnostics, specs, and market reviews.', category: 'Automotive' },
+      'tech': { name: 'Ryan Kowalski', avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=120&h=120&q=80', bio: 'Software engineer and cybersecurity specialist explaining digital tools and emerging tech trends.', category: 'Tech & Digital' },
+      'lifestyle': { name: 'Nora Jacobs', avatar: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&h=120&q=80', bio: 'Home living editor covering pet nutrition, cleaning hacks, recipes, and everyday household advice.', category: 'Home & Lifestyle' },
+      'culture': { name: 'Amir Hassan', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&h=120&q=80', bio: 'Culture and entertainment critic reviewing global events, sports milestones, and film analysis.', category: 'Entertainment & Culture' }
+    };
+
+    function getAuthorSlug(authorName) {
+      return (authorName || '').toLowerCase().replace(/\s+/g, '-');
+    }
+
+    function findAuthorBySlug(slug) {
+      for (const cat in AUTHORS_DATA) {
+        if (getAuthorSlug(AUTHORS_DATA[cat].name) === slug) return { ...AUTHORS_DATA[cat], catSlug: cat };
+      }
+      return null;
+    }
+
+    function showAuthorProfile(catSlug, push) {
+      const author = AUTHORS_DATA[catSlug];
+      if (!author) { showHomeView(); return; }
+      hideAllViews();
+      if (authorView) authorView.classList.remove('hidden');
+
+      document.getElementById('author-profile-avatar').src = author.avatar;
+      document.getElementById('author-profile-avatar').alt = author.name;
+      document.getElementById('author-profile-name').innerText = author.name;
+      document.getElementById('author-profile-role').innerText = author.category + ' Writer';
+      document.getElementById('author-profile-bio').innerText = author.bio;
+
+      const authorArticles = ARTICLES_DATA.filter(a => a.category_slug === catSlug);
+      document.getElementById('author-articles-heading').innerText = 'Articles by ' + author.name;
+      document.getElementById('author-articles-count').innerText = authorArticles.length + ' article' + (authorArticles.length !== 1 ? 's' : '');
+
+      const grid = document.getElementById('author-articles-grid');
+      if (authorArticles.length === 0) {
+        grid.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:40px 0;">No published articles yet.</p>';
+      } else {
+        grid.innerHTML = authorArticles.map(art => `
+          <a href="/${art.id}" class="feed-card" onclick="handleCardClick(event, '${art.id}')">
+            ${art.featured_image ? `<img class="feed-card-img" src="${art.featured_image}" alt="${escapeHtml(art.title)}" loading="lazy" />` : ''}
+            <div class="feed-card-body">
+              <span class="category-badge small">${escapeHtml(art.category_name || '')}</span>
+              <h3 class="feed-card-title">${escapeHtml(art.title)}</h3>
+              <div class="feed-card-meta"><span>${art.display_date || 'Recent'}</span><span>•</span><span>${art.read_time || '5 min read'}</span></div>
+            </div>
+          </a>`).join('');
+      }
+
+      const slug = getAuthorSlug(author.name);
+      updateSeoMetadata(author.name + ' | GeneralPedia Author', author.bio, 'author/' + slug);
+      if (push !== false) history.pushState({}, '', '/author/' + slug);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     // Handle URL routing on load and history navigation
     function handleRoute() {
       const path = window.location.pathname.replace(/^\/+|\/+$/g, '');
@@ -511,6 +579,12 @@
       if (!path) {
         showHomeView(false);
         return;
+      }
+
+      if (path.startsWith('author/')) {
+        const authorSlug = path.replace('author/', '');
+        const authorMatch = findAuthorBySlug(authorSlug);
+        if (authorMatch) { showAuthorProfile(authorMatch.catSlug, false); return; }
       }
 
       if (path.startsWith('category/')) {
