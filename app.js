@@ -271,15 +271,45 @@
       }
     }
 
+    function findArticle(idOrSlug) {
+      if (!idOrSlug || typeof ARTICLES_DATA === 'undefined') return null;
+      const clean = String(idOrSlug).toLowerCase().trim().replace(/^\/+|\/+$/g, '');
+      
+      // 1. Direct match on id or slug
+      let match = ARTICLES_DATA.find(a => (a.id && a.id.toLowerCase() === clean) || (a.slug && a.slug.toLowerCase() === clean));
+      if (match) return match;
+
+      // 2. Prefix match (e.g. honda-crv-2026 matches honda-crv-2026-price-specs-features-trim)
+      match = ARTICLES_DATA.find(a => a.id && a.id.toLowerCase().startsWith(clean + '-'));
+      if (match) return match;
+
+      // 3. Match against primary keyword slugified
+      match = ARTICLES_DATA.find(a => {
+        if (!a.primary_keyword) return false;
+        const kwSlug = a.primary_keyword.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        return kwSlug === clean || clean.startsWith(kwSlug) || kwSlug.startsWith(clean);
+      });
+      if (match) return match;
+
+      // 4. Substring containment match
+      match = ARTICLES_DATA.find(a => a.id && (a.id.toLowerCase().includes(clean) || clean.includes(a.id.toLowerCase())));
+      return match || null;
+    }
+
     async function openArticle(id, push = true) {
-      let post = ARTICLES_DATA.find(a => a.id === id);
+      let post = findArticle(id);
       if (!post || !post.content_html) {
         try {
           const res = await fetch(`/api/post/${id}`);
-          if (res.ok) post = await res.json();
+          if (res.ok) {
+            post = await res.json();
+          }
         } catch(e) {}
       }
-      if (!post) return;
+      if (!post) {
+        console.warn('Post not found for id/slug:', id);
+        return;
+      }
 
       document.getElementById('art-title').innerText = post.title;
       document.getElementById('art-meta').innerText = post.meta_description || '';
@@ -468,14 +498,14 @@
         return;
       }
 
-      if (STATIC_PAGES[path]) {
+      if (typeof STATIC_PAGES !== 'undefined' && STATIC_PAGES[path]) {
         showStaticPage(path, false);
         return;
       }
 
-      const foundArticle = ARTICLES_DATA.find(a => a.id === path);
+      const foundArticle = findArticle(path);
       if (foundArticle) {
-        openArticle(path, false);
+        openArticle(foundArticle.id, false);
         return;
       }
 

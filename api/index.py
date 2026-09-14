@@ -23,7 +23,7 @@ def get_posts():
     return []
 
 def get_post(slug):
-    slug_clean = re.sub(r'[^a-zA-Z0-9-]', '', slug)
+    slug_clean = re.sub(r'[^a-zA-Z0-9-]', '', slug).lower()
     post_path = os.path.join(POSTS_DIR, f"{slug_clean}.json")
     if os.path.exists(post_path):
         try:
@@ -31,6 +31,21 @@ def get_post(slug):
                 return json.load(f)
         except Exception:
             pass
+
+    # Check database for exact or alias match
+    posts = get_posts()
+    for p in posts:
+        pid = (p.get('id') or '').lower()
+        pslug = (p.get('slug') or '').lower()
+        if pid == slug_clean or pslug == slug_clean or pid.startswith(slug_clean + '-'):
+            full_path = os.path.join(POSTS_DIR, f"{pid}.json")
+            if os.path.exists(full_path):
+                try:
+                    with open(full_path, 'r', encoding='utf-8') as f:
+                        return json.load(f)
+                except Exception:
+                    pass
+            return p
     return None
 
 class handler(BaseHTTPRequestHandler):

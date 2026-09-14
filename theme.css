@@ -444,6 +444,7 @@
       inset: 0;
       background: linear-gradient(180deg, rgba(15,23,42,0.1) 0%, rgba(15,23,42,0.92) 80%, rgba(15,23,42,0.98) 100%);
       transition: background 0.2s;
+      pointer-events: none;
     }
     .hero-main-card:hover::before {
       background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(15,23,42,0.95) 75%, #0f172a 100%);
@@ -467,6 +468,7 @@
       inset: 0;
       background: linear-gradient(180deg, rgba(30,41,59,0.2) 0%, rgba(15,23,42,0.94) 85%);
       transition: background 0.2s;
+      pointer-events: none;
     }
     .hero-sub-card:hover::before {
       background: linear-gradient(180deg, rgba(30,41,59,0.3) 0%, rgba(15,23,42,0.98) 80%);

@@ -117,11 +117,10 @@ def rebuild_site():
     with open(os.path.join(SCRATCH_DIR, "app.js"), "r", encoding="utf-8") as f:
         app_js = f.read()
 
-    import sys
-    sys.path.append(r"C:\Users\Admin\.gemini\antigravity\brain\d1a13a74-d277-49d6-ac40-02b2abedbf3c\scratch")
     try:
-        from update_static_pages import STATIC_PAGES
-    except Exception:
+        from static_pages_data import STATIC_PAGES
+    except Exception as e:
+        print(f"Error loading static pages: {e}")
         STATIC_PAGES = {}
     static_json = json.dumps(STATIC_PAGES, ensure_ascii=False)
 
