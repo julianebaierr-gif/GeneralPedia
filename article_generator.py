@@ -738,10 +738,10 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     if img_info:
         image_id = img_info["id"]
         featured_img_url = img_info["url"]
+        alt_text = f"{capital_kw} - {img_info['alt'] or 'Editorial Reference'}"
         img_html = f"""
         <figure style="margin: 24px 0;">
-            <img src="{img_info['url']}" alt="{img_info['alt']}" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px;" />
-            <figcaption style="font-size: 0.825rem; color: #64748b; margin-top: 8px;">Photo via Unsplash ({img_info['credit']})</figcaption>
+            <img src="{img_info['url']}" alt="{alt_text}" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
         </figure>
         """
         body_content = img_html + body_content
@@ -758,10 +758,10 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
 
     mid_img_info = fetch_unique_unsplash_image(query=mid_queries, fallback_terms=[primary_kw, cat_info["name"]])
     if mid_img_info:
+        mid_alt = f"{capital_kw} - {mid_img_info['alt'] or 'In-Depth Overview'}"
         mid_html = f"""
         <figure class="mid-article-figure" style="margin: 36px 0;">
-            <img src="{mid_img_info['url']}" alt="{mid_img_info['alt']}" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 10px;" />
-            <figcaption style="font-size: 0.825rem; color: #64748b; margin-top: 8px; font-style: italic;">Photo: {mid_img_info['alt']} (via Unsplash / {mid_img_info['credit']})</figcaption>
+            <img src="{mid_img_info['url']}" alt="{mid_alt}" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
         </figure>
         """
         # Place mid-content: before 3rd h2 or 2nd h2 or halfway through paragraphs

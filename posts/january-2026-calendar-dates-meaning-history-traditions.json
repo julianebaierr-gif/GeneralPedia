@@ -50,6 +50,6 @@
   "difficulty": 4,
   "cpc": 0.04,
   "featured_image": "https://images.unsplash.com/photo-1758844899074-f4278e31455c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8amFudWFyeSUyMDIwMjZ8ZW58MHwwfHx8MTc4OTMxNzU5NHww&ixlib=rb-4.1.0&q=80&w=1080",
-  "content_html": "\n            <figure style=\"margin: 24px 0;\">\n                <img src=\"https://images.unsplash.com/photo-1758844899074-f4278e31455c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8amFudWFyeSUyMDIwMjZ8ZW58MHwwfHx8MTc4OTMxNzU5NHww&ixlib=rb-4.1.0&q=80&w=1080\" alt=\"3D rendering of the year 2026\" style=\"width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px;\" />\n                <figcaption style=\"font-size: 0.825rem; color: #64748b; margin-top: 8px;\">Photo via Unsplash (BoliviaInteligente)</figcaption>\n            </figure>\n            ",
+  "content_html": "\n            <figure style=\"margin: 28px 0;\">\n    <img src=\"https://images.unsplash.com/photo-1758844899074-f4278e31455c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8amFudWFyeSUyMDIwMjZ8ZW58MHwwfHx8MTc4OTMxNzU5NHww&ixlib=rb-4.1.0&q=80&w=1080\" alt=\"january 2026 calendar Guide & Analysis\" loading=\"lazy\" style=\"width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;\" />\n</figure>\n            ",
   "image_id": "1758844899074-f4278e31455c"
 }

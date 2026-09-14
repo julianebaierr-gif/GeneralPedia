@@ -64,6 +64,6 @@
   "difficulty": 0,
   "cpc": 0.8,
   "featured_image": "https://images.unsplash.com/photo-1669109777226-73e0ce597658?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8MjAyNSUyMHRveW90YXxlbnwwfDB8fHwxNzg5MzE3NTk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
-  "content_html": "\n            <figure style=\"margin: 24px 0;\">\n                <img src=\"https://images.unsplash.com/photo-1669109777226-73e0ce597658?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8MjAyNSUyMHRveW90YXxlbnwwfDB8fHwxNzg5MzE3NTk2fDA&ixlib=rb-4.1.0&q=80&w=1080\" alt=\"a logo on a car\" style=\"width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px;\" />\n                <figcaption style=\"font-size: 0.825rem; color: #64748b; margin-top: 8px;\">Photo via Unsplash (HY ART)</figcaption>\n            </figure>\n            ",
+  "content_html": "\n            <figure style=\"margin: 28px 0;\">\n    <img src=\"https://images.unsplash.com/photo-1669109777226-73e0ce597658?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8MjAyNSUyMHRveW90YXxlbnwwfDB8fHwxNzg5MzE3NTk2fDA&ixlib=rb-4.1.0&q=80&w=1080\" alt=\"2025 toyota camry Guide & Analysis\" loading=\"lazy\" style=\"width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;\" />\n</figure>\n            ",
   "image_id": "1669109777226-73e0ce597658"
 }
