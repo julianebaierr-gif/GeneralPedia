@@ -184,44 +184,132 @@ Return strictly a JSON object with no markdown code fences:
 
     return combined_semantics, visual_queries
 
+AI_REPLACEMENTS = {
+    # Direct robotic markers
+    r'\bcomprehensive\b': 'complete',
+    r'\bComprehensive\b': 'Complete',
+    r'\bkey insights\b': 'main takeaways',
+    r'\bKey Insights\b': 'Main Takeaways',
+    r'\bKey insights\b': 'Main Takeaways',
+    r'\bin-depth\b': 'detailed',
+    r'\bIn-depth\b': 'Detailed',
+    r'\bIn-Depth\b': 'Detailed',
+    r'\bdelve\b': 'look',
+    r'\bDelve\b': 'Look',
+    r'\bdelving\b': 'looking',
+    r'\bDelving\b': 'Looking',
+    r'\btapestry\b': 'mix',
+    r'\bTapestry\b': 'Mix',
+    r'\btestament\b': 'proof',
+    r'\bTestament\b': 'Proof',
+    r'\bmoreover\b': 'also',
+    r'\bMoreover\b': 'Also',
+    r'\bfurthermore\b': 'also',
+    r'\bFurthermore\b': 'Also',
+    r'\bin conclusion\b': 'to sum up',
+    r'\bIn conclusion\b': 'To sum up',
+    r'\bIn Conclusion\b': 'To sum up',
+    r'\bvital role\b': 'major part',
+    r'\bVital role\b': 'Major part',
+    r'\bnavigating\b': 'handling',
+    r'\bNavigating\b': 'Handling',
+    r'\bembark\b': 'start',
+    r'\bEmbark\b': 'Start',
+    r'\bfoster\b': 'support',
+    r'\bFoster\b': 'Support',
+    r'\brealm\b': 'area',
+    r'\bRealm\b': 'Area',
+    r'\bbeacon\b': 'example',
+    r'\bBeacon\b': 'Example',
+    r'\bit is important to remember\b': 'keep in mind',
+    r'\bIt is important to remember\b': 'Keep in mind',
+    r'\bit is crucial to\b': 'make sure to',
+    r'\bIt is crucial to\b': 'Make sure to',
+    r'\bcrucial\b': 'important',
+    r'\bCrucial\b': 'Important',
+}
+
+def sanitize_ai_words(text):
+    """
+    Strips robotic AI clichés, filler phrases, and dead giveaways,
+    replacing them with natural, human, conversational equivalents.
+    """
+    if not text:
+        return ""
+    result = text
+    for pattern, replacement in AI_REPLACEMENTS.items():
+        result = re.sub(pattern, replacement, result)
+    # Ensure zero em-dashes
+    result = result.replace('—', ', ').replace('–', '-')
+    return result
+
 def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
     """
     Generates rich, 800-1200 word authoritative SEO article content dynamically via Gemini API.
     Enforces:
     - Google Helpful Content, Spam & Anti-De-Ranking Policies (human-first, high E-E-A-T)
+    - 100% human editorial tone: BANS ALL AI CLICHES (Comprehensive, Key Insights, in-depth, delve, etc.)
     - Featured snippet target (40-55 words)
     - 5 to 8 concise, punchy FAQ questions with direct answers
     - 100% complete generation
     - Fallback cascade through all Gemini versions
     """
-    prompt = f"""You are a master editorial researcher, investigative writer, and top-tier SEO copywriter for GeneralPedia.
-Write a COMPLETE, comprehensive, highly authoritative informational reference guide for a global audience on:
+    prompt = f"""You are a seasoned human investigative journalist, senior editor, and subject-matter specialist writing for GeneralPedia.
+Write an authentic, direct, highly informative reference guide for real everyday readers on:
 Primary Focus Keyword: "{primary_kw}"
 Related Semantic / LSI Keywords: {', '.join(semantic_kws[:12]) if semantic_kws else 'None'}
 Category Desk: {category_name}
 
-STRICT EDITORIAL, E-E-A-T & ANTI-DE-RANKING POLICIES:
-1. Google Helpful Content & Anti-De-Ranking Quality Guidelines:
-   - Deliver rich, primary-source quality insights, actionable context, real-world examples, and fact-based depth.
-   - ZERO fluff, filler, or robotic throat-clearing. NEVER use cliches like "in conclusion", "tapestry", "delve", "furthermore", "it is important to remember", or "in today's fast-paced world".
-   - Maintain a neutral, professional journalistic tone that immediately demonstrates Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T).
-2. Organic Semantic Integration:
+CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
+1. ABSOLUTE BAN ON AI BUZZWORDS & CLICHES:
+   - NEVER use the following words or phrases anywhere in your headings or text:
+     * "comprehensive"
+     * "key insights"
+     * "in-depth"
+     * "delve" or "delving"
+     * "tapestry"
+     * "testament"
+     * "moreover"
+     * "furthermore"
+     * "in conclusion"
+     * "navigating" or "navigate the landscape"
+     * "vital role"
+     * "crucial"
+     * "beacon"
+     * "foster"
+     * "realm"
+     * "embark"
+     * "it is important to remember / note"
+     * "in today's fast-paced world / digital era"
+   - Write like an experienced human reporter: plain spoken, grounded, fact-packed, clear, and engaging.
+
+2. Google Helpful Content & Anti-De-Ranking Quality Guidelines:
+   - Deliver rich, primary-source quality explanations, real numbers, verified context, practical steps, and direct comparisons.
+   - ZERO fluff, filler, or robotic throat-clearing. Get straight to the answer without preamble.
+   - Maintain a neutral, professional human tone that immediately demonstrates real-world Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T).
+
+3. Organic Semantic Integration:
    - Naturally weave the LSI and semantic keywords throughout headings and body paragraphs without keyword stuffing.
-3. Featured Snippet Optimization (Zero-Click Answer):
+
+4. Featured Snippet Optimization (Zero-Click Answer):
    - Immediately following the first <h2> subheading, provide a direct, concise 40-55 word definitive answer block in <strong> bold tags that answers the core search query with laser accuracy.
-4. Complete Generation Guarantee:
+
+5. Complete Generation Guarantee:
    - Produce the complete article from introduction to the final FAQ without stopping mid-thought or mid-sentence.
-5. Formatting & Typography:
+
+6. Formatting & Typography:
    - Return clean semantic HTML (<h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <details>, <summary>).
    - DO NOT wrap in ```html or ``` code fences.
    - CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use standard commas, parentheses, or simple hyphens instead.
-6. MANDATORY FAQ ACCORDION SECTION (5 to 8 Questions):
+
+7. MANDATORY FAQ ACCORDION SECTION (5 to 8 Questions):
    - Include a dedicated section with <h2>Frequently Asked Questions</h2>.
    - Provide EXACTLY between 5 and 8 questions (minimum 5, maximum 8).
    - Format EACH question and answer using HTML5:
      <details class="faq-item"><summary class="faq-question">Direct User Question?</summary><p class="faq-answer">Direct, factual answer in 25 to 45 words tailored for Google snippet capture.</p></details>
    - Target real questions users ask on Google Search regarding "{primary_kw}".
-7. Word Count Target: 850 to 1,250 words of pure substance.
+
+8. Word Count Target: 850 to 1,250 words of pure substance.
 """
     
     payload = {
@@ -260,6 +348,9 @@ STRICT EDITORIAL, E-E-A-T & ANTI-DE-RANKING POLICIES:
                 clean_html = re.sub(r'^```html\s*', '', raw_text)
                 clean_html = re.sub(r'```$', '', clean_html).strip()
                 
+                # Sanitize any accidental AI buzzwords or em-dashes
+                clean_html = sanitize_ai_words(clean_html)
+                
                 word_count = len(clean_html.split())
                 print(f"[Gemini AI Success] Model: {model_name} generated complete article ({word_count} words, finish: {finish_reason})")
                 return clean_html
@@ -283,8 +374,27 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     cat_slug = detect_category(primary_kw, all_semantic_kws)
     cat_info = CATEGORIES[cat_slug]
     
-    title = f"{capital_kw}: Comprehensive Guide & Key Insights"
-    meta_desc = f"Everything you need to know about {capital_kw}. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia."
+    # Natural, journalistic human editorial headline patterns (100% free of AI buzzwords)
+    import random
+    title_templates = [
+        f"{capital_kw}: What You Need to Know, Facts & Analysis",
+        f"{capital_kw}: Complete Overview, Real Facts & Answers",
+        f"{capital_kw}: Practical Details, Breakdown & Answers",
+        f"{capital_kw}: Essential Facts, Context & Explanations",
+        f"{capital_kw}: Full Breakdown, Important Facts & FAQs",
+    ]
+    # Pick stable deterministic variation based on hash of slug
+    hash_idx = sum(ord(c) for c in slug) % len(title_templates)
+    title = title_templates[hash_idx]
+    
+    meta_desc_templates = [
+        f"Get the verified facts, clear answers, and essential details about {capital_kw} on GeneralPedia.",
+        f"A straightforward breakdown of {capital_kw}. Discover key facts, practical context, and direct answers.",
+        f"Everything you need to understand about {capital_kw}, including common questions, verified facts, and background.",
+        f"Clear facts, background context, and direct answers to common questions about {capital_kw} on GeneralPedia."
+    ]
+    meta_idx = sum(ord(c) for c in slug[::-1]) % len(meta_desc_templates)
+    meta_desc = meta_desc_templates[meta_idx]
     tags = generate_tags(primary_kw, all_semantic_kws, cat_slug)
     
     safe_vol = int(volume) if volume and not str(volume).lower() == 'nan' else 0
@@ -294,7 +404,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     # 2. Fetch complete content via Gemini API cascade
     body_content = generate_article_content_via_gemini_api(capital_kw, all_semantic_kws, cat_info["name"])
     if not body_content:
-        body_content = f"<p>Comprehensive analytical briefing on <strong>{capital_kw}</strong> will be available shortly.</p>"
+        body_content = f"<p>A detailed briefing on <strong>{capital_kw}</strong> will be available shortly.</p>"
         
     # 3. Extract 5-8 FAQs for Schema markup
     faqs = extract_faqs_from_html(body_content)
