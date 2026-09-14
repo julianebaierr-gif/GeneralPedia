@@ -1,172 +1,163 @@
 import os
 import re
 import json
+import urllib.request
 from datetime import datetime
+
 try:
     from config import CATEGORIES, DOMAIN, POSTS_DIR
+    from image_service import fetch_unique_unsplash_image
 except ImportError:
     from .config import CATEGORIES, DOMAIN, POSTS_DIR
+    from .image_service import fetch_unique_unsplash_image
+from env_loader import get_secret
+
+GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
 
 def slugify(text):
     text = re.sub(r'[^a-zA-Z0-9\s-]', '', str(text).lower()).strip()
     return re.sub(r'[\s-]+', '-', text)
 
+def capitalize_keyword(kw):
+    if not kw:
+        return ""
+    words = str(kw).strip().split()
+    return " ".join(w.capitalize() if not w.isupper() else w for w in words)
+
 def detect_category(primary_kw, semantic_kws):
-    # Check primary keyword first, then semantic
     kw = primary_kw.lower()
-    full = (primary_kw + " " + " ".join(semantic_kws[:3])).lower()
-    
     # 1. Calculators & Tools
-    if any(w in kw for w in ['calculator', 'converter', 'calendar', 'tracker', 'depth chart', 'to ml', 'to gallon', 'to inches']):
+    if any(w in kw for w in ['calculator', 'converter', 'calendar', 'tracker', 'depth chart', 'to ml', 'to gallon', 'to inches', 'area code']):
         return "tools"
-    
-    # 2. Sports & Entertainment
-    if any(w in kw for w in ['vs', 'match', 'stats', 'movie', 'film', 'cast', 'season', 'olympics', 'world cup', 'nfl', 'nba', 'game', 'show', 'wizard of oz']):
+    # 2. Sports, Culture & Geography
+    if any(w in kw for w in ['vs', 'match', 'stats', 'movie', 'film', 'cast', 'season', 'olympics', 'world cup', 'nfl', 'nba', 'game', 'show', 'wizard of oz', 'where is', 'cape verde', 'prague', 'fiji', 'cyprus']):
         return "culture"
-    
     # 3. Automotive
-    if any(w in kw for w in ['car', 'toyota', 'honda', 'tesla', 'ford', 'suv', 'truck', 'dodge', 'tire', 'vehicle', 'accord', 'camry', 'corolla', 'porsche', 'bmw']):
+    if any(w in kw for w in ['car', 'toyota', 'honda', 'tesla', 'ford', 'suv', 'truck', 'dodge', 'tire', 'vehicle', 'accord', 'camry', 'corolla', 'porsche', 'bmw', 'crv', 'cr-v']):
         return "automotive"
-        
     # 4. Lifestyle & Pets & Home
     if any(w in kw for w in ['dog', 'cat', 'pet', 'recipe', 'coffee', 'food', 'tea', 'cleaning', 'cook', 'bake', 'dryer vent', 'couch', 'home', 'drain']):
         return "lifestyle"
-        
     # 5. Health & Medical
-    if any(w in kw for w in ['symptom', 'disease', 'infection', 'syndrome', 'massage', 'vitamin', 'pain', 'treatment', 'causes', 'medicine', 'diet', 'health', 'cancer', 'thrush', 'sore']):
+    if any(w in kw for w in ['symptom', 'disease', 'infection', 'syndrome', 'massage', 'vitamin', 'pain', 'treatment', 'causes', 'medicine', 'diet', 'health', 'cancer', 'thrush', 'sore', 'gallbladder', 'appendix']):
         return "health"
-        
     # 6. Finance & Money
     if any(w in kw for w in ['tax', 'ira', '401k', 'insurance', 'loan', 'mortgage', 'equity', 'salary', 'income', 'refund', 'money', 'credit', 'bank', 'cost of']):
         return "finance"
-        
     # 7. How-To & Guides
     if any(w in kw for w in ['how to', 'what is', 'how many', 'how much', 'why do', 'meaning', 'difference between', 'definition']):
         return "how-to"
-        
-    # 8. Tech & Digital
-    if any(w in kw for w in ['software', 'app', 'malware', 'code', 'phone', 'laptop', 'android', 'tech', 'ai ']):
-        return "tech"
-        
     return "how-to"
 
 def generate_tags(primary_kw, semantic_kws, category_slug):
     tags = set()
     cat_name = CATEGORIES[category_slug]["name"]
     tags.add(cat_name)
+    tags.add(capitalize_keyword(primary_kw))
     
-    for kw in [primary_kw] + semantic_kws[:5]:
+    for kw in semantic_kws[:5]:
         clean = re.sub(r'[^a-zA-Z0-9\s]', '', kw).strip()
-        words = clean.split()
-        if 1 <= len(words) <= 3:
-            tags.add(clean.title())
-        elif len(words) > 3:
-            tags.add(" ".join(words[:2]).title())
+        if clean:
+            tags.add(capitalize_keyword(clean))
             
     return list(tags)[:6]
 
+def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
+    """
+    Generates rich, 800-1200 word authoritative SEO article content dynamically via Gemini API.
+    Zero local hardcoded template text.
+    """
+    prompt = f"""Act as an elite SEO content strategist and copywriter.
+Write a comprehensive, professional, and authoritative informational reference guide for a global audience on:
+Primary Focus Keyword: "{primary_kw}"
+Related Semantic / LSI Keywords: {', '.join(semantic_kws[:8]) if semantic_kws else 'None'}
+Category Desk: {category_name}
+
+Formatting and Quality Guidelines:
+1. Return clean, production-ready HTML (DO NOT use ```html or ``` code fences, just output standard HTML tags: <h2>, <h3>, <h4>, <p>, <ul>, <li>, <blockquote>).
+2. CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use hyphens, commas, or parentheses instead.
+3. Content Architecture:
+   - High-impact introductory hook defining the topic and its real-world significance.
+   - Featured Snippet Target section: Provide a clear, direct definition or answer block under an <h2> (ideal for Google Position 0).
+   - In-depth thematic breakdown sections using <h2> and <h3> subheadings covering mechanisms, global comparisons, practical guidelines, and key factors.
+   - Natural, organic integration of the primary focus keyword and all related semantic keywords for maximum search visibility.
+   - A dedicated "Frequently Asked Questions" section with 3 highly relevant questions and comprehensive answers.
+4. Total length MUST be between 800 and 1,200 words. Keep the tone sophisticated, factual, and informative.
+"""
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={GEMINI_API_KEY}"
+    payload = {
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {
+            "temperature": 0.3,
+            "maxOutputTokens": 3000
+        }
+    }
+    
+    try:
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json', 'User-Agent': 'GeneralPedia-AI/1.0'}
+        )
+        with urllib.request.urlopen(req, timeout=40) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            raw_text = data['candidates'][0]['content']['parts'][0]['text']
+            # Clean possible markdown block wraps
+            clean_html = re.sub(r'^```html\s*', '', raw_text.strip())
+            clean_html = re.sub(r'```$', '', clean_html.strip())
+            return clean_html
+    except Exception as e:
+        print(f"Gemini API generation error: {e}")
+        return None
+
 def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
+    """
+    Master pipeline:
+    - Automatically capitalizes keywords
+    - Detects category
+    - Generates content via Gemini API
+    - Fetches UNIQUE image via Unsplash API (enforcing single use per photo ID)
+    """
     cat_slug = detect_category(primary_kw, semantic_kws)
     cat_info = CATEGORIES[cat_slug]
     
     slug = slugify(primary_kw)
-    post_url = f"{DOMAIN}/{cat_slug}/{slug}"
+    capital_kw = capitalize_keyword(primary_kw)
+    post_url = f"https://general-pedia.vercel.app/{slug}"
     post_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     display_date = datetime.now().strftime("%B %d, %Y")
     
-    title = f"{primary_kw.title()}: Complete Comprehensive Guide & Insights"
-    meta_desc = f"Everything you need to know about {primary_kw}. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia."
-    
+    title = f"{capital_kw}: Comprehensive Guide & Key Insights"
+    meta_desc = f"Everything you need to know about {capital_kw}. Explore key facts, in-depth breakdowns, expert tips, and detailed answers on GeneralPedia."
     tags = generate_tags(primary_kw, semantic_kws, cat_slug)
     
     safe_vol = int(volume) if volume and not str(volume).lower() == 'nan' else 0
     safe_kd = int(kd) if kd and not str(kd).lower() == 'nan' else 0
     safe_cpc = float(cpc) if cpc and not str(cpc).lower() == 'nan' else 0.0
     
-    sections = []
+    # 1. Fetch content via Gemini API
+    body_content = generate_article_content_via_gemini_api(capital_kw, semantic_kws, cat_info["name"])
     
-    sec1 = f"""
-    <div class="prose max-w-none text-slate-700 leading-relaxed space-y-4">
-        <p class="text-lg font-medium text-slate-800 leading-relaxed">
-            Understanding <strong>{primary_kw}</strong> has become increasingly critical for readers seeking practical knowledge, reliable data, and actionable steps. In this authoritative GeneralPedia guide, we break down essential insights, practical strategies, and everything you need to navigate this topic successfully.
-        </p>
-        <div class="my-6 p-5 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-xl">
-            <h4 class="font-semibold text-emerald-900 mb-1 flex items-center gap-2">
-                <i class="fa-solid fa-lightbulb text-emerald-600"></i> Key Takeaway
-            </h4>
-            <p class="text-sm text-emerald-800">
-                Whether you are exploring solutions for the first time or optimizing your strategy, mastering <strong>{primary_kw}</strong> provides long-term clarity and significant practical advantages.
-            </p>
-        </div>
-    </div>
-    """
-    sections.append(sec1)
+    # 2. Fetch unique image via Unsplash API by ID
+    img_info = fetch_unique_unsplash_image(primary_kw)
+    featured_img_url = ""
+    image_id = ""
     
-    if semantic_kws:
-        sub_sections = ""
-        for i, skw in enumerate(semantic_kws[:5]):
-            sub_sections += f"""
-            <div class="mt-8">
-                <h3 class="text-xl font-bold text-slate-800 mb-3 flex items-center gap-2">
-                    <span class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center text-sm font-semibold">{i+1}</span>
-                    {skw.title()}
-                </h3>
-                <p class="text-slate-600 leading-relaxed mb-4">
-                    When addressing <em>{primary_kw}</em>, a major consideration is <strong>{skw}</strong>. Experts emphasize looking into relevant criteria, key metrics, and step-by-step best practices to ensure optimal results.
-                </p>
-                <ul class="list-disc pl-6 space-y-2 text-slate-600">
-                    <li>Core factors to evaluate when analyzing <strong>{skw}</strong>.</li>
-                    <li>Common pitfalls to avoid and how to streamline the process efficiently.</li>
-                    <li>Actionable recommendations tailored for everyday readers and specialists alike.</li>
-                </ul>
-            </div>
-            """
-        sections.append(f"""
-        <div class="mt-10">
-            <h2 class="text-2xl font-bold text-slate-900 mb-4 pb-2 border-b border-slate-200">
-                Detailed Analysis & Key Elements
-            </h2>
-            {sub_sections}
-        </div>
-        """)
-        
-    faq_items = [
-        {
-            "q": f"What is the significance of {primary_kw}?",
-            "a": f"{primary_kw.capitalize()} provides essential clarity, helping users make informed decisions backed by verified knowledge and practical application."
-        },
-        {
-            "q": f"How does {semantic_kws[0] if semantic_kws else 'this topic'} relate to the overall picture?",
-            "a": f"Understanding related factors such as {semantic_kws[0] if semantic_kws else primary_kw} ensures a comprehensive overview without overlooking vital details."
-        },
-        {
-            "q": f"Where can I find more updates on {primary_kw}?",
-            "a": f"Stay bookmarked to GeneralPedia.com for continuously updated references, in-depth breakdowns, and real-time guides."
-        }
-    ]
-    
-    faq_html = """<div class="mt-12 bg-slate-50 border border-slate-200 rounded-2xl p-6">
-        <h3 class="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-            <i class="fa-solid fa-circle-question text-emerald-600"></i> Frequently Asked Questions
-        </h3>
-        <div class="space-y-4">
-    """
-    for item in faq_items:
-        faq_html += f"""
-            <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                <h4 class="font-semibold text-slate-800 mb-2">{item['q']}</h4>
-                <p class="text-slate-600 text-sm leading-relaxed">{item['a']}</p>
-            </div>
+    if img_info:
+        image_id = img_info["id"]
+        featured_img_url = img_info["url"]
+        img_html = f"""
+        <figure style="margin: 24px 0;">
+            <img src="{img_info['url']}" alt="{img_info['alt']}" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 12px;" />
+            <figcaption style="font-size: 0.825rem; color: #64748b; margin-top: 8px;">Photo via Unsplash ({img_info['credit']})</figcaption>
+        </figure>
         """
-    faq_html += "</div></div>"
-    sections.append(faq_html)
-    
-    body_content = "\n".join(sections)
+        body_content = img_html + body_content
     
     article_data = {
         "id": slug,
         "title": title,
-        "primary_keyword": primary_kw,
+        "primary_keyword": capital_kw,
         "semantic_keywords": semantic_kws,
         "category_slug": cat_slug,
         "category_name": cat_info["name"],
@@ -177,10 +168,12 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         "meta_description": meta_desc,
         "published_at": post_date_time,
         "display_date": display_date,
-        "read_time": "5 min read",
+        "read_time": "6 min read",
         "search_volume": safe_vol,
         "difficulty": safe_kd,
         "cpc": safe_cpc,
+        "image_id": image_id,
+        "featured_image": featured_img_url,
         "content_html": body_content
     }
     
