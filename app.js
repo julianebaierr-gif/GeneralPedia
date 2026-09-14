@@ -1,3 +1,10 @@
+    function handleCardClick(e, id) {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || (e.button && e.button !== 0)) {
+        return; // Allow native browser behavior for new tab / window / middle click
+      }
+      e.preventDefault();
+      openArticle(id);
+    }
 
     function renderHeroGrid() {
       const heroContainer = document.getElementById('hero-grid-container');
@@ -13,7 +20,7 @@
       }
 
       heroContainer.innerHTML = `
-        <div class="hero-main-card" onclick="openArticle('${p1.id}')" style="${getImg(p1) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p1)}');` : ''}">
+        <a href="/${p1.id}" class="hero-main-card" onclick="handleCardClick(event, '${p1.id}')" style="${getImg(p1) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p1)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge">${escapeHtml(p1.category_name || 'Featured')}</span>
             <h2 class="hero-main-title">${escapeHtml(p1.title)}</h2>
@@ -23,21 +30,21 @@
               <span>${p1.read_time || '6 min read'}</span>
             </div>
           </div>
-        </div>
-        <div class="hero-sub-card" onclick="openArticle('${p2.id}')" style="${getImg(p2) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p2)}');` : ''}">
+        </a>
+        <a href="/${p2.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p2.id}')" style="${getImg(p2) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p2)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge blue">${escapeHtml(p2.category_name || 'Guide')}</span>
             <h3 class="hero-sub-title">${escapeHtml(p2.title)}</h3>
             <div class="hero-meta"><span>${p2.display_date || 'Recent'}</span><span>•</span><span>${p2.read_time || '5 min'}</span></div>
           </div>
-        </div>
-        <div class="hero-sub-card" onclick="openArticle('${p3.id}')" style="${getImg(p3) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p3)}');` : ''}">
+        </a>
+        <a href="/${p3.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p3.id}')" style="${getImg(p3) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p3)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge green">${escapeHtml(p3.category_name || 'Analysis')}</span>
             <h3 class="hero-sub-title">${escapeHtml(p3.title)}</h3>
             <div class="hero-meta"><span>${p3.display_date || 'Recent'}</span><span>•</span><span>${p3.read_time || '5 min'}</span></div>
           </div>
-        </div>
+        </a>
       `;
     }
 
@@ -176,11 +183,10 @@
       }
 
       items.forEach(art => {
-        const card = document.createElement('article');
+        const card = document.createElement('a');
+        card.href = `/${art.id}`;
         card.className = 'mag-article-card';
-        card.tabIndex = 0;
-        card.onclick = () => openArticle(art.id);
-        card.onkeydown = (e) => { if (e.key === 'Enter') openArticle(art.id); };
+        card.onclick = (e) => handleCardClick(e, art.id);
 
         function extractThumb(article) {
           if (article.featured_image) return article.featured_image;
@@ -222,19 +228,18 @@
       
       const sample = ARTICLES_DATA.length > 3 ? ARTICLES_DATA.slice(3, 7) : ARTICLES_DATA.slice(0, 4);
       sample.forEach(art => {
-        const div = document.createElement('div');
-        div.className = 'mini-card';
-        div.tabIndex = 0;
-        div.onclick = () => openArticle(art.id);
-        div.onkeydown = (e) => { if (e.key === 'Enter') openArticle(art.id); };
-        div.innerHTML = `
+        const card = document.createElement('a');
+        card.href = `/${art.id}`;
+        card.className = 'mini-card';
+        card.onclick = (e) => handleCardClick(e, art.id);
+        card.innerHTML = `
           <div>
             <div class="mini-card-tag">${escapeHtml(art.category_name || 'Trending')}</div>
             <h4 class="mini-card-title">${escapeHtml(art.title)}</h4>
           </div>
           <div class="mini-card-date">${art.display_date || 'Updated'} • ${art.read_time || '4 min'}</div>
         `;
-        trendingMiniContainer.appendChild(div);
+        trendingMiniContainer.appendChild(card);
       });
     }
 
@@ -245,19 +250,18 @@
       // Select 5 varied stories
       const top5 = ARTICLES_DATA.slice(0, 5);
       top5.forEach((art, idx) => {
-        const div = document.createElement('div');
-        div.className = 'popular-item';
-        div.tabIndex = 0;
-        div.onclick = () => openArticle(art.id);
-        div.onkeydown = (e) => { if (e.key === 'Enter') openArticle(art.id); };
-        div.innerHTML = `
+        const card = document.createElement('a');
+        card.href = `/${art.id}`;
+        card.className = 'popular-item';
+        card.onclick = (e) => handleCardClick(e, art.id);
+        card.innerHTML = `
           <div class="popular-num">0${idx + 1}</div>
           <div class="popular-content">
             <div class="popular-title">${escapeHtml(art.title)}</div>
             <span>${art.display_date || 'Recent'} • ${escapeHtml(art.category_name || 'Guide')}</span>
           </div>
         `;
-        popularPostsList.appendChild(div);
+        popularPostsList.appendChild(card);
       });
 
       // Also render in article view sidebar
@@ -266,7 +270,7 @@
         artSidebarTrending.innerHTML = popularPostsList.innerHTML;
         // reattach click handlers
         Array.from(artSidebarTrending.children).forEach((child, idx) => {
-          child.onclick = () => openArticle(top5[idx].id);
+          child.onclick = (e) => handleCardClick(e, top5[idx].id);
         });
       }
     }
@@ -425,10 +429,10 @@
       }
 
       results.forEach(art => {
-        const card = document.createElement('article');
+        const card = document.createElement('a');
+        card.href = `/${art.id}`;
         card.className = 'mag-article-card';
-        card.tabIndex = 0;
-        card.onclick = () => openArticle(art.id);
+        card.onclick = (e) => handleCardClick(e, art.id);
         card.innerHTML = `
           <div class="mag-card-header">
             <div class="mag-card-meta">
