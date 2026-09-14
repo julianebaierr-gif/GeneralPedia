@@ -5,11 +5,11 @@ import urllib.request
 from datetime import datetime
 
 try:
-    from config import CATEGORIES, DOMAIN, POSTS_DIR
+    from config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
     from image_service import fetch_unique_unsplash_image
     from tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
 except ImportError:
-    from .config import CATEGORIES, DOMAIN, POSTS_DIR
+    from .config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
     from .image_service import fetch_unique_unsplash_image
     from .tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
 from env_loader import get_secret
@@ -864,7 +864,11 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         "featured_image": featured_img_url,
         "faqs": faqs,
         "faq_schema": faq_schema,
-        "content_html": body_content
+        "content_html": body_content,
+        "author_name": AUTHORS.get(cat_slug, {}).get("name", "Editorial Staff"),
+        "author_avatar": AUTHORS.get(cat_slug, {}).get("avatar", ""),
+        "author_bio": AUTHORS.get(cat_slug, {}).get("bio", ""),
+        "author_initials": AUTHORS.get(cat_slug, {}).get("initials", "GP")
     }
     
     return article_data

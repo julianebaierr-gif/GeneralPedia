@@ -25,7 +25,7 @@
             <span class="category-badge">${escapeHtml(p1.category_name || 'Featured')}</span>
             <h2 class="hero-main-title">${escapeHtml(p1.title)}</h2>
             <div class="hero-meta">
-              <span>By Editorial Staff</span><span>•</span>
+              <span>By ${escapeHtml(p1.author_name || 'Editorial Staff')}</span><span>•</span>
               <span>${p1.display_date || 'Recent'}</span><span>•</span>
               <span>${p1.read_time || '6 min read'}</span>
             </div>
@@ -329,6 +329,14 @@
       }
       document.getElementById('art-title-crumb').innerText = post.primary_keyword || post.title;
       document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
+      // Set author info
+      const authorNameEl = document.getElementById('art-author-name');
+      if (authorNameEl) authorNameEl.innerText = post.author_name || 'Editorial Staff';
+      const avatarImg = document.getElementById('art-avatar-img');
+      if (avatarImg && post.author_avatar) {
+        avatarImg.src = post.author_avatar;
+        avatarImg.alt = post.author_name || 'Author';
+      }
       const contentEl = document.getElementById('art-content');
       contentEl.innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
       // Execute any interactive script tags embedded inside the article content (e.g. calculators)

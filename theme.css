@@ -982,6 +982,14 @@
       font-weight: 800;
       font-size: 1rem;
     }
+    .art-avatar-img {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border-color);
+      flex-shrink: 0;
+    }
     .article-body {
       font-size: 1.0625rem;
       line-height: 1.8;
