@@ -517,7 +517,18 @@
       handleRoute();
     });
 
+    function updateLiveDate() {
+      const dateEl = document.getElementById('current-date-display');
+      if (!dateEl) return;
+      try {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.innerText = now.toLocaleDateString('en-US', options);
+      } catch (e) {}
+    }
+
     // Init
+    updateLiveDate();
     renderHeroGrid();
     renderTrendingMini();
     renderPopularSidebar();

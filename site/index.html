@@ -1438,7 +1438,7 @@
       <div class="top-bar-left">
         <div class="top-date">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          <span id="current-date-display">Sunday, September 13, 2026</span>
+          <span id="current-date-display">Today</span>
         </div>
       </div>
       <div class="top-bar-right">
@@ -2318,7 +2318,18 @@
       handleRoute();
     });
 
+    function updateLiveDate() {
+      const dateEl = document.getElementById('current-date-display');
+      if (!dateEl) return;
+      try {
+        const now = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        dateEl.innerText = now.toLocaleDateString('en-US', options);
+      } catch (e) {}
+    }
+
     // Init
+    updateLiveDate();
     renderHeroGrid();
     renderTrendingMini();
     renderPopularSidebar();
