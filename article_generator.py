@@ -14,7 +14,6 @@ from env_loader import get_secret
 
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
 
-# Cascade from newest Gemini 3.8 down through 3.7, 3.6, 3.5, 3.1, and latest/legacy flash models
 FALLBACK_MODELS = [
     "gemini-3.8-flash",
     "gemini-3.7-flash",
@@ -38,25 +37,18 @@ def capitalize_keyword(kw):
 
 def detect_category(primary_kw, semantic_kws):
     kw = primary_kw.lower()
-    # 1. Calculators & Tools
     if any(w in kw for w in ['calculator', 'converter', 'calendar', 'tracker', 'depth chart', 'to ml', 'to gallon', 'to inches', 'area code']):
         return "tools"
-    # 2. Sports, Culture & Geography
     if any(w in kw for w in ['vs', 'match', 'stats', 'movie', 'film', 'cast', 'season', 'olympics', 'world cup', 'nfl', 'nba', 'game', 'show', 'wizard of oz', 'where is', 'cape verde', 'prague', 'fiji', 'cyprus']):
         return "culture"
-    # 3. Automotive
     if any(w in kw for w in ['car', 'toyota', 'honda', 'tesla', 'ford', 'suv', 'truck', 'dodge', 'tire', 'vehicle', 'accord', 'camry', 'corolla', 'porsche', 'bmw', 'crv', 'cr-v']):
         return "automotive"
-    # 4. Lifestyle & Pets & Home
     if any(w in kw for w in ['dog', 'cat', 'pet', 'recipe', 'coffee', 'food', 'tea', 'cleaning', 'cook', 'bake', 'dryer vent', 'couch', 'home', 'drain']):
         return "lifestyle"
-    # 5. Health & Medical
     if any(w in kw for w in ['symptom', 'disease', 'infection', 'syndrome', 'massage', 'vitamin', 'pain', 'treatment', 'causes', 'medicine', 'diet', 'health', 'cancer', 'thrush', 'sore', 'gallbladder', 'appendix']):
         return "health"
-    # 6. Finance & Money
     if any(w in kw for w in ['tax', 'ira', '401k', 'insurance', 'loan', 'mortgage', 'equity', 'salary', 'income', 'refund', 'money', 'credit', 'bank', 'cost of']):
         return "finance"
-    # 7. How-To & Guides
     if any(w in kw for w in ['how to', 'what is', 'how many', 'how much', 'why do', 'meaning', 'difference between', 'definition']):
         return "how-to"
     return "how-to"
@@ -74,29 +66,88 @@ def generate_tags(primary_kw, semantic_kws, category_slug):
             
     return list(tags)[:6]
 
+def extract_faqs_from_html(html_text):
+    """
+    Parses FAQ questions and answers from generated HTML to create valid Google FAQPage Schema.
+    """
+    faqs = []
+    # Pattern to find details/summary or h3/h4 questions inside faq section (supporting attributes like class="faq-question")
+    q_matches = list(re.finditer(r'<summary[^>]*>(.*?)</summary>\s*<p[^>]*>(.*?)</p>', html_text, re.DOTALL | re.IGNORECASE))
+    for m in q_matches:
+        q = re.sub(r'<[^>]+>', '', m.group(1)).strip()
+        a = re.sub(r'<[^>]+>', '', m.group(2)).strip()
+        if q and a:
+            faqs.append({"question": q, "answer": a})
+            
+    if not faqs:
+        # Fallback regex for h3/h4 FAQ headers
+        q_matches2 = list(re.finditer(r'<h[34][^>]*>(.*?)</h[34]>\s*<p[^>]*>(.*?)</p>', html_text, re.DOTALL | re.IGNORECASE))
+        for m in q_matches2:
+            q = re.sub(r'<[^>]+>', '', m.group(1)).strip()
+            a = re.sub(r'<[^>]+>', '', m.group(2)).strip()
+            if q.endswith('?') and len(q) > 10:
+                faqs.append({"question": q, "answer": a})
+                
+    return faqs[:8]
+
+def build_faq_schema_json(faqs):
+    """
+    Constructs official Google FAQPage Schema JSON-LD.
+    """
+    if not faqs:
+        return ""
+    main_entities = []
+    for item in faqs:
+        main_entities.append({
+            "@type": "Question",
+            "name": item["question"],
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": item["answer"]
+            }
+        })
+    schema = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": main_entities
+    }
+    return json.dumps(schema, ensure_ascii=False)
+
 def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
     """
     Generates rich, 800-1200 word authoritative SEO article content dynamically via Gemini API.
-    Tries models starting from Gemini 3.8 down to oldest flash versions automatically.
-    Guarantees article is 100% complete from start to finish.
+    Enforces:
+    - Google Helpful Content & Spam Policies (100% human-first, verified, authentic)
+    - 5 to 8 concise, punchy FAQ questions with direct answers (ideal for Featured Snippets)
+    - Starts and ends with 100% completeness
+    - Fallback cascade through all Gemini versions
     """
-    prompt = f"""Act as an elite SEO content strategist and copywriter.
-Write a COMPLETE, comprehensive, and authoritative informational reference guide for a global audience on:
+    prompt = f"""You are an elite editorial journalist and lead SEO strategist for GeneralPedia.
+Write a COMPLETE, comprehensive, and authoritative informational reference guide for a global audience adhering to the latest Google Search Quality Rater & Helpful Content guidelines on:
 Primary Focus Keyword: "{primary_kw}"
 Related Semantic / LSI Keywords: {', '.join(semantic_kws[:8]) if semantic_kws else 'None'}
 Category Desk: {category_name}
 
-MANDATORY INSTRUCTIONS:
-1. Complete Generation Guarantee: You MUST write the complete article from the opening hook all the way to the final concluding sentence and FAQ answers. Never stop mid-sentence or omit sections.
-2. Return clean, production-ready HTML (DO NOT use ```html or ``` code fences, just output standard HTML tags: <h2>, <h3>, <h4>, <p>, <ul>, <li>, <blockquote>).
-3. CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use hyphens, commas, or parentheses instead.
-4. Content Architecture:
-   - High-impact introductory hook defining the topic and its global significance.
-   - Featured Snippet Target section: Provide a clear, direct definition or answer block under an <h2> (ideal for Google Position 0).
-   - In-depth thematic breakdown sections using <h2> and <h3> subheadings covering mechanisms, comparisons, practical guidelines, and key factors.
-   - Natural, organic integration of the primary focus keyword and all related semantic keywords.
-   - A dedicated "Frequently Asked Questions" section with 3 highly relevant questions and comprehensive, complete answers.
-5. Total length MUST be between 800 and 1,200 words. Keep the tone professional, objective, and deeply informative.
+STRICT EDITORIAL & SEO POLICIES:
+1. Google Helpful Content & Anti-De-Indexing Standards:
+   - Provide original analysis, comprehensive context, practical value, and verifiable facts.
+   - Do NOT use generic filler, AI buzzwords (e.g., "in conclusion", "tapestry", "delve"), or hollow fluff.
+   - Write in a clean, journalistic, objective tone.
+2. Complete Generation Guarantee: Write the complete article from start to finish. Never stop mid-sentence.
+3. Formatting: Return clean HTML (use <h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <details>, <summary>).
+   - DO NOT wrap in ```html or ``` code fences.
+4. CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use standard hyphens, commas, or parentheses instead.
+5. Content Blueprint:
+   - Engaging opening hook defining the topic and its real-world significance.
+   - Featured Snippet Target (Zero-Click): Under the first <h2>, provide a direct, concise 40-55 word definitive answer block.
+   - In-depth thematic breakdown sections using <h2> and <h3> subheadings covering mechanisms, global comparisons, practical guidelines, and key factors.
+   - Natural, organic integration of all semantic and LSI keywords.
+6. MANDATORY FAQ ACCORDION SECTION (5 to 8 Questions):
+   - Include a dedicated section with <h2>Frequently Asked Questions</h2>.
+   - Provide EXACTLY between 5 and 8 questions (minimum 5, maximum 8).
+   - Format EACH question and answer using HTML5 <details class="faq-item"><summary class="faq-question">Question?</summary><p class="faq-answer">Concise, direct answer (25-45 words) designed for Google snippet capture.</p></details>.
+   - Questions must address real user search intents and answers must be direct and factual.
+7. Word Count: 800 to 1,200 words.
 """
     
     payload = {
@@ -110,7 +161,6 @@ MANDATORY INSTRUCTIONS:
         }
     }
     
-    # Try models starting from 3.8 down to oldest
     for model_name in FALLBACK_MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
         try:
@@ -127,15 +177,12 @@ MANDATORY INSTRUCTIONS:
                 
                 parts = candidate.get('content', {}).get('parts', [])
                 if not parts:
-                    print(f"[{model_name}] No content parts returned, trying next fallback model...")
                     continue
                     
                 raw_text = parts[0].get('text', '').strip()
                 if not raw_text or len(raw_text) < 400:
-                    print(f"[{model_name}] Content too short ({len(raw_text)} chars), trying next fallback model...")
                     continue
                     
-                # Clean possible markdown block wraps
                 clean_html = re.sub(r'^```html\s*', '', raw_text)
                 clean_html = re.sub(r'```$', '', clean_html).strip()
                 
@@ -150,13 +197,6 @@ MANDATORY INSTRUCTIONS:
     return None
 
 def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
-    """
-    Master pipeline:
-    - Automatically capitalizes keywords
-    - Detects category
-    - Generates 100% complete content via Gemini API cascade (3.8 down to oldest)
-    - Fetches UNIQUE image via Unsplash API (enforcing single use per photo ID)
-    """
     cat_slug = detect_category(primary_kw, semantic_kws)
     cat_info = CATEGORIES[cat_slug]
     
@@ -174,12 +214,21 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     safe_kd = int(kd) if kd and not str(kd).lower() == 'nan' else 0
     safe_cpc = float(cpc) if cpc and not str(cpc).lower() == 'nan' else 0.0
     
-    # 1. Fetch complete content via Gemini API cascade (3.8 down to oldest)
+    # 1. Fetch complete content via Gemini API cascade
     body_content = generate_article_content_via_gemini_api(capital_kw, semantic_kws, cat_info["name"])
     if not body_content:
         body_content = f"<p>Comprehensive analytical briefing on <strong>{capital_kw}</strong> will be available shortly.</p>"
         
-    # 2. Fetch unique image via Unsplash API by ID
+    # 2. Extract 5-8 FAQs for Schema markup
+    faqs = extract_faqs_from_html(body_content)
+    faq_schema = build_faq_schema_json(faqs)
+    
+    # Embed schema script directly in post HTML for static crawlers
+    if faq_schema:
+        schema_tag = f'\n<script type="application/ld+json">\n{faq_schema}\n</script>\n'
+        body_content = body_content + schema_tag
+        
+    # 3. Fetch unique image via Unsplash API by ID
     img_info = fetch_unique_unsplash_image(primary_kw)
     featured_img_url = ""
     image_id = ""
@@ -215,6 +264,8 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         "cpc": safe_cpc,
         "image_id": image_id,
         "featured_image": featured_img_url,
+        "faqs": faqs,
+        "faq_schema": faq_schema,
         "content_html": body_content
     }
     

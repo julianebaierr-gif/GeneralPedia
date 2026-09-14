@@ -303,6 +303,20 @@
         `/${id}`
       );
 
+      // Dynamically inject or remove FAQ Schema JSON-LD for rich snippets
+      let faqSchemaTag = document.getElementById('article-faq-schema');
+      if (post.faq_schema) {
+        if (!faqSchemaTag) {
+          faqSchemaTag = document.createElement('script');
+          faqSchemaTag.id = 'article-faq-schema';
+          faqSchemaTag.type = 'application/ld+json';
+          document.head.appendChild(faqSchemaTag);
+        }
+        faqSchemaTag.textContent = typeof post.faq_schema === 'string' ? post.faq_schema : JSON.stringify(post.faq_schema);
+      } else if (faqSchemaTag) {
+        faqSchemaTag.remove();
+      }
+
       hideAllViews();
       articleView.classList.remove('hidden');
       if (push) history.pushState({ view: 'article', id: id }, '', `/${id}`);
