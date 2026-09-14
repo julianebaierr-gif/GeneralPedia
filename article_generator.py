@@ -7,9 +7,11 @@ from datetime import datetime
 try:
     from config import CATEGORIES, DOMAIN, POSTS_DIR
     from image_service import fetch_unique_unsplash_image
+    from tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
 except ImportError:
     from .config import CATEGORIES, DOMAIN, POSTS_DIR
     from .image_service import fetch_unique_unsplash_image
+    from .tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
 from env_loader import get_secret
 
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
@@ -779,6 +781,24 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
                 body_content = body_content[:mid_pos] + mid_html + body_content[mid_pos:]
             else:
                 body_content = body_content + mid_html
+
+    # 6. Auto-generate & embed interactive calculator/tool if topic warrants it
+    if is_tool_or_calculator_topic(primary_kw, all_semantic_kws):
+        tool_widget = generate_interactive_tool_html(capital_kw)
+        if tool_widget:
+            # Place tool widget right after first <h2> or blockquote/paragraph
+            h2_first = re.search(r'</h2>', body_content, re.IGNORECASE)
+            if h2_first:
+                # Place after the immediate paragraph/blockquote following first <h2>
+                rest = body_content[h2_first.end():]
+                next_p = re.search(r'</p>|</blockquote>', rest, re.IGNORECASE)
+                if next_p:
+                    insert_idx = h2_first.end() + next_p.end()
+                    body_content = body_content[:insert_idx] + tool_widget + body_content[insert_idx:]
+                else:
+                    body_content = body_content[:h2_first.end()] + tool_widget + body_content[h2_first.end():]
+            else:
+                body_content = tool_widget + body_content
     
     article_data = {
         "id": slug,

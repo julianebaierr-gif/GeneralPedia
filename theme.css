@@ -1397,3 +1397,123 @@
       font-size: 0.95rem;
       margin: 0;
     }
+
+    /* ==================== 10. EMBEDDED INTERACTIVE CALCULATORS & TOOLS ==================== */
+    .gp-interactive-tool-box {
+      background: var(--bg-card);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      margin: 36px 0;
+      box-shadow: var(--shadow-md);
+    }
+    .gp-tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+    .gp-tool-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0;
+    }
+    .gp-tool-badge {
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.6875rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.05em;
+    }
+    .gp-tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .gp-tool-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .gp-tool-label {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .gp-tool-input, .gp-tool-select {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 0.9375rem;
+      color: var(--text-main);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .gp-tool-input:focus, .gp-tool-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+    }
+    .gp-tool-btn {
+      background: var(--secondary);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9375rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .gp-tool-btn:hover {
+      background: var(--secondary-hover);
+      transform: translateY(-1px);
+    }
+    .gp-tool-results {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .gp-result-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .gp-result-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .gp-result-value {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-top: 4px;
+    }
+    .gp-tool-note {
+      font-size: 0.75rem;
+      color: var(--text-subtle);
+      margin-top: 14px;
+      line-height: 1.5;
+    }

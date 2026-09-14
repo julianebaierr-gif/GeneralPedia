@@ -325,8 +325,17 @@
       }
       document.getElementById('art-title-crumb').innerText = post.primary_keyword || post.title;
       document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
-      document.getElementById('art-read-time').innerText = post.read_time || '5 min read';
-      document.getElementById('art-content').innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
+      const contentEl = document.getElementById('art-content');
+      contentEl.innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
+      // Execute any interactive script tags embedded inside the article content (e.g. calculators)
+      const scripts = contentEl.querySelectorAll('script');
+      scripts.forEach(oldScript => {
+        const newScript = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+        oldScript.parentNode.replaceChild(newScript, oldScript);
+      });
+
       updateSeoMetadata(
         `${post.title} | GeneralPedia`,
         post.meta_description || 'Comprehensive factual reference guide and breakdown on GeneralPedia.',
