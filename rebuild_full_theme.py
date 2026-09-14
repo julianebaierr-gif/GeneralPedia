@@ -10,8 +10,7 @@ def rebuild_site():
     with open(DB_PATH, "r", encoding="utf-8") as f:
         posts_data = json.load(f)
 
-    # Sort newest first
-    posts_data.sort(key=lambda x: x.get("published_at", "") or x.get("created_at", ""), reverse=True)
+    # In posts_database.json, newly published posts are always inserted at index 0 (newest first).
     # Safely escape any '</script' occurrences in the JSON string
     articles_json = json.dumps(posts_data, ensure_ascii=False).replace("</script", "<\\/script").replace("</Script", "<\\/Script")
 
