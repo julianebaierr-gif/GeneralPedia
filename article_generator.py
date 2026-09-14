@@ -414,10 +414,11 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
     title = title.rstrip(', ').strip()
     return title
 
-def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=155, max_len=158):
+def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=140, max_len=157):
     """
     Constructs an authentic, 100% complete grammatical sentence strictly between
-    155 and 158 characters. Contains primary_kw, zero AI buzzwords, ends with a period.
+    140 and 157 characters. Contains primary_kw, zero AI buzzwords, ends with a period.
+    Free of forced brand names like 'on GeneralPedia' or repetitive CTAs.
     """
     words = str(primary_kw).strip().split()
     cap_kw = " ".join(w.capitalize() if not w.isupper() else w for w in words)
@@ -426,19 +427,17 @@ def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=155, 
     # Topic tailored lead-in phrases containing the keyword
     if 'area code' in kw_lower:
         leads = [
-            f"Looking for information on {cap_kw}? Find cities covered, location details, local time zone, and overlay facts.",
-            f"Discover where {cap_kw} is located, including cities served, state details, local time zones, and phone lookup facts.",
-            f"Find out where {cap_kw} is located, including major cities served, time zone, county details, and dialing info.",
-            f"Get the verified facts on {cap_kw}. Explore cities served, county map, local time zone, and helpful dialing advice.",
+            f"Looking up {cap_kw}? Find cities covered, location details, local time zones, and phone lookup facts.",
+            f"Discover where {cap_kw} is located, including major cities served, time zone, county details, and dialing info.",
+            f"Explore {cap_kw} with verified facts on cities served, county map, local time zone, and dialing facts.",
             f"Here is your clear guide to {cap_kw}. Discover cities covered, local time zone, overlay codes, and calling facts."
         ]
     elif any(w in kw_lower for w in ['car', 'toyota', 'honda', 'crv', 'camry', 'vehicle', 'used cars']):
         leads = [
-            f"Get the verified facts on {cap_kw}. Explore release timing, pricing, key specs, performance, and features.",
-            f"Discover the verified facts on {cap_kw}, including trim pricing, engine specs, fuel economy, and key features.",
+            f"Get verified facts on {cap_kw}, including trim pricing, engine specs, fuel economy, and key features.",
             f"Looking into {cap_kw}? Discover verified specs, estimated pricing, interior features, and performance details.",
             f"Explore verified details on {cap_kw}, including expected pricing, trim levels, engine specs, and interior tech.",
-            f"Here are the verified facts on {cap_kw}. Explore trim options, expected pricing, fuel economy, and top features."
+            f"Here are the facts on {cap_kw}. Explore trim options, expected pricing, fuel economy, and top features."
         ]
     elif 'where is' in kw_lower:
         leads = [
@@ -457,16 +456,16 @@ def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=155, 
     elif 'symptom' in kw_lower or 'infection' in kw_lower:
         leads = [
             f"Learn the common {cap_kw}, including early warning signs, typical causes, home remedies, and treatment tips.",
-            f"Discover the common {cap_kw}, including key warning signs, potential causes, relief methods, and home care.",
-            f"Explore the typical {cap_kw}, including early signs to watch, common triggers, relief methods, and treatments.",
+            f"Discover common {cap_kw}, including key warning signs, potential causes, relief methods, and home care.",
+            f"Explore typical {cap_kw}, including early signs to watch, common triggers, relief methods, and treatments.",
             f"Find verified medical facts on {cap_kw}, including early signs, common causes, at-home relief, and treatments."
         ]
     elif 'calendar' in kw_lower or 'memorial day' in kw_lower or 'olympics' in kw_lower:
         leads = [
             f"Get verified schedule facts on {cap_kw}, including official dates, observance traditions, and helpful events.",
-            f"Discover all verified details on {cap_kw}, including official dates, national traditions, and planning tips.",
-            f"Find the verified dates and facts for {cap_kw}, including holiday schedules, key traditions, and handy tips.",
-            f"Explore all the verified facts on {cap_kw}, including official dates, historical meaning, and event details."
+            f"Discover verified details on {cap_kw}, including official dates, national traditions, and planning tips.",
+            f"Find verified dates and facts for {cap_kw}, including holiday schedules, key traditions, and handy tips.",
+            f"Explore verified facts on {cap_kw}, including official dates, historical meaning, and event details."
         ]
     else:
         leads = [
@@ -476,43 +475,30 @@ def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=155, 
             f"Explore clear answers and verified facts about {cap_kw}, including essential background context and details."
         ]
 
-    # Flexible closers to hit target length
+    # Flexible natural topic closers without any brand mentions
     closers = [
-        "Learn everything you need on GeneralPedia.",
-        "Discover everything you need on GeneralPedia.",
-        "Learn all the verified facts on GeneralPedia.",
-        "Find out all the verified facts on GeneralPedia.",
-        "Explore all verified details on GeneralPedia.",
-        "Find all verified details on GeneralPedia.",
-        "Read the full factual guide on GeneralPedia.",
-        "Get all verified answers now on GeneralPedia.",
-        "Discover the full breakdown on GeneralPedia.",
-        "Find verified details today on GeneralPedia.",
-        "Read verified details today on GeneralPedia.",
-        "Find trusted answers today on GeneralPedia.",
-        "Explore verified facts now on GeneralPedia.",
-        "Find accurate answers now on GeneralPedia.",
-        "Read the full overview on GeneralPedia.",
-        "Read all the facts now on GeneralPedia.",
-        "Discover more details on GeneralPedia.",
-        "Find full details now on GeneralPedia.",
-        "Discover more facts on GeneralPedia.",
-        "Learn more details on GeneralPedia.",
-        "Learn the key facts on GeneralPedia.",
-        "Read the full facts on GeneralPedia.",
-        "Find trusted facts on GeneralPedia.",
-        "Find full details on GeneralPedia.",
-        "Read full details on GeneralPedia.",
-        "Learn more today on GeneralPedia.",
-        "Explore details on GeneralPedia.",
-        "Learn more now on GeneralPedia.",
-        "Find facts now on GeneralPedia.",
-        "Read more now on GeneralPedia.",
-        "Learn more on GeneralPedia.",
-        "Read more on GeneralPedia.",
-        "Visit GeneralPedia now.",
-        "On GeneralPedia today.",
-        "On GeneralPedia now.",
+        "Check all the essential details and updates.",
+        "Check full details, advice, and key points.",
+        "Review key points, context, and clear tips.",
+        "Check essential facts and accurate advice.",
+        "Review important facts and helpful updates.",
+        "Check verified facts and key details.",
+        "Review all key points and facts.",
+        "Review essential facts and details.",
+        "Check all verified details now.",
+        "Review complete details and facts.",
+        "Check the verified facts today.",
+        "Review important details today.",
+        "Check key facts and updates.",
+        "Check full details today.",
+        "Review verified facts now.",
+        "Check the key facts now.",
+        "Review essential facts.",
+        "Check full facts now.",
+        "Check key points today.",
+        "Review facts today.",
+        "Check all facts.",
+        ""
     ]
 
     for lead in leads:
@@ -591,7 +577,7 @@ def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=155, 
                 if min_len <= len(cand) <= max_len:
                     return cand
 
-    return f"Explore verified facts, direct answers, and important background details about {cap_kw}. Discover everything you need to know today on GeneralPedia."[:156]
+    return f"Explore verified facts, clear answers, and helpful background details about {cap_kw}. Review key points, essential context, and practical advice."[:156]
 
 def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
     """
