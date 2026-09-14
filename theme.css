@@ -1020,6 +1020,12 @@
     .article-body p {
       margin-bottom: 20px;
     }
+    .article-body > strong,
+    .article-body p strong:only-child {
+      display: block;
+      margin-bottom: 22px;
+      line-height: 1.8;
+    }
     .article-body ul, .article-body ol {
       margin: 16px 0 24px 28px;
     }

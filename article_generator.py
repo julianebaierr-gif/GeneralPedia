@@ -666,7 +666,7 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
    - Naturally weave the LSI and semantic keywords throughout headings and body paragraphs without keyword stuffing.
 
 4. Featured Snippet Optimization (Zero-Click Answer):
-   - Immediately following the first <h2> subheading, provide a direct, concise 40-55 word definitive answer block in <strong> bold tags that answers the core search query with laser accuracy.
+   - Immediately following the first <h2> subheading, provide a direct, concise 40-55 word definitive answer block enclosed in a dedicated paragraph with bold tags: <p><strong>[Direct laser-accurate answer]</strong></p>.
 
 5. Complete Generation Guarantee:
    - Produce the complete article from introduction to the final FAQ without stopping mid-thought or mid-sentence.
