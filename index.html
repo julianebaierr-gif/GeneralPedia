@@ -462,9 +462,10 @@
     }
     .hero-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr;
-      grid-template-rows: 240px 240px;
+      grid-template-columns: 1.6fr 1fr;
+      grid-template-rows: repeat(2, minmax(240px, 1fr));
       gap: 16px;
+      align-items: stretch;
     }
     .hero-main-card {
       grid-row: span 2;
@@ -476,23 +477,25 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 36px 32px;
+      padding: 32px 28px;
+      min-height: 496px;
       box-shadow: var(--shadow-md);
       background-size: cover;
       background-position: center;
       border: 1px solid var(--border-color);
+      text-decoration: none;
     }
-    /* Gradient overlay for hero cards */
     .hero-main-card::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(15,23,42,0.1) 0%, rgba(15,23,42,0.92) 80%, rgba(15,23,42,0.98) 100%);
-      transition: background 0.2s;
+      background: linear-gradient(180deg, rgba(15,23,42,0.1) 0%, rgba(15,23,42,0.85) 60%, rgba(15,23,42,0.98) 100%);
+      transition: opacity 0.2s ease;
       pointer-events: none;
+      z-index: 1;
     }
     .hero-main-card:hover::before {
-      background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(15,23,42,0.95) 75%, #0f172a 100%);
+      background: linear-gradient(180deg, rgba(15,23,42,0.2) 0%, rgba(15,23,42,0.92) 55%, #0f172a 100%);
     }
     .hero-sub-card {
       position: relative;
@@ -503,25 +506,31 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 20px 24px;
+      padding: 20px 22px;
+      min-height: 240px;
       box-shadow: var(--shadow-md);
+      background-size: cover;
+      background-position: center;
       border: 1px solid var(--border-color);
+      text-decoration: none;
     }
     .hero-sub-card::before {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(30,41,59,0.2) 0%, rgba(15,23,42,0.94) 85%);
-      transition: background 0.2s;
+      background: linear-gradient(180deg, rgba(15,23,42,0.15) 0%, rgba(15,23,42,0.88) 65%, rgba(15,23,42,0.98) 100%);
+      transition: opacity 0.2s ease;
       pointer-events: none;
+      z-index: 1;
     }
     .hero-sub-card:hover::before {
-      background: linear-gradient(180deg, rgba(30,41,59,0.3) 0%, rgba(15,23,42,0.98) 80%);
+      background: linear-gradient(180deg, rgba(15,23,42,0.25) 0%, rgba(15,23,42,0.94) 60%, #0f172a 100%);
     }
     .hero-card-content {
       position: relative;
       z-index: 2;
       color: #ffffff;
+      width: 100%;
     }
     .category-badge {
       display: inline-block;
@@ -530,8 +539,8 @@
       font-size: 0.75rem;
       font-weight: 800;
       text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 2px;
+      padding: 4px 9px;
+      border-radius: 3px;
       letter-spacing: 0.04em;
       margin-bottom: 10px;
     }
@@ -541,25 +550,34 @@
     .category-badge.amber { background: #d97706; }
 
     .hero-main-title {
-      font-size: 1.75rem;
+      font-size: 1.65rem;
       font-weight: 800;
-      line-height: 1.25;
-      margin-bottom: 12px;
+      line-height: 1.3;
+      margin-bottom: 10px;
       color: #ffffff;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .hero-sub-title {
-      font-size: 1.125rem;
+      font-size: 1.05rem;
       font-weight: 700;
       line-height: 1.35;
       margin-bottom: 8px;
       color: #ffffff;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .hero-meta {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 8px 12px;
       font-size: 0.8125rem;
       color: #cbd5e1;
     }
@@ -1418,6 +1436,17 @@
 
     /* ==================== RESPONSIVE BREAKPOINTS ==================== */
     @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+      .hero-main-card {
+        grid-row: span 1;
+        min-height: 380px;
+      }
+      .hero-sub-card {
+        min-height: 220px;
+      }
       .magazine-layout {
         grid-template-columns: 1fr;
       }
@@ -2063,35 +2092,49 @@
       const p3 = ARTICLES_DATA[2] || p1;
 
       function getImg(art) {
-        if (!art || !art.content_html) return '';
-        const m = art.content_html.match(/<img[^>]+src=["']([^"']+)["']/);
-        return m ? m[1] : '';
+        if (!art) return '';
+        if (art.featured_image) return art.featured_image;
+        if (art.content_html) {
+          const m = art.content_html.match(/<img[^>]+src=["']([^"']+)["']/);
+          if (m) return m[1];
+        }
+        return '';
       }
 
       heroContainer.innerHTML = `
-        <a href="/${p1.id}" class="hero-main-card" onclick="handleCardClick(event, '${p1.id}')" style="${getImg(p1) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p1)}');` : ''}">
+        <a href="/${p1.id}" class="hero-main-card" onclick="handleCardClick(event, '${p1.id}')" style="${getImg(p1) ? `background-image: url('${getImg(p1)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge">${escapeHtml(p1.category_name || 'Featured')}</span>
             <h2 class="hero-main-title">${escapeHtml(p1.title)}</h2>
             <div class="hero-meta">
-              <span>By <a href="/author/${(p1.author_name||'').toLowerCase().replace(/\s+/g,'-')}" class="art-author-link" onclick="event.preventDefault();event.stopPropagation();showAuthorProfile('${p1.category_slug||''}')">${escapeHtml(p1.author_name || 'Editorial Staff')}</a></span><span>•</span>
-              <span>${p1.display_date || 'Recent'}</span><span>•</span>
+              <span>By <span class="art-author-link" style="color:#ffffff;font-weight:700;" onclick="event.preventDefault();event.stopPropagation();showAuthorProfile('${p1.category_slug||''}')">${escapeHtml(p1.author_name || 'Editorial Staff')}</span></span>
+              <span>•</span>
+              <span>${p1.display_date || 'Recent'}</span>
+              <span>•</span>
               <span>${p1.read_time || '6 min read'}</span>
             </div>
           </div>
         </a>
-        <a href="/${p2.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p2.id}')" style="${getImg(p2) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p2)}');` : ''}">
+        <a href="/${p2.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p2.id}')" style="${getImg(p2) ? `background-image: url('${getImg(p2)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge blue">${escapeHtml(p2.category_name || 'Guide')}</span>
             <h3 class="hero-sub-title">${escapeHtml(p2.title)}</h3>
-            <div class="hero-meta"><span>${p2.display_date || 'Recent'}</span><span>•</span><span>${p2.read_time || '5 min'}</span></div>
+            <div class="hero-meta">
+              <span>${p2.display_date || 'Recent'}</span>
+              <span>•</span>
+              <span>${p2.read_time || '5 min'}</span>
+            </div>
           </div>
         </a>
-        <a href="/${p3.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p3.id}')" style="${getImg(p3) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p3)}');` : ''}">
+        <a href="/${p3.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p3.id}')" style="${getImg(p3) ? `background-image: url('${getImg(p3)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge green">${escapeHtml(p3.category_name || 'Analysis')}</span>
             <h3 class="hero-sub-title">${escapeHtml(p3.title)}</h3>
-            <div class="hero-meta"><span>${p3.display_date || 'Recent'}</span><span>•</span><span>${p3.read_time || '5 min'}</span></div>
+            <div class="hero-meta">
+              <span>${p3.display_date || 'Recent'}</span>
+              <span>•</span>
+              <span>${p3.read_time || '5 min'}</span>
+            </div>
           </div>
         </a>
       `;

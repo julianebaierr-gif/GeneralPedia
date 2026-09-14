@@ -14,35 +14,49 @@
       const p3 = ARTICLES_DATA[2] || p1;
 
       function getImg(art) {
-        if (!art || !art.content_html) return '';
-        const m = art.content_html.match(/<img[^>]+src=["']([^"']+)["']/);
-        return m ? m[1] : '';
+        if (!art) return '';
+        if (art.featured_image) return art.featured_image;
+        if (art.content_html) {
+          const m = art.content_html.match(/<img[^>]+src=["']([^"']+)["']/);
+          if (m) return m[1];
+        }
+        return '';
       }
 
       heroContainer.innerHTML = `
-        <a href="/${p1.id}" class="hero-main-card" onclick="handleCardClick(event, '${p1.id}')" style="${getImg(p1) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p1)}');` : ''}">
+        <a href="/${p1.id}" class="hero-main-card" onclick="handleCardClick(event, '${p1.id}')" style="${getImg(p1) ? `background-image: url('${getImg(p1)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge">${escapeHtml(p1.category_name || 'Featured')}</span>
             <h2 class="hero-main-title">${escapeHtml(p1.title)}</h2>
             <div class="hero-meta">
-              <span>By <a href="/author/${(p1.author_name||'').toLowerCase().replace(/\s+/g,'-')}" class="art-author-link" onclick="event.preventDefault();event.stopPropagation();showAuthorProfile('${p1.category_slug||''}')">${escapeHtml(p1.author_name || 'Editorial Staff')}</a></span><span>•</span>
-              <span>${p1.display_date || 'Recent'}</span><span>•</span>
+              <span>By <span class="art-author-link" style="color:#ffffff;font-weight:700;" onclick="event.preventDefault();event.stopPropagation();showAuthorProfile('${p1.category_slug||''}')">${escapeHtml(p1.author_name || 'Editorial Staff')}</span></span>
+              <span>•</span>
+              <span>${p1.display_date || 'Recent'}</span>
+              <span>•</span>
               <span>${p1.read_time || '6 min read'}</span>
             </div>
           </div>
         </a>
-        <a href="/${p2.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p2.id}')" style="${getImg(p2) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p2)}');` : ''}">
+        <a href="/${p2.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p2.id}')" style="${getImg(p2) ? `background-image: url('${getImg(p2)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge blue">${escapeHtml(p2.category_name || 'Guide')}</span>
             <h3 class="hero-sub-title">${escapeHtml(p2.title)}</h3>
-            <div class="hero-meta"><span>${p2.display_date || 'Recent'}</span><span>•</span><span>${p2.read_time || '5 min'}</span></div>
+            <div class="hero-meta">
+              <span>${p2.display_date || 'Recent'}</span>
+              <span>•</span>
+              <span>${p2.read_time || '5 min'}</span>
+            </div>
           </div>
         </a>
-        <a href="/${p3.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p3.id}')" style="${getImg(p3) ? `background-image: linear-gradient(to top, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.4) 60%, rgba(15,23,42,0.2) 100%), url('${getImg(p3)}');` : ''}">
+        <a href="/${p3.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p3.id}')" style="${getImg(p3) ? `background-image: url('${getImg(p3)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge green">${escapeHtml(p3.category_name || 'Analysis')}</span>
             <h3 class="hero-sub-title">${escapeHtml(p3.title)}</h3>
-            <div class="hero-meta"><span>${p3.display_date || 'Recent'}</span><span>•</span><span>${p3.read_time || '5 min'}</span></div>
+            <div class="hero-meta">
+              <span>${p3.display_date || 'Recent'}</span>
+              <span>•</span>
+              <span>${p3.read_time || '5 min'}</span>
+            </div>
           </div>
         </a>
       `;
