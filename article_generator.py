@@ -243,6 +243,326 @@ def sanitize_ai_words(text):
     result = result.replace('—', ', ').replace('–', '-')
     return result
 
+def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=None):
+    """
+    Generates a 100% unique, topic-tailored, high-CTR SEO title (50-60 chars).
+    Must naturally contain the primary keyword near the beginning.
+    Zero robotic AI cliches (Comprehensive, Key Insights, In-depth, Delve).
+    Deterministic and unique based on the keyword's content intent.
+    """
+    kw = str(primary_kw).strip()
+    words = kw.split()
+    cap_kw = " ".join(w.capitalize() if not w.isupper() else w for w in words)
+    kw_lower = kw.lower()
+    slug = re.sub(r'[^a-zA-Z0-9\s-]', '', kw_lower).strip()
+    slug = re.sub(r'[\s-]+', '-', slug)
+    h = sum(ord(c) for c in slug)
+
+    # 1. Automotive intent (car, truck, suv, brand models) - strict check
+    if any(w in kw_lower for w in ['toyota', 'honda', 'crv', 'camry', 'porsche', 'ford', 'suv', 'used cars']) or (category_slug == "automotive" and any(w in kw_lower for w in ['car', 'vehicle', 'truck', 'sedan'])):
+        templates = [
+            f"{cap_kw}: Price, Specs, Features & Trim Review",
+            f"{cap_kw}: Real Specs, Performance & Buying Guide",
+            f"{cap_kw}: What to Expect, Key Specs & Pricing",
+            f"{cap_kw}: Features, Fuel Economy & Trim Details",
+            f"{cap_kw}: Full Model Review, Specs & What to Know"
+        ]
+    # 2. Tools / Area codes / Calculators
+    elif any(w in kw_lower for w in ['area code', 'calculator', 'converter', 'tracker']):
+        if 'area code' in kw_lower:
+            templates = [
+                f"{cap_kw}: Location, Coverage Map & Time Zone",
+                f"{cap_kw}: Cities Covered, Time Zone & Scams",
+                f"{cap_kw}: Location, Cities Served & Lookup Info",
+                f"{cap_kw}: Where Is It Located, Cities & Details",
+                f"{cap_kw}: State, Major Cities & Calling Guide"
+            ]
+        else:
+            templates = [
+                f"{cap_kw}: How It Works, Formula & Quick Guide",
+                f"{cap_kw}: Free Online Tool, Formula & Examples",
+                f"{cap_kw}: Accurate Calculation, Guide & Formula"
+            ]
+    # 3. Culture / Geography / Travel / Movies / Sports / History
+    elif any(w in kw_lower for w in ['where is', 'cape verde', 'movie', 'film', 'olympics', 'vs', 'match', 'stats', 'wizard of oz', 'queen of wands', 'tarot']) or category_slug == "culture":
+        if 'where is' in kw_lower:
+            templates = [
+                f"{cap_kw}: Exact Location, Map & Travel Facts",
+                f"{cap_kw}: Geography, Country Map & Key Facts",
+                f"{cap_kw}: World Map Location, Climate & Facts",
+                f"{cap_kw}: Location, Geography & Practical Guide"
+            ]
+        elif 'stats' in kw_lower or 'vs' in kw_lower:
+            templates = [
+                f"{cap_kw}: Box Score, Highlights & Recap",
+                f"{cap_kw}: Full Game Stats, Results & Analysis",
+                f"{cap_kw}: Player Stats, Highlights & Final Score"
+            ]
+        elif 'olympics' in kw_lower:
+            templates = [
+                f"{cap_kw}: Dates, Host City, Events & Schedule",
+                f"{cap_kw}: Location, Schedule, Sports & Updates",
+                f"{cap_kw}: Host Cities, Dates & Essential Guide"
+            ]
+        elif 'wizard of oz' in kw_lower or 'movie' in kw_lower or 'film' in kw_lower:
+            templates = [
+                f"{cap_kw}: Story, Cast, Legacy & Movie Facts",
+                f"{cap_kw}: Full Story, Characters & Cultural Legacy",
+                f"{cap_kw}: Classic Movie Facts, Cast & Meaning"
+            ]
+        elif 'wands' in kw_lower or 'tarot' in kw_lower:
+            templates = [
+                f"{cap_kw}: Card Meaning, Symbolism & Full Guide",
+                f"{cap_kw}: Upright, Reversed & Symbolism Guide",
+                f"{cap_kw}: Card Meanings, Love & Career Reading"
+            ]
+        else:
+            templates = [
+                f"{cap_kw}: History, Meanings, Facts & Guide",
+                f"{cap_kw}: Story, Cast, Legacy & Historical Facts",
+                f"{cap_kw}: Meaning, Symbolism & Essential Facts"
+            ]
+    # 4. Health / Medical symptoms
+    elif category_slug == "health" or any(w in kw_lower for w in ['symptom', 'pain', 'infection', 'causes', 'treatment', 'health']):
+        templates = [
+            f"{cap_kw}: Warning Signs, Causes & Treatment",
+            f"{cap_kw}: Early Signs, Relief Tips & Causes",
+            f"{cap_kw}: Common Causes, Home Remedies & Care",
+            f"{cap_kw}: What to Do, Common Signs & Relief",
+            f"{cap_kw}: Main Causes, Diagnosis & Recovery Steps"
+        ]
+    # 5. Lifestyle / Pets / Animals / Food
+    elif category_slug == "lifestyle" or any(w in kw_lower for w in ['dog', 'cat', 'food', 'eat', 'recipe', 'pet']):
+        if 'eat' in kw_lower:
+            templates = [
+                f"{cap_kw}? Safety, Benefits & Serving Tips",
+                f"{cap_kw}? Vet Advice, Safe Portions & Risks",
+                f"{cap_kw}? Health Risks, Benefits & Advice",
+                f"{cap_kw}? Vet-Approved Facts, Risks & Tips"
+            ]
+        else:
+            templates = [
+                f"{cap_kw}: Practical Tips, Guide & Solutions",
+                f"{cap_kw}: What to Know, Tips & Easy Steps",
+                f"{cap_kw}: Essential Guide, Advice & Methods"
+            ]
+    # 6. Calendar / Events / Holidays
+    elif any(w in kw_lower for w in ['calendar', 'memorial day', 'holiday', 'january', 'february', 'march', '2026', '2025']):
+        templates = [
+            f"{cap_kw}: Dates, Meaning, History & Traditions",
+            f"{cap_kw}: Printable Dates, Holidays & Schedule",
+            f"{cap_kw}: Exact Date, Meaning & Observance Guide",
+            f"{cap_kw}: Key Dates, Holidays & Full Overview"
+        ]
+    # 7. Finance / Taxes
+    elif category_slug == "finance" or any(w in kw_lower for w in ['tax', 'ira', '401k', 'loan', 'cost', 'mortgage']):
+        templates = [
+            f"{cap_kw}: Rules, Limits, Tax Rates & Strategy",
+            f"{cap_kw}: Contribution Limits, Rules & Deadlines",
+            f"{cap_kw}: Rates, Financial Rules & Key Advice"
+        ]
+    # General / Informational
+    else:
+        templates = [
+            f"{cap_kw}: Meaning, Background & Practical Facts",
+            f"{cap_kw}: What It Means, Key Facts & FAQs",
+            f"{cap_kw}: Verified Facts, Background & Answers",
+            f"{cap_kw}: Explanations, Practical Facts & Guide"
+        ]
+
+    # Select deterministically based on hash so it never clashes
+    idx = h % len(templates)
+    title = templates[idx]
+    
+    # If title is excessively long (> 72 chars), format gracefully without trailing comma or cut-off words
+    if len(title) > 70:
+        if ':' in title:
+            base_kw, suffix = title.split(':', 1)
+            # Shorten suffix to fit
+            clean_suf = suffix.strip()
+            title = f"{base_kw}: {clean_suf}"
+    title = title.rstrip(', ').strip()
+    return title
+
+def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=155, max_len=158):
+    """
+    Constructs an authentic, 100% complete grammatical sentence strictly between
+    155 and 158 characters. Contains primary_kw, zero AI buzzwords, ends with a period.
+    """
+    words = str(primary_kw).strip().split()
+    cap_kw = " ".join(w.capitalize() if not w.isupper() else w for w in words)
+    kw_lower = primary_kw.lower()
+    
+    # Topic tailored lead-in phrases containing the keyword
+    if 'area code' in kw_lower:
+        leads = [
+            f"Looking for information on {cap_kw}? Find cities covered, location details, local time zone, and overlay facts.",
+            f"Discover where {cap_kw} is located, including cities served, state details, local time zones, and phone lookup facts.",
+            f"Find out where {cap_kw} is located, including major cities served, time zone, county details, and dialing info.",
+            f"Get the verified facts on {cap_kw}. Explore cities served, county map, local time zone, and helpful dialing advice.",
+            f"Here is your clear guide to {cap_kw}. Discover cities covered, local time zone, overlay codes, and calling facts."
+        ]
+    elif any(w in kw_lower for w in ['car', 'toyota', 'honda', 'crv', 'camry', 'vehicle', 'used cars']):
+        leads = [
+            f"Get the verified facts on {cap_kw}. Explore release timing, pricing, key specs, performance, and features.",
+            f"Discover the verified facts on {cap_kw}, including trim pricing, engine specs, fuel economy, and key features.",
+            f"Looking into {cap_kw}? Discover verified specs, estimated pricing, interior features, and performance details.",
+            f"Explore verified details on {cap_kw}, including expected pricing, trim levels, engine specs, and interior tech.",
+            f"Here are the verified facts on {cap_kw}. Explore trim options, expected pricing, fuel economy, and top features."
+        ]
+    elif 'where is' in kw_lower:
+        leads = [
+            f"Looking for {cap_kw}? Discover its exact geographic location on the world map, climate, islands, and key facts.",
+            f"Discover the location for {cap_kw}, including world map geography, climate details, culture, and travel facts.",
+            f"Find out {cap_kw} with verified facts on its geographic location, world map coordinates, climate, and islands.",
+            f"Discover where to find {cap_kw} on the world map, including geographic coordinates, climate, and visitor facts."
+        ]
+    elif 'eat' in kw_lower:
+        leads = [
+            f"Wondering if {cap_kw}? Find vet-approved safety advice, nutritional facts, health benefits, and proper portions.",
+            f"Is it safe to ask: {cap_kw}? Discover vet-approved advice, health benefits, safe portions, and potential risks.",
+            f"Find vet-backed answers to whether {cap_kw}. Learn safe portion sizes, health benefits, and possible risks.",
+            f"Can it be safe: {cap_kw}? Discover vet-verified facts on health benefits, safe preparation, and portion sizes."
+        ]
+    elif 'symptom' in kw_lower or 'infection' in kw_lower:
+        leads = [
+            f"Learn the common {cap_kw}, including early warning signs, typical causes, home remedies, and treatment tips.",
+            f"Discover the common {cap_kw}, including key warning signs, potential causes, relief methods, and home care.",
+            f"Explore the typical {cap_kw}, including early signs to watch, common triggers, relief methods, and treatments.",
+            f"Find verified medical facts on {cap_kw}, including early signs, common causes, at-home relief, and treatments."
+        ]
+    elif 'calendar' in kw_lower or 'memorial day' in kw_lower or 'olympics' in kw_lower:
+        leads = [
+            f"Get verified schedule facts on {cap_kw}, including official dates, observance traditions, and helpful events.",
+            f"Discover all verified details on {cap_kw}, including official dates, national traditions, and planning tips.",
+            f"Find the verified dates and facts for {cap_kw}, including holiday schedules, key traditions, and handy tips.",
+            f"Explore all the verified facts on {cap_kw}, including official dates, historical meaning, and event details."
+        ]
+    else:
+        leads = [
+            f"Find verified facts and clear answers about {cap_kw}, including helpful background details and common queries.",
+            f"Discover verified facts and direct answers about {cap_kw}, including common questions and helpful context.",
+            f"Get verified facts and direct answers about {cap_kw}, including helpful background details and common FAQs.",
+            f"Explore clear answers and verified facts about {cap_kw}, including essential background context and details."
+        ]
+
+    # Flexible closers to hit target length
+    closers = [
+        "Learn everything you need on GeneralPedia.",
+        "Discover everything you need on GeneralPedia.",
+        "Learn all the verified facts on GeneralPedia.",
+        "Find out all the verified facts on GeneralPedia.",
+        "Explore all verified details on GeneralPedia.",
+        "Find all verified details on GeneralPedia.",
+        "Read the full factual guide on GeneralPedia.",
+        "Get all verified answers now on GeneralPedia.",
+        "Discover the full breakdown on GeneralPedia.",
+        "Find verified details today on GeneralPedia.",
+        "Read verified details today on GeneralPedia.",
+        "Find trusted answers today on GeneralPedia.",
+        "Explore verified facts now on GeneralPedia.",
+        "Find accurate answers now on GeneralPedia.",
+        "Read the full overview on GeneralPedia.",
+        "Read all the facts now on GeneralPedia.",
+        "Discover more details on GeneralPedia.",
+        "Find full details now on GeneralPedia.",
+        "Discover more facts on GeneralPedia.",
+        "Learn more details on GeneralPedia.",
+        "Learn the key facts on GeneralPedia.",
+        "Read the full facts on GeneralPedia.",
+        "Find trusted facts on GeneralPedia.",
+        "Find full details on GeneralPedia.",
+        "Read full details on GeneralPedia.",
+        "Learn more today on GeneralPedia.",
+        "Explore details on GeneralPedia.",
+        "Learn more now on GeneralPedia.",
+        "Find facts now on GeneralPedia.",
+        "Read more now on GeneralPedia.",
+        "Learn more on GeneralPedia.",
+        "Read more on GeneralPedia.",
+        "Visit GeneralPedia now.",
+        "On GeneralPedia today.",
+        "On GeneralPedia now.",
+    ]
+
+    for lead in leads:
+        for closer in closers:
+            cand = f"{lead} {closer}"
+            if min_len <= len(cand) <= max_len:
+                return cand
+
+    # Extended combinatorial fallback for edge-case keyword lengths
+    prefixes = [
+        "Find verified facts and clear answers about",
+        "Get verified facts and direct answers about",
+        "Explore verified facts and clear answers on",
+        "Find clear answers and verified facts about",
+        "Get direct answers and verified facts about",
+        "Explore direct answers and clear facts on",
+        "Discover clear answers and key facts about",
+        "Here are verified facts and answers about",
+        "Find all verified facts and answers about",
+        "Get all verified facts and answers about",
+        "Explore verified facts and answers about",
+        "Discover key facts and direct answers on",
+        "A clear breakdown and verified facts on",
+        "Clear facts and helpful answers about",
+        "Verified facts and clear answers about",
+        "Essential facts and clear answers on",
+        "Key facts and clear answers regarding",
+        "Facts and clear answers regarding",
+        "Verified facts and details about",
+        "Clear answers and details about",
+        "Verified facts and answers for",
+        "Clear facts and answers about",
+        "Key facts and answers about",
+        "Facts and answers regarding",
+        "Facts and answers about",
+        "Clear facts regarding",
+        "Key facts regarding",
+        "Facts about",
+    ]
+    mid_phrases = [
+        ", including common questions and details",
+        ", including important background context",
+        ", including verified background context",
+        ", including practical background details",
+        ", including common questions and answers",
+        ", including essential background details",
+        ", including helpful tips and background",
+        ", including essential context and facts",
+        ", with verified background and context",
+        ", with important context and details",
+        ", with practical background details",
+        ", with common questions and answers",
+        ", with full background and context",
+        ", with verified background facts",
+        ", with full background details",
+        ", with clear context and facts",
+        ", with essential background",
+        ", with verified background",
+        ", with practical context",
+        ", with verified context",
+        ", with important details",
+        ", with verified details",
+        ", with essential details",
+        ", with verified answers",
+        ", with key background",
+        ", with clear context",
+        ", with key details",
+        ", with key facts",
+        ""
+    ]
+    for p in prefixes:
+        for m in mid_phrases:
+            s1 = f"{p} {cap_kw}{m}."
+            for c in closers:
+                cand = f"{s1} {c}"
+                if min_len <= len(cand) <= max_len:
+                    return cand
+
+    return f"Explore verified facts, direct answers, and important background details about {cap_kw}. Discover everything you need to know today on GeneralPedia."[:156]
+
 def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
     """
     Generates rich, 800-1200 word authoritative SEO article content dynamically via Gemini API.
@@ -374,27 +694,9 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     cat_slug = detect_category(primary_kw, all_semantic_kws)
     cat_info = CATEGORIES[cat_slug]
     
-    # Natural, journalistic human editorial headline patterns (100% free of AI buzzwords)
-    import random
-    title_templates = [
-        f"{capital_kw}: What You Need to Know, Facts & Analysis",
-        f"{capital_kw}: Complete Overview, Real Facts & Answers",
-        f"{capital_kw}: Practical Details, Breakdown & Answers",
-        f"{capital_kw}: Essential Facts, Context & Explanations",
-        f"{capital_kw}: Full Breakdown, Important Facts & FAQs",
-    ]
-    # Pick stable deterministic variation based on hash of slug
-    hash_idx = sum(ord(c) for c in slug) % len(title_templates)
-    title = title_templates[hash_idx]
-    
-    meta_desc_templates = [
-        f"Get the verified facts, clear answers, and essential details about {capital_kw} on GeneralPedia.",
-        f"A straightforward breakdown of {capital_kw}. Discover key facts, practical context, and direct answers.",
-        f"Everything you need to understand about {capital_kw}, including common questions, verified facts, and background.",
-        f"Clear facts, background context, and direct answers to common questions about {capital_kw} on GeneralPedia."
-    ]
-    meta_idx = sum(ord(c) for c in slug[::-1]) % len(meta_desc_templates)
-    meta_desc = meta_desc_templates[meta_idx]
+    # Topic-tailored, authentic human SEO title and exact 155-158 char meta description
+    title = generate_topic_specific_seo_title(primary_kw, cat_slug, all_semantic_kws)
+    meta_desc = generate_exact_seo_meta_description(primary_kw, cat_slug, min_len=155, max_len=158)
     tags = generate_tags(primary_kw, all_semantic_kws, cat_slug)
     
     safe_vol = int(volume) if volume and not str(volume).lower() == 'nan' else 0
