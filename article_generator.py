@@ -29,6 +29,28 @@ def slugify(text):
     text = re.sub(r'[^a-zA-Z0-9\s-]', '', str(text).lower()).strip()
     return re.sub(r'[\s-]+', '-', text)
 
+def slugify_with_seo_title(primary_kw, seo_title):
+    """
+    Builds a high-impact, human-natural SEO slug incorporating the primary keyword
+    plus distinguishing keywords from the SEO Title (e.g. 'honda-crv-2026-price-specs-features-trim').
+    """
+    clean_title = re.sub(r'[^a-zA-Z0-9\s-]', '', str(seo_title).lower())
+    words = clean_title.split()
+    stop_words = {'a', 'an', 'the', 'and', 'or', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'is', 'it', 'by', 'vs'}
+    meaningful = [w for w in words if w not in stop_words]
+    kw_terms = [re.sub(r'[^a-zA-Z0-9]', '', w.lower()) for w in primary_kw.split()]
+    
+    slug_words = []
+    for kw_w in kw_terms:
+        if kw_w and kw_w not in slug_words:
+            slug_words.append(kw_w)
+            
+    for w in meaningful:
+        if w not in slug_words and len(slug_words) < 7:
+            slug_words.append(w)
+            
+    return "-".join(slug_words)
+
 def capitalize_keyword(kw):
     if not kw:
         return ""
@@ -225,6 +247,14 @@ AI_REPLACEMENTS = {
     r'\bIt is important to remember\b': 'Keep in mind',
     r'\bit is crucial to\b': 'make sure to',
     r'\bIt is crucial to\b': 'Make sure to',
+    r'\blearn more today\b': 'get the full picture',
+    r'\bLearn more today\b': 'Get the full picture',
+    r'\blearn more details\b': 'see key facts',
+    r'\bLearn more details\b': 'See key facts',
+    r'\blearn more now\b': 'get full facts',
+    r'\bLearn more now\b': 'Get full facts',
+    r'\blearn more\b': 'see more',
+    r'\bLearn more\b': 'See more',
     r'\bcrucial\b': 'important',
     r'\bCrucial\b': 'Important',
 }
@@ -696,6 +726,8 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     
     # Topic-tailored, authentic human SEO title and exact 155-158 char meta description
     title = generate_topic_specific_seo_title(primary_kw, cat_slug, all_semantic_kws)
+    slug = slugify_with_seo_title(primary_kw, title)
+    post_url = f"https://general-pedia.vercel.app/{slug}"
     meta_desc = generate_exact_seo_meta_description(primary_kw, cat_slug, min_len=155, max_len=158)
     tags = generate_tags(primary_kw, all_semantic_kws, cat_slug)
     
