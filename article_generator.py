@@ -730,7 +730,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     faqs = extract_faqs_from_html(body_content)
     faq_schema = build_faq_schema_json(faqs)
     
-    # 4. Fetch unique contextual image via Unsplash API by ID using enriched visual queries
+    # 4. Fetch unique contextual featured image via Unsplash API by ID using enriched visual queries
     img_info = fetch_unique_unsplash_image(query=visual_queries, fallback_terms=[primary_kw, cat_info["name"]])
     featured_img_url = ""
     image_id = ""
@@ -745,6 +745,40 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         </figure>
         """
         body_content = img_html + body_content
+
+    # 5. Fetch unique mid-content image strictly relative to keyword/subtopics and not used anywhere else
+    mid_queries = [
+        f"{primary_kw} details",
+        f"{primary_kw} overview",
+        f"{cat_info['name']} reference",
+        "detailed workflow"
+    ]
+    if len(visual_queries) > 1:
+        mid_queries = visual_queries[1:] + mid_queries
+
+    mid_img_info = fetch_unique_unsplash_image(query=mid_queries, fallback_terms=[primary_kw, cat_info["name"]])
+    if mid_img_info:
+        mid_html = f"""
+        <figure class="mid-article-figure" style="margin: 36px 0;">
+            <img src="{mid_img_info['url']}" alt="{mid_img_info['alt']}" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 10px;" />
+            <figcaption style="font-size: 0.825rem; color: #64748b; margin-top: 8px; font-style: italic;">Photo: {mid_img_info['alt']} (via Unsplash / {mid_img_info['credit']})</figcaption>
+        </figure>
+        """
+        # Place mid-content: before 3rd h2 or 2nd h2 or halfway through paragraphs
+        h2_positions = [m.start() for m in re.finditer(r'<h2\b[^>]*>', body_content, re.IGNORECASE)]
+        if len(h2_positions) >= 3:
+            pos = h2_positions[2]
+            body_content = body_content[:pos] + mid_html + body_content[pos:]
+        elif len(h2_positions) >= 2:
+            pos = h2_positions[1]
+            body_content = body_content[:pos] + mid_html + body_content[pos:]
+        else:
+            p_positions = [m.end() for m in re.finditer(r'</p>', body_content, re.IGNORECASE)]
+            if len(p_positions) >= 4:
+                mid_pos = p_positions[len(p_positions) // 2]
+                body_content = body_content[:mid_pos] + mid_html + body_content[mid_pos:]
+            else:
+                body_content = body_content + mid_html
     
     article_data = {
         "id": slug,
