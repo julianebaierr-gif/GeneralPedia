@@ -17,6 +17,33 @@ except ImportError:
 
 ONLINE_SHEET_CSV_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/export?format=csv&gid={SHEET_GID}"
 POSTS_DB_FILE = os.path.join(DATA_DIR, "posts_database.json")
+PUBLISHER_STATE_FILE = os.path.join(DATA_DIR, "publisher_state.json")
+
+# Fixed ordered list of all active categories to cycle through
+CATEGORY_CYCLE = [
+    "how-to",
+    "finance",
+    "health",
+    "tools",
+    "automotive",
+    "lifestyle",
+    "culture",
+    "tech"
+]
+
+def get_publisher_state():
+    os.makedirs(DATA_DIR, exist_ok=True)
+    if os.path.exists(PUBLISHER_STATE_FILE):
+        try:
+            with open(PUBLISHER_STATE_FILE, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"last_category_index": -1, "last_category_slug": None, "cycle_count": 0}
+
+def save_publisher_state(state):
+    with open(PUBLISHER_STATE_FILE, 'w', encoding='utf-8') as f:
+        json.dump(state, f, indent=2)
 
 def get_posts_database():
     os.makedirs(DATA_DIR, exist_ok=True)
@@ -40,37 +67,82 @@ def publish_next_post():
     """
     Automated job:
     1. Reads live topics directly from online Google Sheet via HTTPS
-    2. Checks existing database IDs to skip published ones
-    3. Generates 800-1200 words via Gemini API
-    4. Fetches unique image by ID from Unsplash API
-    5. Saves post and logs to Google Sheet via Webhook
+    2. Cycles through categories one-by-one (Round-Robin)
+    3. If an entire category is exhausted (no unposted keywords), it skips to the next
+    4. When all categories finish their turn, cycles back to the 1st category
+    5. Generates 800-1200 words via Gemini API & Unsplash API
+    6. Saves post, logs to Google Sheet via Webhook, and rebuilds index.html
     """
+    from article_generator import slugify, detect_category
+
     df = fetch_online_keywords_dataframe()
     posts = get_posts_database()
+    state = get_publisher_state()
+
     existing_ids = {str(p.get('id', '')).strip().lower() for p in posts}
     existing_slugs = {str(p.get('slug', '')).strip().lower() for p in posts}
     existing_kws = {str(p.get('primary_keyword', '')).strip().lower() for p in posts}
-    
-    selected_row = None
+
+    # Group all available, unposted rows by their detected category
+    unposted_by_category = {cat: [] for cat in CATEGORY_CYCLE}
+
     for idx, row in df.iterrows():
         primary_kw = str(row['Primary_Focus_Keyword']).strip()
-        from article_generator import slugify
         slug = slugify(primary_kw).lower()
-        if slug not in existing_ids and slug not in existing_slugs and primary_kw.lower() not in existing_kws:
-            selected_row = row
+        if slug in existing_ids or slug in existing_slugs or primary_kw.lower() in existing_kws:
+            continue
+
+        sem_raw = str(row.get('Semantic_Keywords_List', ''))
+        semantic_kws = [k.strip() for k in sem_raw.split(',') if k.strip() and k.strip().lower() != 'none (single standalone topic)']
+        detected_cat = detect_category(primary_kw, semantic_kws)
+
+        if detected_cat not in unposted_by_category:
+            unposted_by_category[detected_cat] = []
+        unposted_by_category[detected_cat].append(row)
+
+    # Determine which category should publish next using round-robin cycle
+    last_idx = state.get("last_category_index", -1)
+    total_cats = len(CATEGORY_CYCLE)
+
+    selected_row = None
+    selected_cat = None
+    selected_cat_idx = None
+
+    # Try every category in order starting right after last_idx
+    for step in range(1, total_cats + 1):
+        candidate_idx = (last_idx + step) % total_cats
+        candidate_cat = CATEGORY_CYCLE[candidate_idx]
+        available_rows = unposted_by_category.get(candidate_cat, [])
+
+        if available_rows:
+            selected_row = available_rows[0]
+            selected_cat = candidate_cat
+            selected_cat_idx = candidate_idx
+            print(f"[Round-Robin] Selected Category '{candidate_cat}' ({len(available_rows)} keywords remaining in category)")
             break
-            
+        else:
+            print(f"[Round-Robin] Category '{candidate_cat}' has 0 available keywords, skipping to next category...")
+
+    # If all standard categories in cycle are exhausted, fallback to any unposted category
     if selected_row is None:
-        return {"success": False, "message": "All keywords published!"}
-        
+        for cat, rows in unposted_by_category.items():
+            if rows:
+                selected_row = rows[0]
+                selected_cat = cat
+                selected_cat_idx = CATEGORY_CYCLE.index(cat) if cat in CATEGORY_CYCLE else 0
+                break
+
+    if selected_row is None:
+        return {"success": False, "message": "All keywords in all categories have been published!"}
+
     primary_kw = str(selected_row['Primary_Focus_Keyword']).strip()
     sem_raw = str(selected_row.get('Semantic_Keywords_List', ''))
     semantic_kws = [k.strip() for k in sem_raw.split(',') if k.strip() and k.strip().lower() != 'none (single standalone topic)']
-    
+
     vol = selected_row.get('Primary_Volume', 0)
     kd = selected_row.get('Primary_KD', 0)
     cpc = selected_row.get('Primary_CPC', 0.0)
-    
+
     # 1. Generate SEO Article via Gemini API & Unsplash API
     article = generate_article(primary_kw, semantic_kws, volume=vol, kd=kd, cpc=cpc)
     
@@ -94,7 +166,18 @@ def publish_next_post():
         post_date_time=article['published_at']
     )
     
-    # 5. Rebuild static index.html
+    # 5. Save updated round-robin state
+    new_cycle_count = state.get("cycle_count", 0)
+    if selected_cat_idx == total_cats - 1:
+        new_cycle_count += 1
+    save_publisher_state({
+        "last_category_index": selected_cat_idx,
+        "last_category_slug": selected_cat,
+        "cycle_count": new_cycle_count,
+        "last_published_at": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+    })
+
+    # 6. Rebuild static index.html
     try:
         from rebuild_full_theme import rebuild_site
         rebuild_site()
@@ -103,6 +186,7 @@ def publish_next_post():
         
     return {
         "success": True,
+        "category": selected_cat,
         "article": article,
         "sheet_sync": sheet_res,
         "total_published": len(posts)

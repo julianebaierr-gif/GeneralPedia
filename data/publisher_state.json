@@ -1,14 +1,6 @@
 {
-  "published_count": 8,
-  "last_published_index": 7,
-  "published_ids": [
-    "2026-winter-olympics",
-    "the-wizard-of-oz",
-    "sinus-infection-symptoms",
-    "can-dogs-eat-bananas",
-    "2025-toyota-camry",
-    "atlanta-hawks-vs-knicks-match-player-stats",
-    "january-2026-calendar",
-    "queen-of-wands"
-  ]
+  "last_category_index": 5,
+  "last_category_slug": "lifestyle",
+  "cycle_count": 0,
+  "last_published_at": "2026-09-14 13:48:00 UTC"
 }
