@@ -12,7 +12,8 @@ def rebuild_site():
 
     # Sort newest first
     posts_data.sort(key=lambda x: x.get("published_at", "") or x.get("created_at", ""), reverse=True)
-    articles_json = json.dumps(posts_data, ensure_ascii=False)
+    # Safely escape any '</script' occurrences in the JSON string
+    articles_json = json.dumps(posts_data, ensure_ascii=False).replace("</script", "<\\/script").replace("</Script", "<\\/Script")
 
     with open(os.path.join(SCRATCH_DIR, "theme.css"), "r", encoding="utf-8") as f:
         theme_css = f.read()

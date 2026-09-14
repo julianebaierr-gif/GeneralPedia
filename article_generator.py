@@ -300,11 +300,6 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     faqs = extract_faqs_from_html(body_content)
     faq_schema = build_faq_schema_json(faqs)
     
-    # Embed schema script directly in post HTML for static crawlers
-    if faq_schema:
-        schema_tag = f'\n<script type="application/ld+json">\n{faq_schema}\n</script>\n'
-        body_content = body_content + schema_tag
-        
     # 4. Fetch unique contextual image via Unsplash API by ID using enriched visual queries
     img_info = fetch_unique_unsplash_image(query=visual_queries, fallback_terms=[primary_kw, cat_info["name"]])
     featured_img_url = ""
