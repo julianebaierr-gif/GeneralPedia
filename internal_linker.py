@@ -122,6 +122,30 @@ ANCHOR_MAP = [
     }
 ]
 
+def get_active_targets():
+    targets = list(ANCHOR_MAP)
+    known_ids = {t["id"] for t in targets}
+    if os.path.exists(DB_PATH):
+        try:
+            with open(DB_PATH, "r", encoding="utf-8") as f:
+                db_posts = json.load(f)
+            for p in db_posts:
+                pid = p.get("slug") or p.get("id")
+                if pid and pid not in known_ids:
+                    pkw = p.get("primary_keyword", "")
+                    clean_kw = re.sub(r'[^a-zA-Z0-9\s]', '', pkw).strip().lower()
+                    if clean_kw:
+                        targets.append({
+                            "id": pid,
+                            "title": p.get("title", pkw),
+                            "category": p.get("category_slug", "guide"),
+                            "patterns": [rf"\b{re.escape(clean_kw)}\b"]
+                        })
+                        known_ids.add(pid)
+        except Exception:
+            pass
+    return targets
+
 def inject_natural_internal_links(content_html, curr_id, curr_cat=None):
     if not content_html:
         return content_html
@@ -132,6 +156,8 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None):
     clean_content = re.sub(r'<li class="gp-related-reading-item">.*?</li>\s*', '', clean_content, flags=re.DOTALL)
     clean_content = re.sub(r'\s*</div>\s*<ul class="gp-related-reading-list">', '', clean_content)
     clean_content = re.sub(r'<a\b[^>]*class="gp-internal-link"[^>]*>(.*?)</a>', r'\1', clean_content)
+
+    targets = get_active_targets()
 
     # Natural In-Text Linking directly on words/phrases inside <p> paragraphs
     linked_in_this_post = set()
@@ -145,7 +171,7 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None):
         if '<a ' in text or 'gp-interactive-tool' in text or '<button' in text:
             return match.group(0)
 
-        for target in ANCHOR_MAP:
+        for target in targets:
             if target["id"] == curr_id or target["id"] in linked_in_this_post or len(linked_in_this_post) >= 3:
                 continue
             for pat in target["patterns"]:
@@ -165,8 +191,8 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None):
     updated_content = p_pattern.sub(link_p, clean_content)
 
     # 2. Add 'Recommended Further Reading & Related Guides' strictly BELOW FAQs
-    same_cat_targets = [t for t in ANCHOR_MAP if t["id"] != curr_id and t.get("category") == curr_cat]
-    other_cat_targets = [t for t in ANCHOR_MAP if t["id"] != curr_id and t.get("category") != curr_cat]
+    same_cat_targets = [t for t in targets if t["id"] != curr_id and t.get("category") == curr_cat]
+    other_cat_targets = [t for t in targets if t["id"] != curr_id and t.get("category") != curr_cat]
     selected_related = (same_cat_targets + other_cat_targets)[:3]
 
     if selected_related:

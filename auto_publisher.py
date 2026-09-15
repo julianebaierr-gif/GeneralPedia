@@ -19,7 +19,7 @@ ONLINE_SHEET_CSV_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}
 POSTS_DB_FILE = os.path.join(DATA_DIR, "posts_database.json")
 PUBLISHER_STATE_FILE = os.path.join(DATA_DIR, "publisher_state.json")
 
-# Fixed ordered list of all active categories to cycle through
+# Fixed ordered list of all active categories to cycle through (7 categories)
 CATEGORY_CYCLE = [
     "how-to",
     "finance",
@@ -27,8 +27,7 @@ CATEGORY_CYCLE = [
     "tools",
     "automotive",
     "lifestyle",
-    "culture",
-    "tech"
+    "culture"
 ]
 
 def get_publisher_state():

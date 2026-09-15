@@ -2,8 +2,9 @@ name: Auto Publish Articles and Tools
 
 on:
   schedule:
-    # Runs every 4 hours (UTC)
-    - cron: '0 */4 * * *'
+    # Runs 7 times per 24 hours (exactly 1 article per category daily across the 7 categories)
+    # At minutes 0 past hours 0, 3, 7, 10, 14, 17, 21 UTC
+    - cron: '0 0,3,7,10,14,17,21 * * *'
   workflow_dispatch:
 
 permissions:
