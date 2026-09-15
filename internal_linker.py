@@ -13,118 +13,52 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 
 ANCHOR_MAP = [
     {
-        "id": "12mm-to-inches-meaning-background-practical-facts",
-        "title": "12mm To Inches: Complete Metric & Hardware Guide",
-        "category": "tools",
-        "patterns": [r"\b12mm to inches\b", r"\bmetric to imperial\b", r"\bmetric measurements\b", r"\bmetric and imperial\b"]
-    },
-    {
-        "id": "how-to-change-a-tire-meaning-background",
-        "title": "How To Change A Tire: Step-by-Step Emergency Guide",
-        "category": "automotive",
-        "patterns": [r"\bhow to change a tire\b", r"\bspare tire\b", r"\broadside emergency\b", r"\bvehicle maintenance\b"]
-    },
-    {
-        "id": "oz-to-gallon-explanations-practical-facts-guide",
-        "title": "Oz To Gallon: Liquid Volume & Conversions",
-        "category": "tools",
-        "patterns": [r"\boz to gallon\b", r"\bfluid ounces\b", r"\bliquid measurements\b", r"\bvolume conversions\b"]
-    },
-    {
-        "id": "thrush-in-mouth-common-causes-home-remedies",
-        "title": "Thrush In Mouth: Causes & Natural Home Remedies",
-        "category": "health",
-        "patterns": [r"\bthrush in mouth\b", r"\boral thrush\b", r"\boral hygiene\b", r"\bimmune system\b"]
+        "id": "memorial-day-2026-dates-meaning-history-traditions",
+        "title": "Memorial Day 2026: Dates, Meaning, History & Traditions",
+        "category": "how-to",
+        "patterns": [r"\bmemorial day 2026\b", r"\bmemorial day\b", r"\bfederal holiday\b"]
     },
     {
         "id": "tax-brackets-2025-key-dates-holidays-full",
-        "title": "Tax Brackets 2025: Federal Tax Rates & Deadlines",
+        "title": "Tax Brackets 2025: Key Dates, Holidays & Full Overview",
         "category": "finance",
-        "patterns": [r"\btax brackets 2025\b", r"\bfederal tax brackets\b", r"\bincome tax\b", r"\btax rate\b", r"\btax bracket\b"]
-    },
-    {
-        "id": "best-running-shoes-2025-printable-dates-holidays",
-        "title": "Best Running Shoes 2025: Cushioning & Athletic Footwear",
-        "category": "how-to",
-        "patterns": [r"\brunning shoes\b", r"\bathletic footwear\b", r"\bcushioning\b"]
-    },
-    {
-        "id": "twilight-movies-in-order-full-story-characters",
-        "title": "Twilight Movies In Order: Full Saga Timeline",
-        "category": "culture",
-        "patterns": [r"\btwilight movies\b", r"\bmovie franchise\b", r"\bcinematic release\b"]
-    },
-    {
-        "id": "dryer-vent-cleaning-what-know-tips-easy",
-        "title": "Dryer Vent Cleaning: Essential Fire Safety & Tips",
-        "category": "lifestyle",
-        "patterns": [r"\bdryer vent cleaning\b", r"\bhousehold safety\b", r"\bventilation\b", r"\bfire hazard\b"]
-    },
-    {
-        "id": "roth-ira-calculator-how-works-formula-quick",
-        "title": "Roth IRA Calculator: Formulas & Compound Growth",
-        "category": "tools",
-        "patterns": [r"\broth ira\b", r"\bretirement savings\b", r"\bcompound interest\b", r"\bfinancial planning\b"]
-    },
-    {
-        "id": "loan-payoff-calculator-free-online-tool-formula",
-        "title": "Loan Payoff Calculator: Amortization & Debt Reduction",
-        "category": "tools",
-        "patterns": [r"\bloan payoff calculator\b", r"\binterest rate\b", r"\bmonthly payments\b", r"\bdebt payoff\b"]
-    },
-    {
-        "id": "honda-crv-2026-price-specs-features-trim",
-        "title": "Honda CR-V 2026: Pricing, Specs & Trims",
-        "category": "automotive",
-        "patterns": [r"\bhonda cr-v\b", r"\bcompact suv\b", r"\ball-wheel drive\b"]
-    },
-    {
-        "id": "2025-toyota-camry-features-fuel-economy-trim",
-        "title": "2025 Toyota Camry: Hybrid Performance & MPG",
-        "category": "automotive",
-        "patterns": [r"\btoyota camry\b", r"\bhybrid sedan\b", r"\bfuel economy\b", r"\bmpg\b"]
-    },
-    {
-        "id": "used-cars-for-sale-real-specs-performance",
-        "title": "Used Cars For Sale: Buyer Checklist & Inspection",
-        "category": "automotive",
-        "patterns": [r"\bused cars\b", r"\bpre-owned vehicle\b", r"\bvehicle inspection\b"]
+        "patterns": [r"\btax brackets 2025\b", r"\bfederal tax brackets\b", r"\bincome tax rate\b", r"\btax bracket\b"]
     },
     {
         "id": "sinus-infection-symptoms-main-causes-diagnosis-recovery",
-        "title": "Sinus Infection Symptoms: Causes & Recovery Guide",
+        "title": "Sinus Infection Symptoms: Main Causes, Diagnosis & Recovery Steps",
         "category": "health",
-        "patterns": [r"\bsinus infection\b", r"\bsinus pressure\b", r"\bcongestion\b", r"\bantibiotics\b"]
+        "patterns": [r"\bsinus infection symptoms\b", r"\bsinus infection\b", r"\bsinus pressure\b", r"\bnasal congestion\b"]
+    },
+    {
+        "id": "january-2026-calendar-dates-meaning-history-traditions",
+        "title": "January 2026 Calendar: Dates, Meaning, History & Traditions",
+        "category": "tools",
+        "patterns": [r"\bjanuary 2026 calendar\b", r"\b2026 calendar\b", r"\bmonthly calendar\b"]
+    },
+    {
+        "id": "2025-toyota-camry-features-fuel-economy-trim",
+        "title": "2025 Toyota Camry: Features, Fuel Economy & Trim Details",
+        "category": "automotive",
+        "patterns": [r"\b2025 toyota camry\b", r"\btoyota camry\b", r"\bhybrid sedan\b", r"\bfuel economy\b"]
     },
     {
         "id": "can-dogs-eat-bananas-safety-benefits-serving",
-        "title": "Can Dogs Eat Bananas: Canine Nutrition & Benefits",
-        "category": "finance",
-        "patterns": [r"\bcan dogs eat bananas\b", r"\bpet health\b", r"\bdog nutrition\b"]
-    },
-    {
-        "id": "the-wizard-of-oz-classic-movie-facts",
-        "title": "The Wizard of Oz: Classic Movie History & Facts",
-        "category": "finance",
-        "patterns": [r"\bthe wizard of oz\b", r"\bclassic cinema\b", r"\bfilm history\b"]
+        "title": "Can Dogs Eat Bananas? Safety, Benefits & Serving Tips",
+        "category": "lifestyle",
+        "patterns": [r"\bcan dogs eat bananas\b", r"\bdog nutrition\b", r"\bcanine diet\b", r"\bpet health\b"]
     },
     {
         "id": "2026-winter-olympics-location-schedule-sports-updates",
-        "title": "2026 Winter Olympics: Venues & Competition Guide",
-        "category": "finance",
-        "patterns": [r"\bwinter olympics\b", r"\bolympic games\b", r"\bathletic competition\b"]
-    },
-    {
-        "id": "memorial-day-2026-dates-meaning-history-traditions",
-        "title": "Memorial Day 2026: Origins, Observance & Meaning",
-        "category": "how-to",
-        "patterns": [r"\bmemorial day\b", r"\bfederal holiday\b", r"\bnational traditions\b"]
+        "title": "2026 Winter Olympics: Location, Schedule, Sports & Updates",
+        "category": "culture",
+        "patterns": [r"\b2026 winter olympics\b", r"\bwinter olympics\b", r"\bmilano cortina 2026\b", r"\bolympic games\b"]
     }
 ]
 
 def get_active_targets():
-    targets = list(ANCHOR_MAP)
-    known_ids = {t["id"] for t in targets}
+    targets = []
+    known_ids = set()
     if os.path.exists(DB_PATH):
         try:
             with open(DB_PATH, "r", encoding="utf-8") as f:
@@ -144,6 +78,9 @@ def get_active_targets():
                         known_ids.add(pid)
         except Exception:
             pass
+    # Fallback to ANCHOR_MAP only if database is empty
+    if not targets:
+        targets = list(ANCHOR_MAP)
     return targets
 
 def inject_natural_internal_links(content_html, curr_id, curr_cat=None):

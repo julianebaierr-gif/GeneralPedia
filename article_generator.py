@@ -142,22 +142,33 @@ def build_faq_schema_json(faqs):
 def enrich_semantic_and_visual_terms(primary_kw, existing_semantic_kws):
     """
     Intelligently expands semantic/LSI keywords and generates contextual visual search terms.
-    If sheet already has semantic keywords, complements them with topic-specific LSI terms.
-    If sheet has None/empty keywords, generates 6-10 highly relevant LSI keywords and visual queries.
+    Filters out any irrelevant keywords from corrupted cluster lists.
+    Always uses Gemini to produce 6-8 directly relevant, intent-driven LSI terms and 3 precise visual queries.
     """
-    cleaned_existing = [
-        k.strip() for k in existing_semantic_kws
-        if k and k.strip() and k.strip().lower() != 'none (single standalone topic)'
-    ]
+    kw_words = set(re.findall(r'\w+', primary_kw.lower()))
     
-    # Prompt Gemini for accurate semantic terms and stock photo visual queries
+    # Filter existing sheet keywords to only keep ones that share thematic words or are genuinely relevant
+    cleaned_existing = []
+    for k in existing_semantic_kws:
+        k_clean = str(k).strip()
+        if not k_clean or k_clean.lower() == 'none (single standalone topic)':
+            continue
+        # If the sheet keyword shares at least one meaningful word with primary keyword, keep it
+        k_words = set(re.findall(r'\w+', k_clean.lower()))
+        common = kw_words.intersection(k_words)
+        # ignore generic stop words in intersection
+        stop = {'the', 'a', 'an', 'in', 'on', 'at', 'to', 'for', 'of', 'and', 'or', 'is', 'it', 'what', 'how'}
+        meaningful_common = common - stop
+        if meaningful_common or len(existing_semantic_kws) <= 5:
+            cleaned_existing.append(k_clean)
+
     prompt = f"""For the primary informational topic: "{primary_kw}"
-Existing related keywords: {', '.join(cleaned_existing) if cleaned_existing else 'None'}
+Contextual keywords: {', '.join(cleaned_existing[:8]) if cleaned_existing else 'None'}
 
 Perform two tasks:
 1. Provide 6 to 8 highly relevant, intent-driven LSI/semantic search phrases strictly tied to "{primary_kw}".
-   - Ensure they match real Google search queries (how it works, definitions, causes, solutions, specifications, comparisons).
-2. Provide 3 concrete, descriptive visual search queries for Unsplash stock photography that represent this exact subject (e.g. real-world objects, tools, settings, city scenes - avoid abstract words or numbers alone).
+   - Ensure they match real Google search queries (how it works, definitions, causes, solutions, specifications, comparisons, schedules, facts).
+2. Provide 3 concrete, descriptive visual search queries for Unsplash stock photography that represent this exact subject (e.g. real-world objects, settings, equipment, authentic scenery - avoid abstract words or numbers alone).
 
 Return strictly a JSON object with no markdown code fences:
 {{"semantic_keywords": ["keyword 1", "keyword 2"], "visual_queries": ["query 1", "query 2"]}}
@@ -173,7 +184,7 @@ Return strictly a JSON object with no markdown code fences:
     generated_semantics = []
     visual_queries = []
     
-    for model_name in ["gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.5-flash", "gemini-flash-latest"]:
+    for model_name in ["gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-flash-latest"]:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
         try:
             req = urllib.request.Request(
@@ -194,10 +205,10 @@ Return strictly a JSON object with no markdown code fences:
         except Exception:
             continue
 
-    # Merge sheet keywords + Gemini LSI keywords
+    # Prefer generated, highly relevant semantics, supplemented with clean sheet terms
     combined_semantics = []
     seen = set()
-    for kw in cleaned_existing + generated_semantics:
+    for kw in generated_semantics + cleaned_existing:
         clean = kw.strip()
         lower = clean.lower()
         if clean and lower != primary_kw.lower() and lower not in seen:
@@ -206,9 +217,9 @@ Return strictly a JSON object with no markdown code fences:
 
     # Fallback visual queries if API failed
     if not visual_queries:
-        visual_queries = [primary_kw, f"{primary_kw} guide", "technology workplace"]
+        visual_queries = [primary_kw, f"{primary_kw} guide", "detailed reference"]
 
-    return combined_semantics, visual_queries
+    return combined_semantics[:10], visual_queries
 
 AI_REPLACEMENTS = {
     # Direct robotic markers
