@@ -122,14 +122,18 @@ ANCHOR_MAP = [
     }
 ]
 
-def inject_natural_internal_links(content_html, curr_id, curr_cat):
+def inject_natural_internal_links(content_html, curr_id, curr_cat=None):
     if not content_html:
         return content_html
 
-    # Clean previous related reading boxes
+    # Clean any residual related reading boxes, lists, or bullets completely
     clean_content = re.sub(r'<div class="gp-related-reading-box">.*?</div>\s*', '', content_html, flags=re.DOTALL)
+    clean_content = re.sub(r'<ul class="gp-related-reading-list">.*?</ul>\s*', '', clean_content, flags=re.DOTALL)
+    clean_content = re.sub(r'<li class="gp-related-reading-item">.*?</li>\s*', '', clean_content, flags=re.DOTALL)
+    clean_content = re.sub(r'\s*</div>\s*<ul class="gp-related-reading-list">', '', clean_content)
+    clean_content = re.sub(r'<a\b[^>]*class="gp-internal-link"[^>]*>(.*?)</a>', r'\1', clean_content)
 
-    # 1. Natural In-Text Linking
+    # Natural In-Text Linking directly on words/phrases inside <p> paragraphs
     linked_in_this_post = set()
     p_pattern = re.compile(r'(<p\b[^>]*>)(.*?)(</p>)', re.IGNORECASE | re.DOTALL)
 
@@ -159,40 +163,6 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat):
         return f"{open_tag}{text}{close_tag}"
 
     updated_content = p_pattern.sub(link_p, clean_content)
-
-    # 2. Contextual Related Reading Box (3 related articles)
-    same_cat_targets = [t for t in ANCHOR_MAP if t["id"] != curr_id and t["category"] == curr_cat]
-    other_cat_targets = [t for t in ANCHOR_MAP if t["id"] != curr_id and t["category"] != curr_cat]
-    selected_related = (same_cat_targets + other_cat_targets)[:3]
-
-    items_html = ""
-    for t in selected_related:
-        cat_display = t["category"].replace("-", " ").title()
-        t_id = t["id"]
-        t_title = t["title"]
-        items_html += f"""
-        <li class="gp-related-reading-item">
-          <span class="gp-related-reading-badge">{cat_display}</span>
-          <a href="/{t_id}" class="gp-related-reading-link" onclick="handleCardClick(event, '{t_id}')">{t_title}</a>
-        </li>"""
-
-    box_html = f"""
-      <div class="gp-related-reading-box">
-        <div class="gp-related-reading-title">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          <span>Recommended Further Reading &amp; Related Guides</span>
-        </div>
-        <ul class="gp-related-reading-list">{items_html}
-        </ul>
-      </div>
-"""
-
-    faq_match = re.search(r'<h2\b[^>]*>.*?faq.*?</h2>|<h2\b[^>]*>.*?frequently asked.*?</h2>', updated_content, re.IGNORECASE)
-    if faq_match:
-        updated_content = updated_content[:faq_match.start()] + box_html + updated_content[faq_match.start():]
-    else:
-        updated_content = updated_content + box_html
-
     return updated_content
 
 def process_all_articles():
@@ -225,7 +195,7 @@ def process_all_articles():
     with open(DB_PATH, "w", encoding="utf-8") as f:
         json.dump(posts, f, indent=2, ensure_ascii=False)
 
-    print(f"Successfully processed and updated all {len(posts)} articles with natural internal links.")
+    print(f"Successfully processed all {len(posts)} articles with pure in-text internal links.")
 
 if __name__ == "__main__":
     process_all_articles()

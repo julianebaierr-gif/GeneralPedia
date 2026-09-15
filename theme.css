@@ -1670,7 +1670,7 @@
       display: none !important;
     }
 
-    /* Natural In-Article Internal Links */
+    /* Natural In-Article Internal Links (Inline on actual words) */
     .article-body a.gp-internal-link {
       color: var(--primary);
       text-decoration: underline;
@@ -1683,67 +1683,4 @@
       color: var(--secondary);
       background-color: rgba(2, 132, 199, 0.08);
       border-radius: 3px;
-    }
-
-    /* Contextual Related Reading Box inside Article */
-    .gp-related-reading-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-left: 4px solid var(--primary);
-      border-radius: var(--radius-md);
-      padding: 24px 28px;
-      margin: 36px 0;
-      box-shadow: var(--shadow-sm);
-    }
-    .gp-related-reading-title {
-      font-size: 1.0625rem;
-      font-weight: 800;
-      color: var(--text-main);
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .gp-related-reading-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      margin: 0;
-      padding: 0;
-    }
-    .gp-related-reading-item {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      font-size: 0.9375rem;
-      line-height: 1.5;
-    }
-    .gp-related-reading-item::before {
-      content: "→";
-      color: var(--secondary);
-      font-weight: 800;
-      font-size: 1rem;
-    }
-    .gp-related-reading-link {
-      color: var(--text-main);
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-    .gp-related-reading-link:hover {
-      color: var(--primary);
-      text-decoration: underline;
-    }
-    .gp-related-reading-badge {
-      font-size: 0.6875rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 4px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-color);
-      color: var(--text-subtle);
-      text-transform: uppercase;
     }
