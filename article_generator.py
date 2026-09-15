@@ -273,6 +273,15 @@ def sanitize_ai_words(text):
     result = text
     for pattern, replacement in AI_REPLACEMENTS.items():
         result = re.sub(pattern, replacement, result)
+    # Clean any malformed <li> tags mistakenly generated inside table rows <tr>
+    def fix_table_cells(match):
+        table_html = match.group(0)
+        # replace <li> inside table with <td>
+        table_html = re.sub(r'<li\b[^>]*>', '<td>', table_html, flags=re.IGNORECASE)
+        table_html = re.sub(r'</li>', '</td>', table_html, flags=re.IGNORECASE)
+        return table_html
+    result = re.sub(r'<table\b.*?</table>', fix_table_cells, result, flags=re.DOTALL | re.IGNORECASE)
+
     # Ensure zero em-dashes
     result = result.replace('—', ', ').replace('–', '-')
     return result
@@ -293,6 +302,7 @@ def format_crisp_paragraphs(html_text):
             p_clean.startswith('<ul') or 
             p_clean.startswith('<ol') or 
             p_clean.startswith('<details') or 
+            p_clean.startswith('<table') or
             p_clean.startswith('<strong') or
             p_clean.startswith('<div class="gp-interactive-tool-box')):
             new_paras.append(p)
@@ -680,6 +690,9 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
      * NEVER write huge, thick, intimidating blocks of text or 5+ sentence paragraphs!
      * Break all content into crisp, bite-sized paragraphs: exactly 2 sentences per paragraph (maximum 35-50 words per paragraph).
      * Use frequent whitespace, clear subheadings, and short 2-sentence paragraphs so readers on mobile and desktop can read effortlessly.
+   - CRITICAL HTML TABLE RULE:
+     * When creating comparisons or reference tables, always use standard table rows and cells: <table><thead><tr><th>...</th></tr></thead><tbody><tr><td>...</td></tr></tbody></table>.
+     * NEVER put <li> bullet tags inside <tr> or <td>! Always use clean, pure <td>Cell text</td>.
    - CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use standard commas, parentheses, or simple hyphens instead.
 
 7. MANDATORY FAQ ACCORDION SECTION (5 to 8 Questions):
