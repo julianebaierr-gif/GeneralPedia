@@ -387,6 +387,38 @@
       }
     }
 
+    function renderCategoryTaxonomySidebar() {
+      const catListEl = document.getElementById('cat-tax-list');
+      if (!catListEl || typeof ARTICLES_DATA === 'undefined') return;
+
+      const categoriesConfig = [
+        { slug: 'how-to', name: 'How-To & Tutorials' },
+        { slug: 'finance', name: 'Finance & Tax' },
+        { slug: 'health', name: 'Health & Wellness' },
+        { slug: 'tools', name: 'Calculators & Tools' },
+        { slug: 'automotive', name: 'Automotive' },
+        { slug: 'lifestyle', name: 'Lifestyle & Living' },
+        { slug: 'culture', name: 'Culture & Tarot' }
+      ];
+
+      // Calculate real-time dynamic count for each category
+      const counts = {};
+      ARTICLES_DATA.forEach(art => {
+        const cat = art.category_slug || '';
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+
+      catListEl.innerHTML = categoriesConfig.map(cat => {
+        const count = counts[cat.slug] || 0;
+        return `
+          <li class="cat-tax-item" onclick="filterCategory('${cat.slug}')">
+            <span>${cat.name}</span>
+            <span class="cat-count">${count}</span>
+          </li>
+        `;
+      }).join('');
+    }
+
     function findArticle(idOrSlug) {
       if (!idOrSlug || typeof ARTICLES_DATA === 'undefined') return null;
       const clean = String(idOrSlug).toLowerCase().trim().replace(/^\/+|\/+$/g, '');
@@ -737,4 +769,5 @@
     renderHeroGrid();
     renderTrendingMini();
     renderPopularSidebar();
+    renderCategoryTaxonomySidebar();
     handleRoute();
