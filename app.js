@@ -177,8 +177,41 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const overlay = document.getElementById('mobile-drawer-overlay');
+      const btn = document.getElementById('mobile-menu-btn');
+      if (!drawer || !overlay) return;
+      const isOpen = drawer.classList.contains('active');
+      if (isOpen) {
+        closeMobileMenu();
+      } else {
+        drawer.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+      }
+    }
+
+    function closeMobileMenu() {
+      const drawer = document.getElementById('mobile-nav-drawer');
+      const overlay = document.getElementById('mobile-drawer-overlay');
+      const btn = document.getElementById('mobile-menu-btn');
+      if (drawer) drawer.classList.remove('active');
+      if (overlay) overlay.classList.remove('active');
+      document.body.style.overflow = '';
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+
     function updateNavHighlight(slug) {
       document.querySelectorAll('.nav-item-btn').forEach(btn => {
+        if (btn.dataset.cat === slug) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      document.querySelectorAll('.mobile-nav-item').forEach(btn => {
         if (btn.dataset.cat === slug) {
           btn.classList.add('active');
         } else {
