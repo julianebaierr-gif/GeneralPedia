@@ -826,7 +826,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
 
     # 6. Auto-generate & embed interactive calculator/tool if topic warrants it
     if is_tool_or_calculator_topic(primary_kw, all_semantic_kws):
-        tool_widget = generate_interactive_tool_html(capital_kw)
+        tool_widget = generate_interactive_tool_html(capital_kw, all_semantic_kws)
         if tool_widget:
             # Place tool widget right after first <h2> or blockquote/paragraph
             h2_first = re.search(r'</h2>', body_content, re.IGNORECASE)

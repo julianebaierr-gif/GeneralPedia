@@ -63,11 +63,11 @@ def fetch_online_keywords_dataframe():
         content = resp.read().decode('utf-8', errors='ignore')
         return pd.read_csv(io.StringIO(content))
 
-def publish_next_post():
+def publish_next_post(target_category=None):
     """
     Automated job:
     1. Reads live topics directly from online Google Sheet via HTTPS
-    2. Cycles through categories one-by-one (Round-Robin)
+    2. Cycles through categories one-by-one (Round-Robin) or targets specific category if requested
     3. If an entire category is exhausted (no unposted keywords), it skips to the next
     4. When all categories finish their turn, cycles back to the 1st category
     5. Generates 800-1200 words via Gemini API & Unsplash API
@@ -100,7 +100,7 @@ def publish_next_post():
             unposted_by_category[detected_cat] = []
         unposted_by_category[detected_cat].append(row)
 
-    # Determine which category should publish next using round-robin cycle
+    # Determine which category should publish next
     last_idx = state.get("last_category_index", -1)
     total_cats = len(CATEGORY_CYCLE)
 
@@ -108,29 +108,36 @@ def publish_next_post():
     selected_cat = None
     selected_cat_idx = None
 
-    # Try every category in order starting right after last_idx
-    for step in range(1, total_cats + 1):
-        candidate_idx = (last_idx + step) % total_cats
-        candidate_cat = CATEGORY_CYCLE[candidate_idx]
-        available_rows = unposted_by_category.get(candidate_cat, [])
+    # If a specific category was requested manually, prioritize it
+    if target_category and target_category in unposted_by_category and unposted_by_category[target_category]:
+        selected_row = unposted_by_category[target_category][0]
+        selected_cat = target_category
+        selected_cat_idx = CATEGORY_CYCLE.index(target_category) if target_category in CATEGORY_CYCLE else last_idx
+        print(f"[Direct-Category] Selected Category '{target_category}' ({len(unposted_by_category[target_category])} keywords remaining)")
+    else:
+        # Try every category in order starting right after last_idx
+        for step in range(1, total_cats + 1):
+            candidate_idx = (last_idx + step) % total_cats
+            candidate_cat = CATEGORY_CYCLE[candidate_idx]
+            available_rows = unposted_by_category.get(candidate_cat, [])
 
-        if available_rows:
-            selected_row = available_rows[0]
-            selected_cat = candidate_cat
-            selected_cat_idx = candidate_idx
-            print(f"[Round-Robin] Selected Category '{candidate_cat}' ({len(available_rows)} keywords remaining in category)")
-            break
-        else:
-            print(f"[Round-Robin] Category '{candidate_cat}' has 0 available keywords, skipping to next category...")
-
-    # If all standard categories in cycle are exhausted, fallback to any unposted category
-    if selected_row is None:
-        for cat, rows in unposted_by_category.items():
-            if rows:
-                selected_row = rows[0]
-                selected_cat = cat
-                selected_cat_idx = CATEGORY_CYCLE.index(cat) if cat in CATEGORY_CYCLE else 0
+            if available_rows:
+                selected_row = available_rows[0]
+                selected_cat = candidate_cat
+                selected_cat_idx = candidate_idx
+                print(f"[Round-Robin] Selected Category '{candidate_cat}' ({len(available_rows)} keywords remaining in category)")
                 break
+            else:
+                print(f"[Round-Robin] Category '{candidate_cat}' has 0 available keywords, skipping to next category...")
+
+        # If all standard categories in cycle are exhausted, fallback to any unposted category
+        if selected_row is None:
+            for cat, rows in unposted_by_category.items():
+                if rows:
+                    selected_row = rows[0]
+                    selected_cat = cat
+                    selected_cat_idx = CATEGORY_CYCLE.index(cat) if cat in CATEGORY_CYCLE else 0
+                    break
 
     if selected_row is None:
         return {"success": False, "message": "All keywords in all categories have been published!"}
