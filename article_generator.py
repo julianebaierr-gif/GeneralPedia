@@ -8,10 +8,12 @@ try:
     from config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
     from image_service import fetch_unique_unsplash_image
     from tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
+    from internal_linker import inject_natural_internal_links
 except ImportError:
     from .config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
     from .image_service import fetch_unique_unsplash_image
     from .tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
+    from .internal_linker import inject_natural_internal_links
 from env_loader import get_secret
 
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
@@ -841,6 +843,12 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
                     body_content = body_content[:h2_first.end()] + tool_widget + body_content[h2_first.end():]
             else:
                 body_content = tool_widget + body_content
+
+    # 7. Naturally inject contextual in-text internal links & Related Guides box
+    try:
+        body_content = inject_natural_internal_links(body_content, slug, cat_slug)
+    except Exception as e:
+        print(f"[Internal Linker Warning] Failed to inject internal links: {e}")
     
     article_data = {
         "id": slug,
