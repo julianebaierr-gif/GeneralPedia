@@ -148,6 +148,10 @@ def rebuild_site():
     with open(index_file, "w", encoding="utf-8") as f:
         f.write(full_html)
 
+    if os.path.exists(os.path.dirname(site_index_file)):
+        with open(site_index_file, "w", encoding="utf-8") as f:
+            f.write(full_html)
+
     # Update sitemap.xml
     try:
         today_str = datetime.now().strftime("%Y-%m-%d")
