@@ -19,11 +19,11 @@ from env_loader import get_secret
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
 
 FALLBACK_MODELS = [
-    "gemini-3.8-flash",
-    "gemini-3.7-flash",
     "gemini-3.6-flash",
     "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
+    "gemini-3.8-flash",
+    "gemini-3.7-flash",
     "gemini-3.1-flash-lite",
     "gemini-flash-lite-latest",
     "gemini-flash-latest"
@@ -722,15 +722,21 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
                     continue
                     
                 raw_text = parts[0].get('text', '').strip()
-                if not raw_text or len(raw_text) < 400:
+                if not raw_text or len(raw_text.split()) < 650:
+                    print(f"[Gemini AI] Model {model_name} generated too few words ({len(raw_text.split()) if raw_text else 0}), trying next...")
                     continue
-                    
+
                 clean_html = re.sub(r'^```html\s*', '', raw_text)
                 clean_html = re.sub(r'```$', '', clean_html).strip()
-                
+
+                # Ensure article ends cleanly with </details> or </p>
+                if not (clean_html.endswith('</details>') or clean_html.endswith('</p>') or clean_html.endswith('</div>')):
+                    print(f"[Gemini AI] Model {model_name} cut off prematurely, trying next fallback...")
+                    continue
+
                 # Sanitize any accidental AI buzzwords or em-dashes
                 clean_html = sanitize_ai_words(clean_html)
-                
+
                 word_count = len(clean_html.split())
                 print(f"[Gemini AI Success] Model: {model_name} generated complete article ({word_count} words, finish: {finish_reason})")
                 return clean_html

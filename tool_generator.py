@@ -78,10 +78,10 @@ REQUIREMENTS:
 
     models = [
         "gemini-3.6-flash",
-        "gemini-3.7-flash",
-        "gemini-3.8-flash",
         "gemini-3.5-flash",
         "gemini-3.5-flash-lite",
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
         "gemini-flash-latest"
     ]
 
@@ -92,7 +92,7 @@ REQUIREMENTS:
                 "contents": [{"parts": [{"text": prompt}]}],
                 "generationConfig": {
                     "temperature": 0.2,
-                    "maxOutputTokens": 2000
+                    "maxOutputTokens": 4096
                 }
             }
             req = urllib.request.Request(
@@ -113,9 +113,11 @@ REQUIREMENTS:
                 clean_html = re.sub(r'^```\s*', '', clean_html)
                 clean_html = re.sub(r'```$', '', clean_html).strip()
 
-                if '<div class="gp-interactive-tool-box"' in clean_html and '<script>' in clean_html:
+                if '<div class="gp-interactive-tool-box"' in clean_html and '<script>' in clean_html and '</script>' in clean_html and '</div>' in clean_html:
                     print(f"[Tool Generator] Successfully generated 100% custom AI interactive tool for '{primary_kw}' using {model_name}")
                     return clean_html
+                else:
+                    print(f"[Tool Generator] Model {model_name} generated incomplete tool HTML (missing closing tags), trying next fallback...")
         except Exception as e:
             print(f"[Tool Generator Warning] {model_name} failed: {e}. Trying fallback...")
             continue
