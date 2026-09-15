@@ -1684,3 +1684,72 @@
       background-color: rgba(2, 132, 199, 0.08);
       border-radius: 3px;
     }
+
+    /* Recommended Further Reading & Related Guides Section (Below FAQs) */
+    .gp-related-reading-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 24px 28px;
+      margin-top: 40px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .gp-related-reading-title {
+      font-size: 1.125rem;
+      font-weight: 800;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .gp-related-reading-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+    }
+    .gp-related-reading-item {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+    }
+    .gp-related-reading-item::before {
+      content: "→";
+      color: var(--secondary);
+      font-weight: 800;
+      font-size: 1.125rem;
+      line-height: 1;
+    }
+    .gp-related-reading-link {
+      color: var(--text-main);
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .gp-related-reading-link:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    .gp-related-reading-badge {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      flex-shrink: 0;
+    }

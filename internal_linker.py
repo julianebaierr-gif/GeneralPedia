@@ -163,6 +163,42 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None):
         return f"{open_tag}{text}{close_tag}"
 
     updated_content = p_pattern.sub(link_p, clean_content)
+
+    # 2. Add 'Recommended Further Reading & Related Guides' strictly BELOW FAQs
+    same_cat_targets = [t for t in ANCHOR_MAP if t["id"] != curr_id and t.get("category") == curr_cat]
+    other_cat_targets = [t for t in ANCHOR_MAP if t["id"] != curr_id and t.get("category") != curr_cat]
+    selected_related = (same_cat_targets + other_cat_targets)[:3]
+
+    if selected_related:
+        items_html = ""
+        for t in selected_related:
+            cat_display = t.get("category", "Guide").replace("-", " ").title()
+            t_id = t["id"]
+            t_title = t["title"]
+            items_html += f"""
+        <li class="gp-related-reading-item">
+          <span class="gp-related-reading-badge">{cat_display}</span>
+          <a href="/{t_id}" class="gp-related-reading-link" onclick="handleCardClick(event, '{t_id}')">{t_title}</a>
+        </li>"""
+
+        box_html = f"""
+<div class="gp-related-reading-box">
+  <div class="gp-related-reading-title">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+    <span>Recommended Further Reading &amp; Related Guides</span>
+  </div>
+  <ul class="gp-related-reading-list">{items_html}
+  </ul>
+</div>
+"""
+        # Place strictly after the last </details> (end of FAQs), or at the very end of content
+        last_details_matches = list(re.finditer(r'</details>', updated_content, re.IGNORECASE))
+        if last_details_matches:
+            insert_idx = last_details_matches[-1].end()
+            updated_content = updated_content[:insert_idx] + box_html + updated_content[insert_idx:]
+        else:
+            updated_content = updated_content + box_html
+
     return updated_content
 
 def process_all_articles():
