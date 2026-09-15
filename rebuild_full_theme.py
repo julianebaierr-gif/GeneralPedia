@@ -27,11 +27,11 @@ def rebuild_site():
   <meta name="keywords" content="generalpedia, knowledge hub, encyclopedia, digital magazine, personal finance, tutorials, tax guides, automotive reviews">
   <meta name="author" content="GeneralPedia Editorial Board">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://generalpedia.com">
+  <link rel="canonical" href="https://general-pedia.vercel.app/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://generalpedia.com">
+  <meta property="og:url" content="https://general-pedia.vercel.app/">
   <meta property="og:title" content="GeneralPedia | Digital Knowledge Magazine">
   <meta property="og:description" content="Research-backed articles, trending news, and tools across finance, health, tech, automotive, and everyday living.">
   <meta property="og:site_name" content="GeneralPedia">

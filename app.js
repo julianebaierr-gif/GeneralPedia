@@ -6,6 +6,14 @@
       openArticle(id);
     }
 
+    function handleNavClick(e, actionFn) {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || (e.button && e.button !== 0)) {
+        return; // Allow native browser open in new tab/window
+      }
+      e.preventDefault();
+      if (typeof actionFn === 'function') actionFn();
+    }
+
     function renderHeroGrid() {
       const heroContainer = document.getElementById('hero-grid-container');
       if (!heroContainer || typeof ARTICLES_DATA === 'undefined' || ARTICLES_DATA.length === 0) return;
@@ -411,10 +419,10 @@
       catListEl.innerHTML = categoriesConfig.map(cat => {
         const count = counts[cat.slug] || 0;
         return `
-          <li class="cat-tax-item" onclick="filterCategory('${cat.slug}')">
+          <a href="/category/${cat.slug}" class="cat-tax-item" onclick="handleNavClick(event, () => filterCategory('${cat.slug}'))" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
             <span>${cat.name}</span>
             <span class="cat-count">${count}</span>
-          </li>
+          </a>
         `;
       }).join('');
     }
@@ -532,9 +540,10 @@
       document.getElementById('static-crumb').innerText = page.title;
       document.getElementById('static-content').innerHTML = page.content;
       const cleanTitle = page.title.replace('&amp;', '&');
+      const staticDesc = page.description || `Official ${cleanTitle} document and informational guide for GeneralPedia publication.`;
       updateSeoMetadata(
         `${cleanTitle} | GeneralPedia`,
-        `Official ${cleanTitle} document and informational guide for GeneralPedia publication.`,
+        staticDesc,
         `/${slug}`
       );
 

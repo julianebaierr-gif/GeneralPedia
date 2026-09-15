@@ -15,9 +15,9 @@
       </div>
       <div class="top-bar-right">
         <ul class="top-links">
-          <li><a href="#" onclick="showStaticPage('about'); return false;">About</a></li>
-          <li><a href="#" onclick="showStaticPage('write-for-us'); return false;">Write For Us</a></li>
-          <li><a href="#" onclick="showStaticPage('contact'); return false;">Contact</a></li>
+          <li><a href="/about" onclick="handleNavClick(event, () => showStaticPage('about'))">About</a></li>
+          <li><a href="/write-for-us" onclick="handleNavClick(event, () => showStaticPage('write-for-us'))">Write For Us</a></li>
+          <li><a href="/contact" onclick="handleNavClick(event, () => showStaticPage('contact'))">Contact</a></li>
         </ul>
         <button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Switch Dark/Light Theme">
           <span id="theme-icon">🌙</span> <span id="theme-label">Dark</span>
@@ -31,7 +31,7 @@
     <div class="container header-layout">
       <!-- Top-Notch Modern Editorial Logo -->
       <div class="brand-group">
-        <a href="#" onclick="showHomeView(); return false;" class="site-logo" aria-label="GeneralPedia Magazine Home">
+        <a href="/" onclick="handleNavClick(event, () => showHomeView())" class="site-logo" aria-label="GeneralPedia Magazine Home">
           <svg class="brand-symbol" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <rect width="42" height="42" rx="9" fill="#0f172a"/>
             <!-- Stylized Bold G Book/Compass geometry -->
@@ -58,14 +58,14 @@
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </button>
         <ul class="nav-menu" id="primary-nav">
-          <li><button onclick="showHomeView()" class="nav-item-btn active" data-cat="all">Home</button></li>
-          <li><button onclick="filterCategory('how-to')" class="nav-item-btn" data-cat="how-to">How-To</button></li>
-          <li><button onclick="filterCategory('finance')" class="nav-item-btn" data-cat="finance">Finance</button></li>
-          <li><button onclick="filterCategory('health')" class="nav-item-btn" data-cat="health">Health</button></li>
-          <li><button onclick="filterCategory('tools')" class="nav-item-btn" data-cat="tools">Calculators</button></li>
-          <li><button onclick="filterCategory('automotive')" class="nav-item-btn" data-cat="automotive">Automotive</button></li>
-          <li><button onclick="filterCategory('lifestyle')" class="nav-item-btn" data-cat="lifestyle">Lifestyle</button></li>
-          <li><button onclick="filterCategory('culture')" class="nav-item-btn" data-cat="culture">Culture</button></li>
+          <li><a href="/" onclick="handleNavClick(event, () => showHomeView())" class="nav-item-btn active" data-cat="all">Home</a></li>
+          <li><a href="/category/how-to" onclick="handleNavClick(event, () => filterCategory('how-to'))" class="nav-item-btn" data-cat="how-to">How-To</a></li>
+          <li><a href="/category/finance" onclick="handleNavClick(event, () => filterCategory('finance'))" class="nav-item-btn" data-cat="finance">Finance</a></li>
+          <li><a href="/category/health" onclick="handleNavClick(event, () => filterCategory('health'))" class="nav-item-btn" data-cat="health">Health</a></li>
+          <li><a href="/category/tools" onclick="handleNavClick(event, () => filterCategory('tools'))" class="nav-item-btn" data-cat="tools">Calculators</a></li>
+          <li><a href="/category/automotive" onclick="handleNavClick(event, () => filterCategory('automotive'))" class="nav-item-btn" data-cat="automotive">Automotive</a></li>
+          <li><a href="/category/lifestyle" onclick="handleNavClick(event, () => filterCategory('lifestyle'))" class="nav-item-btn" data-cat="lifestyle">Lifestyle</a></li>
+          <li><a href="/category/culture" onclick="handleNavClick(event, () => filterCategory('culture'))" class="nav-item-btn" data-cat="culture">Culture</a></li>
         </ul>
       </div>
 
@@ -77,9 +77,9 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </button>
         </form>
-        <button class="nav-guest-btn" onclick="showStaticPage('write-for-us')">
+        <a href="/write-for-us" class="nav-guest-btn" onclick="handleNavClick(event, () => showStaticPage('write-for-us'))" style="text-decoration:none; display:inline-flex; align-items:center;">
           Write for Us
-        </button>
+        </a>
       </div>
     </div>
 
@@ -101,22 +101,22 @@
         </form>
       </div>
       <ul class="mobile-drawer-links">
-        <li><button onclick="closeMobileMenu(); showHomeView();" class="mobile-nav-item active" data-cat="all">🏠 Home</button></li>
-        <li><button onclick="closeMobileMenu(); filterCategory('how-to');" class="mobile-nav-item" data-cat="how-to">📖 How-To & Tutorials</button></li>
-        <li><button onclick="closeMobileMenu(); filterCategory('finance');" class="mobile-nav-item" data-cat="finance">💰 Finance & Taxes</button></li>
-        <li><button onclick="closeMobileMenu(); filterCategory('health');" class="mobile-nav-item" data-cat="health">🩺 Health & Wellness</button></li>
-        <li><button onclick="closeMobileMenu(); filterCategory('tools');" class="mobile-nav-item" data-cat="tools">🧮 Calculators & Tools</button></li>
-        <li><button onclick="closeMobileMenu(); filterCategory('automotive');" class="mobile-nav-item" data-cat="automotive">🚗 Automotive Reviews</button></li>
-        <li><button onclick="closeMobileMenu(); filterCategory('lifestyle');" class="mobile-nav-item" data-cat="lifestyle">🌿 Home & Lifestyle</button></li>
-        <li><button onclick="closeMobileMenu(); filterCategory('culture');" class="mobile-nav-item" data-cat="culture">🎭 Culture & Milestones</button></li>
+        <li><a href="/" onclick="handleNavClick(event, () => { closeMobileMenu(); showHomeView(); })" class="mobile-nav-item active" data-cat="all">🏠 Home</a></li>
+        <li><a href="/category/how-to" onclick="handleNavClick(event, () => { closeMobileMenu(); filterCategory('how-to'); })" class="mobile-nav-item" data-cat="how-to">📖 How-To &amp; Tutorials</a></li>
+        <li><a href="/category/finance" onclick="handleNavClick(event, () => { closeMobileMenu(); filterCategory('finance'); })" class="mobile-nav-item" data-cat="finance">💰 Finance &amp; Taxes</a></li>
+        <li><a href="/category/health" onclick="handleNavClick(event, () => { closeMobileMenu(); filterCategory('health'); })" class="mobile-nav-item" data-cat="health">🩺 Health &amp; Wellness</a></li>
+        <li><a href="/category/tools" onclick="handleNavClick(event, () => { closeMobileMenu(); filterCategory('tools'); })" class="mobile-nav-item" data-cat="tools">🧮 Calculators &amp; Tools</a></li>
+        <li><a href="/category/automotive" onclick="handleNavClick(event, () => { closeMobileMenu(); filterCategory('automotive'); })" class="mobile-nav-item" data-cat="automotive">🚗 Automotive Reviews</a></li>
+        <li><a href="/category/lifestyle" onclick="handleNavClick(event, () => { closeMobileMenu(); filterCategory('lifestyle'); })" class="mobile-nav-item" data-cat="lifestyle">🌿 Home &amp; Lifestyle</a></li>
+        <li><a href="/category/culture" onclick="handleNavClick(event, () => { closeMobileMenu(); filterCategory('culture'); })" class="mobile-nav-item" data-cat="culture">🎭 Culture &amp; Milestones</a></li>
         <li style="border-top: 1px solid var(--border-color); margin: 8px 0; padding-top: 8px;"></li>
-        <li><button onclick="closeMobileMenu(); showStaticPage('about');" class="mobile-nav-item">ℹ️ About GeneralPedia</button></li>
-        <li><button onclick="closeMobileMenu(); showStaticPage('contact');" class="mobile-nav-item">✉️ Contact Editorial</button></li>
+        <li><a href="/about" onclick="handleNavClick(event, () => { closeMobileMenu(); showStaticPage('about'); })" class="mobile-nav-item">ℹ️ About GeneralPedia</a></li>
+        <li><a href="/contact" onclick="handleNavClick(event, () => { closeMobileMenu(); showStaticPage('contact'); })" class="mobile-nav-item">✉️ Contact Editorial</a></li>
       </ul>
       <div class="mobile-drawer-footer">
-        <button class="mobile-drawer-guest-btn" onclick="closeMobileMenu(); showStaticPage('write-for-us');">
+        <a href="/write-for-us" class="mobile-drawer-guest-btn" onclick="handleNavClick(event, () => { closeMobileMenu(); showStaticPage('write-for-us'); })" style="text-decoration:none; display:block; text-align:center;">
           ✍️ Write for Us (Guest Post)
-        </button>
+        </a>
       </div>
     </div>
   </nav>
@@ -397,12 +397,12 @@
         <div class="footer-col">
           <h4>Magazine Sections</h4>
           <ul class="footer-links">
-            <li><button onclick="filterCategory('how-to')">How-To &amp; Tutorials</button></li>
-            <li><button onclick="filterCategory('finance')">Finance &amp; Tax</button></li>
-            <li><button onclick="filterCategory('health')">Health &amp; Medicine</button></li>
-            <li><button onclick="filterCategory('tools')">Calculators &amp; Reference</button></li>
-            <li><button onclick="filterCategory('automotive')">Automotive Reviews</button></li>
-            <li><button onclick="filterCategory('lifestyle')">Lifestyle &amp; Living</button></li>
+            <li><a href="/category/how-to" onclick="handleNavClick(event, () => filterCategory('how-to'))">How-To &amp; Tutorials</a></li>
+            <li><a href="/category/finance" onclick="handleNavClick(event, () => filterCategory('finance'))">Finance &amp; Tax</a></li>
+            <li><a href="/category/health" onclick="handleNavClick(event, () => filterCategory('health'))">Health &amp; Medicine</a></li>
+            <li><a href="/category/tools" onclick="handleNavClick(event, () => filterCategory('tools'))">Calculators &amp; Reference</a></li>
+            <li><a href="/category/automotive" onclick="handleNavClick(event, () => filterCategory('automotive'))">Automotive Reviews</a></li>
+            <li><a href="/category/lifestyle" onclick="handleNavClick(event, () => filterCategory('lifestyle'))">Lifestyle &amp; Living</a></li>
           </ul>
         </div>
 
@@ -410,10 +410,10 @@
         <div class="footer-col">
           <h4>Editorial Desk</h4>
           <ul class="footer-links">
-            <li><button onclick="showStaticPage('write-for-us')">Write for Us (Guest Post)</button></li>
-            <li><button onclick="showStaticPage('editorial-guidelines')">Editorial Guidelines</button></li>
-            <li><button onclick="showStaticPage('about')">About Our Team</button></li>
-            <li><button onclick="showStaticPage('contact')">Contact &amp; Press</button></li>
+            <li><a href="/write-for-us" onclick="handleNavClick(event, () => showStaticPage('write-for-us'))">Write for Us (Guest Post)</a></li>
+            <li><a href="/editorial-guidelines" onclick="handleNavClick(event, () => showStaticPage('editorial-guidelines'))">Editorial Guidelines</a></li>
+            <li><a href="/about" onclick="handleNavClick(event, () => showStaticPage('about'))">About Our Team</a></li>
+            <li><a href="/contact" onclick="handleNavClick(event, () => showStaticPage('contact'))">Contact &amp; Press</a></li>
           </ul>
         </div>
 
@@ -421,9 +421,9 @@
         <div class="footer-col">
           <h4>Policy &amp; Trust</h4>
           <ul class="footer-links">
-            <li><button onclick="showStaticPage('privacy-policy')">Privacy Policy</button></li>
-            <li><button onclick="showStaticPage('terms')">Terms of Service</button></li>
-            <li><button onclick="showStaticPage('editorial-guidelines')">Fact-Checking Policy</button></li>
+            <li><a href="/privacy-policy" onclick="handleNavClick(event, () => showStaticPage('privacy-policy'))">Privacy Policy</a></li>
+            <li><a href="/terms" onclick="handleNavClick(event, () => showStaticPage('terms'))">Terms of Service</a></li>
+            <li><a href="/editorial-guidelines" onclick="handleNavClick(event, () => showStaticPage('editorial-guidelines'))">Fact-Checking Policy</a></li>
           </ul>
         </div>
 
