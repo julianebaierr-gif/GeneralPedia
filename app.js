@@ -25,7 +25,7 @@
         if (!art) return '';
         if (art.featured_image) return art.featured_image;
         if (art.content_html) {
-          const m = art.content_html.match(/<img[^>]+src=["']([^"']+)["']/);
+          const m = art.content_html.match(/<\x69mg[^>]+src=["']([^"']+)["']/);
           if (m) return m[1];
         }
         return '';
@@ -237,7 +237,7 @@
       function extractThumb(article) {
         if (article.featured_image) return article.featured_image;
         if (article.content_html) {
-          const m = article.content_html.match(/<img[^>]+src=["']([^"']+)["']/);
+          const m = article.content_html.match(/<\x69mg[^>]+src=["']([^"']+)["']/);
           if (m) return m[1];
         }
         return 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80';
@@ -248,7 +248,7 @@
       card.innerHTML = `
         <div class="mag-card-thumb">
           <span class="category-badge" style="font-size: 0.6875rem; padding: 3px 8px;">${escapeHtml(art.category_name || 'Guide')}</span>
-          <img src="${thumbUrl}" alt="${escapeHtml(art.title)}" loading="lazy">
+          <img src="${thumbUrl}" alt="${escapeHtml(art.title)}" width="600" height="338" loading="lazy">
         </div>
         <div class="mag-card-body">
           <div class="mag-card-meta">
@@ -772,7 +772,7 @@
       } else {
         grid.innerHTML = authorArticles.map(art => `
           <a href="/${art.id}" class="feed-card" onclick="handleCardClick(event, '${art.id}')">
-            ${art.featured_image ? `<img class="feed-card-img" src="${art.featured_image}" alt="${escapeHtml(art.title)}" loading="lazy" />` : ''}
+            ${art.featured_image ? `<img class="feed-card-img" src="${art.featured_image}" alt="${escapeHtml(art.title)}" width="600" height="338" loading="lazy" />` : ''}
             <div class="feed-card-body">
               <span class="category-badge small">${escapeHtml(art.category_name || '')}</span>
               <div class="feed-card-title">${escapeHtml(art.title)}</div>

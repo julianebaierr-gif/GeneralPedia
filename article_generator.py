@@ -817,7 +817,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         alt_text = f"{capital_kw} - {img_info['alt'] or 'Editorial Reference'}"
         img_html = f"""
         <figure style="margin: 24px 0;">
-            <img src="{img_info['url']}" alt="{alt_text}" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
+            <img src="{img_info['url']}" alt="{alt_text}" width="1200" height="675" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
         </figure>
         """
         body_content = img_html + body_content
@@ -837,7 +837,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         mid_alt = f"{capital_kw} - {mid_img_info['alt'] or 'In-Depth Overview'}"
         mid_html = f"""
         <figure class="mid-article-figure" style="margin: 36px 0;">
-            <img src="{mid_img_info['url']}" alt="{mid_alt}" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
+            <img src="{mid_img_info['url']}" alt="{mid_alt}" width="1200" height="675" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
         </figure>
         """
         # Place mid-content: before 3rd h2 or 2nd h2 or halfway through paragraphs

@@ -240,7 +240,7 @@ def rebuild_site():
             cat_cards = []
             for p in cat_posts:
                 img = p.get('featured_image', '')
-                img_tag = f'<div class="mag-card-thumb"><img src="{img}" alt="{p["title"]}" loading="lazy"></div>' if img else ''
+                img_tag = f'<div class="mag-card-thumb"><img src="{img}" alt="{p["title"]}" width="600" height="338" loading="lazy"></div>' if img else ''
                 cat_cards.append(f'''
                   <a href="/{p["id"]}" class="mag-article-card">
                     {img_tag}
