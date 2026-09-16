@@ -189,7 +189,7 @@
       <!-- Dedicated Category Archive Header Banner -->
       <section id="category-header-banner" class="category-header-banner hidden" aria-label="Category Overview">
         <div class="category-breadcrumbs">
-          <button onclick="showHomeView()">Home</button>
+          <a href="/" onclick="handleNavClick(event, () => showHomeView())">Home</a>
           <span>/</span>
           <span>Topics</span>
           <span>/</span>
@@ -370,7 +370,7 @@
         <article class="article-wrapper" aria-labelledby="art-title">
           <nav aria-label="Breadcrumb">
             <ol class="breadcrumbs">
-              <li><button onclick="showHomeView()">Home</button></li>
+              <li><a href="/" onclick="handleNavClick(event, () => showHomeView())">Home</a></li>
               <li>/</li>
               <li><button id="art-category-crumb" onclick="filterCategory(currentCategorySlug)">Category</button></li>
               <li>/</li>
@@ -435,7 +435,7 @@
         <article class="article-wrapper">
           <nav aria-label="Breadcrumb">
             <ol class="breadcrumbs">
-              <li><button onclick="showHomeView()">Home</button></li>
+              <li><a href="/" onclick="handleNavClick(event, () => showHomeView())">Home</a></li>
               <li>/</li>
               <li id="static-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Write For Us &amp; Contributor Guidelines</li>
             </ol>
@@ -605,7 +605,7 @@
     <div id="author-view" class="hidden" style="padding: 24px 0 60px;">
       <nav aria-label="Breadcrumb" style="margin-bottom: 20px;">
         <ol class="breadcrumbs">
-          <li><button onclick="showHomeView()">Home</button></li>
+          <li><a href="/" onclick="handleNavClick(event, () => showHomeView())">Home</a></li>
           <li>/</li>
           <li style="color: var(--text-main); font-weight: 600;">Author Profile</li>
         </ol>

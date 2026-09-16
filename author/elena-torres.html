@@ -186,7 +186,7 @@
     <div id="author-view" style="padding: 24px 0 60px;">
       <nav aria-label="Breadcrumb" style="margin-bottom: 20px;">
         <ol class="breadcrumbs">
-          <li><button onclick="showHomeView()">Home</button></li>
+          <li><a href="/" onclick="handleNavClick(event, () => showHomeView())">Home</a></li>
           <li>/</li>
           <li style="color: var(--text-main); font-weight: 600;">Author Profile</li>
         </ol>
