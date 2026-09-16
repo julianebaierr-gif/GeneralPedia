@@ -208,7 +208,7 @@
       display: flex;
       flex-direction: column;
     }
-    .site-logo {
+    .site-logo, h1.site-logo {
       font-size: 2.125rem;
       font-weight: 900;
       letter-spacing: -0.04em;
@@ -218,6 +218,8 @@
       gap: 12px;
       text-decoration: none;
       line-height: 1;
+      margin: 0;
+      padding: 0;
     }
     .brand-symbol {
       width: 42px;
