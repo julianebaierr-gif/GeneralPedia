@@ -12,13 +12,13 @@ def rebuild_site():
     with open(DB_PATH, "r", encoding="utf-8") as f:
         posts_data = json.load(f)
 
-    # Escape h1-h4 tags in JSON strings to prevent HTML scanners/crawlers from reading raw duplicate headings inside script blocks
-    articles_json = json.dumps(posts_data, ensure_ascii=False).replace("</script", "<\\/script").replace("</Script", "<\\/Script")
+    # Create minimal articles metadata for client-side search/feeds
+    feed_keys = ['id', 'slug', 'title', 'category_slug', 'category_name', 'featured_image', 'display_date', 'read_time', 'meta_description', 'author_name', 'primary_keyword']
+    light_posts = [{k: p.get(k, '') for k in feed_keys} for p in posts_data]
+
+    articles_json = json.dumps(light_posts, ensure_ascii=False).replace("</script", "<\\/script").replace("</Script", "<\\/Script")
     for h in ["h1", "h2", "h3", "h4"]:
         articles_json = articles_json.replace(f"<{h}", f"\\u003c{h}").replace(f"</{h}>", f"\\u003c/{h}\\u003e")
-
-    with open(os.path.join(SCRATCH_DIR, "theme.css"), "r", encoding="utf-8") as f:
-        theme_css = f.read()
 
     # Concise description: 147 characters (under 155 chars limit)
     head_part = """<!DOCTYPE html>
@@ -60,10 +60,12 @@ def rebuild_site():
     "potentialAction": {
       "@type": "SearchAction",
       "target": "https://www.generalpedia.com/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
     }
   }
   </script>
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="/theme.css">
+</head>
 """
 
     with open(os.path.join(SCRATCH_DIR, "template_body.html"), "r", encoding="utf-8") as f:
@@ -138,16 +140,12 @@ def rebuild_site():
     # Template for subpages (removes STATIC_CATEGORIES_PLACEHOLDER completely)
     body_clean = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "")
     page_base_html = f"""{head_part}
-  <style>
-{theme_css}
-  </style>
 {body_clean}
   <script>
     const ARTICLES_DATA = {articles_json};
     const STATIC_PAGES = {static_json};
-
-{app_js}
   </script>
+  <script src="/app.js" defer></script>
 </body>
 </html>
 """
@@ -155,16 +153,12 @@ def rebuild_site():
     # Template for Homepage
     home_body = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "\n".join(cat_previews_html))
     home_full_html = f"""{head_part}
-  <style>
-{theme_css}
-  </style>
 {home_body}
   <script>
     const ARTICLES_DATA = {articles_json};
     const STATIC_PAGES = {static_json};
-
-{app_js}
   </script>
+  <script src="/app.js" defer></script>
 </body>
 </html>
 """
@@ -203,7 +197,7 @@ def rebuild_site():
         # Enforce exactly 1 H1 per page:
         if page_type == "article":
             p_data = extra_data or {}
-            clean_art_title = escaped_title.split(" | ")[0]
+            clean_art_title = (p_data.get('title') or escaped_title.split(" | ")[0]).replace('&', '&amp;')
             # Convert article title div to h1
             page_html = page_html.replace(
                 '<div id="art-title" class="art-title-text">Article Title</div>',
@@ -286,7 +280,21 @@ def rebuild_site():
     for p in posts_data:
         slug = p.get('slug') or p.get('id')
         if slug:
-            p_title = f"{p.get('title', 'GeneralPedia')} | GeneralPedia"
+            raw_title = p.get('title', 'GeneralPedia').strip()
+            # If escaped length with brand fits in 60:
+            with_brand = f"{raw_title} | GeneralPedia"
+            if len(with_brand.replace('&', '&amp;')) <= 60:
+                p_title = with_brand
+            elif len(raw_title.replace('&', '&amp;')) <= 60:
+                p_title = raw_title
+            else:
+                prefix = re.split(r'[:\-–—]', raw_title)[0].strip()
+                cand = f"{prefix} | GeneralPedia"
+                if len(cand.replace('&', '&amp;')) <= 60:
+                    p_title = cand
+                else:
+                    p_title = prefix[:56]
+            
             p_desc = p.get('meta_description', '')
             p_url = f"https://www.generalpedia.com/{slug}"
             write_prerendered_page(f"{slug}.html", p_title, p_desc, p_url, page_type="article", extra_data=p)
