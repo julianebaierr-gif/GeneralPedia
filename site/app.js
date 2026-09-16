@@ -316,6 +316,77 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    window.handleContactSubmit = async function(event) {
+      event.preventDefault();
+      const form = event.target;
+      const btn = document.getElementById('gp-submit-btn');
+      const statusBox = document.getElementById('gp-form-status');
+
+      if (!form) return;
+
+      const origBtnText = btn ? btn.innerText : 'Transmit Message';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'Sending Message...';
+        btn.style.opacity = '0.7';
+      }
+
+      if (statusBox) {
+        statusBox.style.display = 'none';
+        statusBox.innerText = '';
+      }
+
+      const formData = new FormData(form);
+      const object = Object.fromEntries(formData);
+      const json = JSON.stringify(object);
+
+      try {
+        const response = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: json
+        });
+
+        const result = await response.json();
+
+        if (response.status === 200 && result.success) {
+          form.reset();
+          if (statusBox) {
+            statusBox.style.display = 'block';
+            statusBox.style.background = '#dcfce7';
+            statusBox.style.color = '#15803d';
+            statusBox.style.border = '1px solid #86efac';
+            statusBox.innerText = '✓ Thank you! Your message has been sent successfully. Our team will get back to you shortly at your email.';
+          }
+        } else {
+          if (statusBox) {
+            statusBox.style.display = 'block';
+            statusBox.style.background = '#fee2e2';
+            statusBox.style.color = '#b91c1c';
+            statusBox.style.border = '1px solid #fca5a5';
+            statusBox.innerText = result.message || 'Something went wrong. Please try again or email us directly at info.generalpedia1@gmail.com.';
+          }
+        }
+      } catch (error) {
+        if (statusBox) {
+          statusBox.style.display = 'block';
+          statusBox.style.background = '#fee2e2';
+          statusBox.style.color = '#b91c1c';
+          statusBox.style.border = '1px solid #fca5a5';
+          statusBox.innerText = 'Network error. Please try again or email us directly at info.generalpedia1@gmail.com.';
+        }
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerText = origBtnText;
+          btn.style.opacity = '1';
+        }
+      }
+    };
+
     function triggerSearchFocus() {
       const searchInput = document.getElementById('nav-search-input');
       if (searchInput) {
