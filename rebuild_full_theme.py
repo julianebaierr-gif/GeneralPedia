@@ -1,5 +1,7 @@
 import os
 import json
+import re
+from datetime import datetime
 
 SCRATCH_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(SCRATCH_DIR, "data", "posts_database.json")
@@ -10,8 +12,6 @@ def rebuild_site():
     with open(DB_PATH, "r", encoding="utf-8") as f:
         posts_data = json.load(f)
 
-    # In posts_database.json, newly published posts are always inserted at index 0 (newest first).
-    # Safely escape any '</script' occurrences in the JSON string
     articles_json = json.dumps(posts_data, ensure_ascii=False).replace("</script", "<\\/script").replace("</Script", "<\\/Script")
 
     with open(os.path.join(SCRATCH_DIR, "theme.css"), "r", encoding="utf-8") as f:
@@ -27,11 +27,11 @@ def rebuild_site():
   <meta name="keywords" content="generalpedia, knowledge hub, encyclopedia, digital magazine, personal finance, tutorials, tax guides, automotive reviews">
   <meta name="author" content="GeneralPedia Editorial Board">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://generalpedia.com/">
+  <link rel="canonical" href="https://www.generalpedia.com/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://generalpedia.com/">
+  <meta property="og:url" content="https://www.generalpedia.com/">
   <meta property="og:title" content="GeneralPedia | Digital Knowledge Magazine">
   <meta property="og:description" content="Research-backed articles, trending news, and tools across finance, health, tech, automotive, and everyday living.">
   <meta property="og:site_name" content="GeneralPedia">
@@ -51,11 +51,11 @@ def rebuild_site():
     "@type": "NewsMediaOrganization",
     "name": "GeneralPedia",
     "alternateName": "GeneralPedia.com",
-    "url": "https://generalpedia.com",
+    "url": "https://www.generalpedia.com",
     "description": "Premier Digital Knowledge Magazine & Fact-Checked Encyclopedia",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://generalpedia.com/?q={search_term_string}",
+      "target": "https://www.generalpedia.com/?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   }
@@ -152,32 +152,86 @@ def rebuild_site():
         with open(site_index_file, "w", encoding="utf-8") as f:
             f.write(full_html)
 
+    def write_prerendered_page(rel_path, page_title, page_desc, page_url):
+        escaped_title = page_title.replace('&', '&amp;')
+        escaped_desc = page_desc.replace('"', '&quot;').replace('&', '&amp;')
+        
+        page_html = full_html
+        page_html = re.sub(r'<title>.*?</title>', f'<title>{escaped_title}</title>', page_html, count=1)
+        page_html = re.sub(r'<meta name="description" content=".*?">', f'<meta name="description" content="{escaped_desc}">', page_html, count=1)
+        page_html = re.sub(r'<link rel="canonical" href=".*?">', f'<link rel="canonical" href="{page_url}">', page_html, count=1)
+        page_html = re.sub(r'<meta property="og:url" content=".*?">', f'<meta property="og:url" content="{page_url}">', page_html, count=1)
+        page_html = re.sub(r'<meta property="og:title" content=".*?">', f'<meta property="og:title" content="{escaped_title}">', page_html, count=1)
+        page_html = re.sub(r'<meta property="og:description" content=".*?">', f'<meta property="og:description" content="{escaped_desc}">', page_html, count=1)
+
+        target_file = os.path.join(SCRATCH_DIR, rel_path)
+        os.makedirs(os.path.dirname(target_file), exist_ok=True)
+        with open(target_file, "w", encoding="utf-8") as pf:
+            pf.write(page_html)
+
+    # 1. Prerender each article
+    for p in posts_data:
+        slug = p.get('slug') or p.get('id')
+        if slug:
+            p_title = f"{p.get('title', 'GeneralPedia')} | GeneralPedia"
+            p_desc = p.get('meta_description', '')
+            p_url = f"https://www.generalpedia.com/{slug}"
+            write_prerendered_page(f"{slug}.html", p_title, p_desc, p_url)
+
+    # 2. Prerender static pages
+    for sp_slug, sp_data in STATIC_PAGES.items():
+        clean_title = sp_data.get('title', '').replace('&amp;', '&')
+        sp_title = f"{clean_title} | GeneralPedia"
+        sp_desc = sp_data.get('description', '')
+        sp_url = f"https://www.generalpedia.com/{sp_slug}"
+        write_prerendered_page(f"{sp_slug}.html", sp_title, sp_desc, sp_url)
+
+    # 3. Prerender categories
+    categories = [
+        ("how-to", "How-To & Practical Guides"),
+        ("finance", "Personal Finance & Tax Analysis"),
+        ("health", "Health, Medicine & Wellness Insights"),
+        ("tools", "Calculators & Interactive Reference"),
+        ("automotive", "Automotive Reviews & Diagnostics"),
+        ("tech", "Technology & Digital Tools"),
+        ("lifestyle", "Home, Pet Care & Living"),
+        ("culture", "Culture, Sports & Entertainment")
+    ]
+    for cat_slug, cat_name in categories:
+        cat_title = f"{cat_name} | GeneralPedia"
+        cat_desc = f"Explore curated, research-backed guides, articles, and analyses in {cat_name} on GeneralPedia."
+        cat_url = f"https://www.generalpedia.com/category/{cat_slug}"
+        write_prerendered_page(os.path.join("category", f"{cat_slug}.html"), cat_title, cat_desc, cat_url)
+
     # Update sitemap.xml
-    try:
-        today_str = datetime.now().strftime("%Y-%m-%d")
-    except Exception:
-        from datetime import datetime
-        today_str = datetime.now().strftime("%Y-%m-%d")
+    today_str = datetime.now().strftime("%Y-%m-%d")
 
     sitemap_lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
         '  <!-- Homepage -->',
         '  <url>',
-        '    <loc>https://generalpedia.com/</loc>',
+        '    <loc>https://www.generalpedia.com/</loc>',
         f'    <lastmod>{today_str}</lastmod>',
         '    <changefreq>daily</changefreq>',
         '    <priority>1.0</priority>',
         '  </url>',
         '  <!-- Categories -->',
-        '  <url><loc>https://generalpedia.com/category/how-to</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://generalpedia.com/category/finance</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://generalpedia.com/category/health</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://generalpedia.com/category/tools</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://generalpedia.com/category/automotive</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://generalpedia.com/category/tech</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://generalpedia.com/category/lifestyle</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://generalpedia.com/category/culture</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/how-to</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/finance</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/health</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/tools</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/automotive</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/tech</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/lifestyle</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/culture</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <!-- Static Pages -->',
+        '  <url><loc>https://www.generalpedia.com/about</loc><lastmod>' + today_str + '</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/write-for-us</loc><lastmod>' + today_str + '</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/editorial-guidelines</loc><lastmod>' + today_str + '</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/privacy-policy</loc><lastmod>' + today_str + '</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/terms</loc><lastmod>' + today_str + '</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/contact</loc><lastmod>' + today_str + '</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>',
         '  <!-- Articles -->'
     ]
 
@@ -185,16 +239,16 @@ def rebuild_site():
         p_slug = p.get('slug') or p.get('id')
         p_date = (p.get('published_at') or today_str)[:10]
         if p_slug:
-            sitemap_lines.append(f'  <url><loc>https://generalpedia.com/{p_slug}</loc><lastmod>{p_date}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>')
+            sitemap_lines.append(f'  <url><loc>https://www.generalpedia.com/{p_slug}</loc><lastmod>{p_date}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>')
 
-    sitemap_lines.append('</urlset>\n')
-    sitemap_content = '\n'.join(sitemap_lines)
+    sitemap_lines.append('</urlset>\\n')
+    sitemap_content = '\\n'.join(sitemap_lines)
 
     sitemap_path = os.path.join(SCRATCH_DIR, "sitemap.xml")
     with open(sitemap_path, "w", encoding="utf-8") as f:
         f.write(sitemap_content)
 
-    print(f"Successfully rebuilt index.html and sitemap.xml with {len(posts_data)} posts.")
+    print(f"Successfully rebuilt index.html, sitemap.xml, and static pages with {len(posts_data)} posts.")
 
 if __name__ == "__main__":
     rebuild_site()

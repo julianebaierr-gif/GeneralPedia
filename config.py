@@ -1,7 +1,7 @@
 import os
 
 SITE_NAME = "GeneralPedia"
-DOMAIN = "https://generalpedia.com"
+DOMAIN = "https://www.generalpedia.com"
 TAGLINE = "The Complete Encyclopedia & Everyday Knowledge Hub"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

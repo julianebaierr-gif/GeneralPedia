@@ -102,7 +102,7 @@
       const canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) {
         const cleanPath = path ? (path.startsWith('/') ? path : '/' + path) : '/';
-        canonical.setAttribute('href', `https://generalpedia.com${cleanPath}`);
+        canonical.setAttribute('href', `https://www.generalpedia.com${cleanPath}`);
       }
     }
 
