@@ -6,6 +6,26 @@ from datetime import datetime
 SCRATCH_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(SCRATCH_DIR, "data", "posts_database.json")
 
+def minify_css(css_content: str) -> str:
+    css = re.sub(r'/\*[\s\S]*?\*/', '', css_content)
+    css = re.sub(r'\s+', ' ', css)
+    css = re.sub(r'\s*([\{\}\:\;\,\>])\s*', r'\1', css)
+    css = re.sub(r';\}', '}', css)
+    return css.strip()
+
+def minify_js(js_content: str) -> str:
+    js = re.sub(r'/\*[\s\S]*?\*/', '', js_content)
+    lines = js.split('\n')
+    cleaned = []
+    for line in lines:
+        s = line.strip()
+        if not s or s.startswith('//'):
+            continue
+        if '//' in s and not any(q in s for q in ['http://', 'https://', '://', "'", '"', '`']):
+            s = s.split('//')[0].strip()
+        cleaned.append(s)
+    return '\n'.join(cleaned)
+
 def rebuild_site():
     if not os.path.exists(DB_PATH):
         return
@@ -63,8 +83,8 @@ def rebuild_site():
     }
   }
   </script>
-  <!-- External Stylesheet -->
-  <link rel="stylesheet" href="/theme.css">
+  <!-- External Stylesheet (Minified) -->
+  <link rel="stylesheet" href="/theme.min.css">
 </head>
 """
 
@@ -127,6 +147,19 @@ def rebuild_site():
     with open(os.path.join(SCRATCH_DIR, "app.js"), "r", encoding="utf-8") as f:
         app_js = f.read()
 
+    with open(os.path.join(SCRATCH_DIR, "theme.css"), "r", encoding="utf-8") as f:
+        theme_css = f.read()
+
+    # Minify CSS
+    theme_min_css = minify_css(theme_css)
+    with open(os.path.join(SCRATCH_DIR, "theme.min.css"), "w", encoding="utf-8") as f:
+        f.write(theme_min_css)
+
+    # Minify app.js
+    app_min_js = minify_js(app_js)
+    with open(os.path.join(SCRATCH_DIR, "app.min.js"), "w", encoding="utf-8") as f:
+        f.write(app_min_js)
+
     try:
         from static_pages_data import STATIC_PAGES
     except Exception as e:
@@ -140,10 +173,24 @@ def rebuild_site():
     site_data_content = f"const ARTICLES_DATA = {articles_json};\nconst STATIC_PAGES = {static_json};\n"
     with open(os.path.join(SCRATCH_DIR, "site_data.js"), "w", encoding="utf-8") as f:
         f.write(site_data_content)
+    site_data_min = minify_js(site_data_content)
+    with open(os.path.join(SCRATCH_DIR, "site_data.min.js"), "w", encoding="utf-8") as f:
+        f.write(site_data_min)
+
     site_dir = os.path.join(SCRATCH_DIR, "site")
     if os.path.exists(site_dir):
+        with open(os.path.join(site_dir, "theme.css"), "w", encoding="utf-8") as f:
+            f.write(theme_css)
+        with open(os.path.join(site_dir, "theme.min.css"), "w", encoding="utf-8") as f:
+            f.write(theme_min_css)
+        with open(os.path.join(site_dir, "app.js"), "w", encoding="utf-8") as f:
+            f.write(app_js)
+        with open(os.path.join(site_dir, "app.min.js"), "w", encoding="utf-8") as f:
+            f.write(app_min_js)
         with open(os.path.join(site_dir, "site_data.js"), "w", encoding="utf-8") as f:
             f.write(site_data_content)
+        with open(os.path.join(site_dir, "site_data.min.js"), "w", encoding="utf-8") as f:
+            f.write(site_data_min)
 
     # Build pre-rendered popular guides (top 5) for sidebar
     top5_posts = posts_data[:5]
@@ -202,8 +249,8 @@ def rebuild_site():
     body_clean = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "")
     page_base_html = f"""{head_part}
 {body_clean}
-  <script src="/site_data.js" defer></script>
-  <script src="/app.js" defer></script>
+  <script src="/site_data.min.js" defer></script>
+  <script src="/app.min.js" defer></script>
 </body>
 </html>
 """
@@ -264,8 +311,8 @@ def rebuild_site():
 
     home_full_html = f"""{head_part}
 {home_body}
-  <script src="/site_data.js" defer></script>
-  <script src="/app.js" defer></script>
+  <script src="/site_data.min.js" defer></script>
+  <script src="/app.min.js" defer></script>
 </body>
 </html>
 """

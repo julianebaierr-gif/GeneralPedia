@@ -422,10 +422,12 @@
       catListEl.innerHTML = categoriesConfig.map(cat => {
         const count = counts[cat.slug] || 0;
         return `
-          <a href="/category/${cat.slug}" class="cat-tax-item" onclick="handleNavClick(event, () => filterCategory('${cat.slug}'))" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
-            <span>${cat.name}</span>
-            <span class="cat-count">${count}</span>
-          </a>
+          <li>
+            <a href="/category/${cat.slug}" class="cat-tax-item" onclick="handleNavClick(event, () => filterCategory('${cat.slug}'))" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
+              <span>${cat.name}</span>
+              <span class="cat-count">${count}</span>
+            </a>
+          </li>
         `;
       }).join('');
     }
