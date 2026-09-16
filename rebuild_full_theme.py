@@ -176,7 +176,7 @@ def rebuild_site():
     home_logo_end_search = '</div>\n        </a>'
     home_logo_end_replace = '</div>\n        </a></h1>'
 
-    index_html = home_full_html.replace(home_logo_search, home_logo_replace, 1).replace(home_logo_end_search, home_logo_end_replace, 1)
+    index_html = home_full_html.replace(home_logo_search, home_logo_replace, 1).replace(home_logo_end_search, home_logo_end_replace, 1).replace('<div class="mag-section-title" id="mag-feed-heading">Latest Published Reports</div>', '<h2 class="mag-section-title" id="mag-feed-heading">Latest Published Reports</h2>', 1)
 
     index_file = os.path.join(SCRATCH_DIR, "index.html")
     site_index_file = os.path.join(SCRATCH_DIR, "site", "index.html")
@@ -226,6 +226,12 @@ def rebuild_site():
             page_html = page_html.replace(
                 '<div class="category-header-title" id="category-banner-title">Category Title</div>',
                 f'<h1 class="category-header-title" id="category-banner-title">{cat_display_name}</h1>',
+                1
+            )
+            # Update feed heading to H2 for category page (Hierarchy: H1 banner -> H2 feed title)
+            page_html = page_html.replace(
+                '<div class="mag-section-title" id="mag-feed-heading">Latest Published Reports</div>',
+                f'<h2 class="mag-section-title" id="mag-feed-heading">{cat_display_name} Published Guides</h2>',
                 1
             )
             # Show category banner, hide hero & trending
