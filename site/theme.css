@@ -662,9 +662,13 @@
     /* ==================== 6. MAGAZINE 2-COLUMN LAYOUT ==================== */
     .magazine-layout {
       display: grid;
-      grid-template-columns: 1fr 340px;
+      grid-template-columns: minmax(0, 1fr) 340px;
       gap: 32px;
       margin-bottom: 48px;
+      align-items: start;
+    }
+    .mag-main-col {
+      min-width: 0;
     }
 
     /* Section Header bar in MoreNews style */
@@ -929,9 +933,13 @@
     /* ==================== 8. ARTICLE VIEW & STATIC PAGES ==================== */
     .article-view-layout {
       display: grid;
-      grid-template-columns: 1fr 320px;
+      grid-template-columns: minmax(0, 1fr) 320px;
       gap: 32px;
       padding: 24px 0 60px;
+      align-items: start;
+    }
+    .article-wrapper {
+      min-width: 0;
     }
     .article-wrapper {
       background: var(--bg-card);
@@ -1615,11 +1623,14 @@
         padding: 20px;
       }
       .magazine-layout {
-        grid-template-columns: 1fr;
-        gap: 32px;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 24px;
+        align-items: start;
       }
       .article-view-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 24px;
+        align-items: start;
       }
       .trending-mini-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1645,6 +1656,14 @@
 
     /* Tablets & Phablets (max-width: 768px) */
     @media (max-width: 768px) {
+      .magazine-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .article-view-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
       .nav-menu {
         display: none !important;
       }
