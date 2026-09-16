@@ -46,24 +46,24 @@ def rebuild_site():
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GeneralPedia | The Digital Knowledge Hub & Magazine</title>
-  <meta name="description" content="GeneralPedia is a premier digital knowledge magazine delivering fact-checked guides, personal finance data, health insights, and expert tutorials.">
-  <meta name="keywords" content="generalpedia, knowledge hub, encyclopedia, digital magazine, personal finance, tutorials, tax guides, automotive reviews">
-  <meta name="author" content="GeneralPedia Editorial Board">
+  <title>GeneralPedia | Everyday Reference, Money & Living Magazine</title>
+  <meta name="description" content="Explore practical DIY advice, IRS tax updates, car reviews, wellness insights, and interactive calculation tools made for everyday living.">
+  <meta name="keywords" content="generalpedia, personal finance, tax rules, vehicle reviews, home improvement, wellness advice, reference calculators">
+  <meta name="author" content="GeneralPedia Editorial Staff">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.generalpedia.com/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.generalpedia.com/">
-  <meta property="og:title" content="GeneralPedia | Digital Knowledge Magazine">
-  <meta property="og:description" content="Research-backed articles, trending news, and tools across finance, health, tech, automotive, and everyday living.">
+  <meta property="og:title" content="GeneralPedia | Everyday Reference, Money & Living Magazine">
+  <meta property="og:description" content="Explore practical DIY advice, IRS tax updates, car reviews, wellness insights, and interactive calculation tools made for everyday living.">
   <meta property="og:site_name" content="GeneralPedia">
 
   <!-- Twitter / X -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="GeneralPedia | Digital Knowledge Magazine">
-  <meta name="twitter:description" content="Research-backed articles, trending news, and tools across finance, health, tech, automotive, and everyday living.">
+  <meta name="twitter:title" content="GeneralPedia | Everyday Reference, Money & Living Magazine">
+  <meta name="twitter:description" content="Explore practical DIY advice, IRS tax updates, car reviews, wellness insights, and interactive calculation tools made for everyday living.">
 
   <!-- Favicon / Brand Icon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%230f172a'/%3E%3Cpath d='M10 26V14h9.5c3.5 0 6 2 6 5.5s-2.5 5.5-6 5.5H15v-5h4.2c1.2 0 2-.6 2-1.8 0-1.1-.8-1.7-2-1.7h-5.2v9H10z' fill='%23ffffff'/%3E%3Cpath d='M25 14h5v12h-5z' fill='%23e63946'/%3E%3C/svg%3E">
@@ -605,29 +605,39 @@ def rebuild_site():
 
     # 3. Prerender categories
     categories_full = [
-        ("how-to", "How-To & Practical Guides"),
-        ("finance", "Personal Finance & Tax Analysis"),
-        ("health", "Health, Medicine & Wellness Insights"),
-        ("tools", "Calculators & Interactive Reference"),
-        ("automotive", "Automotive Reviews & Diagnostics"),
-        ("tech", "Technology & Digital Tools"),
-        ("lifestyle", "Home, Pet Care & Living"),
-        ("culture", "Culture, Sports & Entertainment")
+        ("how-to", "Practical DIY Tutorials and Repair Solutions", "Straightforward troubleshooting walkthroughs, home repairs, and practical technical fixes written for homeowners and creators."),
+        ("finance", "Personal Finance, Tax Strategy and Investing", "Clear money advice on IRS tax codes, retirement savings accounts, smart budgeting strategies, and long-term wealth planning."),
+        ("health", "Evidence-Based Wellness, Medicine and Nutrition", "Physician-vetted wellness advice, symptom timelines, and practical healthy living recommendations to support everyday wellbeing."),
+        ("tools", "Interactive Calculators and Quick Reference Tables", "Instant financial calculators, unit converters, telephone area code directories, and handy numerical estimation tools."),
+        ("automotive", "Honest Car Reviews, Maintenance and Road Tests", "In-depth vehicle road tests, reliability ratings, powertrain comparisons, and smart used-car buying strategies for drivers."),
+        ("tech", "Software Tutorials, Cybersecurity and Tech Trends", "Actionable tech advice, online privacy walkthroughs, device optimization, and straightforward software recommendations."),
+        ("lifestyle", "Home Living, Pet Care and Household Smarts", "Practical household tips, pet nutrition safety, sustainable home care routines, and everyday living advice for modern families."),
+        ("culture", "History, Global Sports and Cultural Milestones", "Deep dives into cinematic classics, historic holiday traditions, international athletic rivalries, and major cultural moments.")
     ]
-    for cat_slug, cat_name in categories_full:
-        cat_title = f"{cat_name} | GeneralPedia"
-        cat_desc = f"Explore curated, research-backed guides, articles, and analyses in {cat_name} on GeneralPedia."
+    for cat_slug, cat_title_prefix, cat_desc in categories_full:
+        cat_title = f"{cat_title_prefix} | GeneralPedia"
         cat_url = f"https://www.generalpedia.com/category/{cat_slug}"
-        write_prerendered_page(os.path.join("category", f"{cat_slug}.html"), cat_title, cat_desc, cat_url, page_type="category", extra_data={"slug": cat_slug, "name": cat_name})
+        cat_display_name = cat_title_prefix.split(" and ")[0].split(",")[0]
+        write_prerendered_page(os.path.join("category", f"{cat_slug}.html"), cat_title, cat_desc, cat_url, page_type="category", extra_data={"slug": cat_slug, "name": cat_display_name})
 
     # 4. Prerender authors
     from config import AUTHORS, CATEGORIES
+    author_custom_descs = {
+        "marcus-reid": "Browse practical DIY tutorials, appliance repair strategies, and hands-on troubleshooting articles written by Marcus Reid.",
+        "sarah-mitchell": "Read personal tax explanations, retirement account strategies, and wealth-building insights by financial analyst Sarah Mitchell.",
+        "elena-torres": "Explore evidence-based wellness articles, symptom reviews, and health research reports written by Elena Torres on GeneralPedia.",
+        "james-carter": "Check out interactive financial engines, mathematical calculation tools, and area code directories engineered by James Carter.",
+        "david-chen": "Read road-tested vehicle reviews, used car inspection tips, and mechanical diagnostic articles by automotive journalist David Chen.",
+        "nora-jacobs": "Discover smart home cleaning methods, pet nutrition advice, and seasonal household upkeep recommendations from Nora Jacobs.",
+        "amir-hassan": "Explore historical sports retrospectives, holiday traditions, and entertainment retrospectives written by cultural critic Amir Hassan."
+    }
+
     for cat_slug, auth_data in AUTHORS.items():
         auth_name = auth_data.get("name", "")
         auth_slug = auth_name.lower().replace(" ", "-")
         auth_role = auth_data.get("role", f"{CATEGORIES.get(cat_slug, {}).get('name', 'Knowledge')} Specialist")
-        auth_title = f"{auth_name} - Author Profile | GeneralPedia"
-        auth_desc = f"Explore fact-checked guides, analysis, and research published by {auth_name}, {auth_role} on GeneralPedia."
+        auth_title = f"{auth_name} | GeneralPedia"
+        auth_desc = author_custom_descs.get(auth_slug, f"Read articles and research published by {auth_name} on GeneralPedia.")
         auth_url = f"https://www.generalpedia.com/author/{auth_slug}"
         write_prerendered_page(
             os.path.join("author", f"{auth_slug}.html"),

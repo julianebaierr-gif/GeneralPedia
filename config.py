@@ -18,49 +18,49 @@ CATEGORIES = {
         "name": "How-To & Guides",
         "slug": "how-to",
         "color": "emerald",
-        "description": "Step-by-step tutorials, actionable guides, and everyday solutions."
+        "description": "Straightforward troubleshooting walkthroughs, home repairs, and practical technical fixes written for homeowners and creators."
     },
     "finance": {
         "name": "Finance & Money",
         "slug": "finance",
         "color": "amber",
-        "description": "Tax brackets, retirement accounts (Roth IRA, 401k), insurance, and loans."
+        "description": "Clear money advice on IRS tax codes, retirement savings accounts, smart budgeting strategies, and long-term wealth planning."
     },
     "health": {
         "name": "Health & Wellness",
         "slug": "health",
         "color": "rose",
-        "description": "Medical insights, symptoms breakdown, natural wellness, and body care."
+        "description": "Physician-vetted wellness advice, symptom timelines, and practical healthy living recommendations to support everyday wellbeing."
     },
     "tools": {
         "name": "Calculators & Tools",
         "slug": "tools",
         "color": "indigo",
-        "description": "Interactive financial calculators, measurement converters, and calendars."
+        "description": "Instant financial calculators, unit converters, telephone area code directories, and handy numerical estimation tools."
     },
     "automotive": {
         "name": "Automotive",
         "slug": "automotive",
         "color": "cyan",
-        "description": "Vehicle buying advice, repair guides, maintenance, and car comparisons."
+        "description": "In-depth vehicle road tests, reliability ratings, powertrain comparisons, and smart used-car buying strategies for drivers."
     },
     "tech": {
         "name": "Tech & Digital",
         "slug": "tech",
         "color": "blue",
-        "description": "Digital tools, cyber security explanations, software, and tech tips."
+        "description": "Actionable tech advice, online privacy walkthroughs, device optimization, and straightforward software recommendations."
     },
     "lifestyle": {
         "name": "Home & Lifestyle",
         "slug": "lifestyle",
         "color": "teal",
-        "description": "Home care, pet nutrition guides, recipes, and everyday living advice."
+        "description": "Practical household tips, pet nutrition safety, sustainable home care routines, and everyday living advice for modern families."
     },
     "culture": {
         "name": "Entertainment & Culture",
         "slug": "culture",
         "color": "purple",
-        "description": "Major global events, movies, pop culture, and sports reviews."
+        "description": "Deep dives into cinematic classics, historic holiday traditions, international athletic rivalries, and major cultural moments."
     }
 }
 
