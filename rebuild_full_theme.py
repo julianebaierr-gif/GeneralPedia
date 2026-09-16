@@ -137,27 +137,134 @@ def rebuild_site():
     for h in ["h1", "h2", "h3", "h4"]:
         static_json = static_json.replace(f"<{h}", f"\\u003c{h}").replace(f"</{h}>", f"\\u003c/{h}\\u003e")
 
+    site_data_content = f"const ARTICLES_DATA = {articles_json};\nconst STATIC_PAGES = {static_json};\n"
+    with open(os.path.join(SCRATCH_DIR, "site_data.js"), "w", encoding="utf-8") as f:
+        f.write(site_data_content)
+    site_dir = os.path.join(SCRATCH_DIR, "site")
+    if os.path.exists(site_dir):
+        with open(os.path.join(site_dir, "site_data.js"), "w", encoding="utf-8") as f:
+            f.write(site_data_content)
+
+    # Build pre-rendered popular guides (top 5) for sidebar
+    top5_posts = posts_data[:5]
+    popular_cards = []
+    for idx, art in enumerate(top5_posts):
+        popular_cards.append(f'''
+              <a href="/{art['id']}" class="popular-item">
+                <div class="popular-num">0{idx + 1}</div>
+                <div class="popular-content">
+                  <div class="popular-title">{art['title']}</div>
+                  <span>{art.get('display_date', 'Recent')} • {art.get('category_name', 'Guide')}</span>
+                </div>
+              </a>''')
+    static_popular_html = '\n'.join(popular_cards)
+
+    # Build pre-rendered category taxonomy with counts for sidebar
+    cat_tax_configs = [
+        {"slug": "how-to", "name": "How-To & Tutorials"},
+        {"slug": "finance", "name": "Finance & Tax"},
+        {"slug": "health", "name": "Health & Wellness"},
+        {"slug": "tools", "name": "Calculators & Tools"},
+        {"slug": "automotive", "name": "Automotive"},
+        {"slug": "lifestyle", "name": "Lifestyle & Living"},
+        {"slug": "culture", "name": "Culture & Society"}
+    ]
+    counts = {}
+    for art in posts_data:
+        c_slug = art.get("category_slug", "")
+        counts[c_slug] = counts.get(c_slug, 0) + 1
+
+    cat_tax_cards = []
+    for cat in cat_tax_configs:
+        cnt = counts.get(cat["slug"], 0)
+        cat_tax_cards.append(f'''
+              <li>
+                <a href="/category/{cat['slug']}" class="cat-tax-item" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
+                  <span>{cat['name']}</span>
+                  <span class="cat-count">{cnt}</span>
+                </a>
+              </li>''')
+    static_cat_tax_html = '\n'.join(cat_tax_cards)
+
+    # Pre-render sidebar popular and taxonomy into body_part for all pages
+    body_part = body_part.replace(
+        '<div class="popular-list" id="popular-posts-list">\n              <!-- Populated via JS -->\n            </div>',
+        f'<div class="popular-list" id="popular-posts-list">{static_popular_html}\n            </div>',
+        1
+    )
+    body_part = body_part.replace(
+        '<ul class="cat-tax-list" id="cat-tax-list">\n              <!-- Dynamically populated via JS with real-time article counts -->\n            </ul>',
+        f'<ul class="cat-tax-list" id="cat-tax-list">{static_cat_tax_html}\n            </ul>',
+        1
+    )
+
     # Template for subpages (removes STATIC_CATEGORIES_PLACEHOLDER completely)
     body_clean = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "")
     page_base_html = f"""{head_part}
 {body_clean}
-  <script>
-    const ARTICLES_DATA = {articles_json};
-    const STATIC_PAGES = {static_json};
-  </script>
+  <script src="/site_data.js" defer></script>
   <script src="/app.js" defer></script>
 </body>
 </html>
 """
 
+    # Pre-render Homepage feed (first 13 articles after hero)
+    home_feed_cards = []
+    for p in posts_data:
+        img_url = p.get('featured_image', '')
+        img_tag = f'<div class="mag-card-thumb"><img src="{img_url}" alt="{p["title"]}" width="600" height="338" loading="lazy"></div>' if img_url else ''
+        home_feed_cards.append(f'''
+            <a href="/{p["id"]}" class="mag-article-card">
+              {img_tag}
+              <div class="mag-card-body">
+                <div class="mag-card-title">{p["title"]}</div>
+                <p class="mag-card-excerpt">{p.get("meta_description","")}</p>
+              </div>
+            </a>''')
+    home_feed_html = '\n'.join(home_feed_cards)
+
+    # Pre-render Homepage Hero Grid (p1, p2, p3)
+    p1 = posts_data[0]
+    p2 = posts_data[1] if len(posts_data) > 1 else p1
+    p3 = posts_data[2] if len(posts_data) > 2 else p1
+    hero_grid_html = f'''
+          <a href="/{p1['id']}" class="hero-main-card" style="background-image: url('{p1.get('featured_image','')}');">
+            <div class="hero-card-content">
+              <span class="category-badge">{p1.get('category_name','Featured')}</span>
+              <div class="hero-main-title">{p1['title']}</div>
+              <div class="hero-meta">
+                <span>By {p1.get('author_name','Editorial Staff')}</span> • <span>{p1.get('display_date','Recent')}</span> • <span>{p1.get('read_time','6 min read')}</span>
+              </div>
+            </div>
+          </a>
+          <a href="/{p2['id']}" class="hero-sub-card" style="background-image: url('{p2.get('featured_image','')}');">
+            <div class="hero-card-content">
+              <span class="category-badge blue">{p2.get('category_name','Guide')}</span>
+              <div class="hero-sub-title">{p2['title']}</div>
+              <div class="hero-meta">
+                <span>{p2.get('display_date','Recent')}</span> • <span>{p2.get('read_time','5 min')}</span>
+              </div>
+            </div>
+          </a>
+          <a href="/{p3['id']}" class="hero-sub-card" style="background-image: url('{p3.get('featured_image','')}');">
+            <div class="hero-card-content">
+              <span class="category-badge green">{p3.get('category_name','Analysis')}</span>
+              <div class="hero-sub-title">{p3['title']}</div>
+              <div class="hero-meta">
+                <span>{p3.get('display_date','Recent')}</span> • <span>{p3.get('read_time','5 min')}</span>
+              </div>
+            </div>
+          </a>
+    '''
+
     # Template for Homepage
     home_body = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "\n".join(cat_previews_html))
+    home_body = home_body.replace('<div class="hero-grid" id="hero-grid-container">\n        </div>', f'<div class="hero-grid" id="hero-grid-container">{hero_grid_html}\n        </div>')
+    home_body = home_body.replace('<div class="mag-feed-grid" id="articles-feed">\n            <!-- Populated via JS -->\n          </div>', f'<div class="mag-feed-grid" id="articles-feed">{home_feed_html}\n          </div>')
+
     home_full_html = f"""{head_part}
 {home_body}
-  <script>
-    const ARTICLES_DATA = {articles_json};
-    const STATIC_PAGES = {static_json};
-  </script>
+  <script src="/site_data.js" defer></script>
   <script src="/app.js" defer></script>
 </body>
 </html>
@@ -181,6 +288,17 @@ def rebuild_site():
     if os.path.exists(os.path.dirname(site_index_file)):
         with open(site_index_file, "w", encoding="utf-8") as f:
             f.write(index_html)
+
+    category_editorial_overviews = {
+        "how-to": "Our How-To and Tutorials library delivers step-by-step instructions, proven DIY solutions, and comprehensive troubleshooting protocols. Whether tackling household repairs, mastering software configurations, or following technical procedures, every manual is systematically reviewed to ensure actionable accuracy, clear safety warnings, and reliable results for beginners and advanced practitioners alike. Browse our complete catalog of practical procedures, maintenance checkpoints, and instructional manuals below. Each guide features verified equipment checklists, timing estimates, common pitfalls to avoid, and systematic diagnosis charts to streamline your project.",
+        "finance": "GeneralPedia Personal Finance & Tax Analysis hub provides clear breakdowns of tax brackets, insurance regulations, investment strategies, and retirement planning rules. Explore fact-checked financial analyses, deadline schedules, and actionable money management principles designed to help individuals and families make informed, prudent economic decisions. Review our latest financial guides, policy updates, and fiscal breakdowns below. Our contributors analyze IRS regulations, statutory contribution caps, inflation adjustments, and tax-saving structures to keep you compliant and financially secure.",
+        "health": "The Health, Medicine & Wellness section offers evidence-based medical summaries, symptom breakdowns, preventative care overviews, and nutritional guidelines. All guides are compiled from peer-reviewed clinical research and health authority standards, empowering readers with clear insights to better understand medical conditions and wellness choices. Explore our latest clinical summaries, health advisories, and medical reviews below. Consult verified timelines for symptom progression, home management protocols, and criteria for professional medical evaluation.",
+        "tools": "Explore our collection of interactive calculation tools, reference charts, area code directories, and conversion formulas. Built for fast, reliable lookup, each tool simplifies numerical computations, geographic verifications, and technical data analysis for everyday productivity and project planning. Access our full suite of lookup tables, calculators, and verified references below. Features include comprehensive telecommunications routing maps, regional telecommunication histories, and practical calculation templates.",
+        "automotive": "Our Automotive hub offers in-depth vehicle reviews, mechanical diagnostic guides, maintenance schedules, and practical used car purchasing advice. From performance specifications and fuel economy analyses to troubleshooting engine trouble codes, our automotive manuals equip drivers with dependable knowledge to care for their vehicles. Consult our vehicle reviews, diagnostic playbooks, and inspection guides below. Discover road-tested trim comparisons, long-term ownership expense forecasts, and mechanic-certified pre-purchase checklists.",
+        "tech": "The Technology and Digital Tools category covers software tutorials, system optimization techniques, consumer electronics comparisons, and emerging digital developments. Learn how to configure applications, enhance personal privacy, and navigate digital tools effectively with clear, jargon-free technical manuals. Examine our comprehensive software overviews, device benchmarks, and technical guides below. Stay informed with actionable cybersecurity best practices, operating system configuration steps, and digital productivity workflows.",
+        "lifestyle": "The Home, Pet Care & Living archive delivers vetted home maintenance strategies, pet nutrition guides, indoor air quality practices, and sustainable lifestyle tips. Discover practical advice for everyday living, home safety precautions, and conscientious pet care rooted in expert recommendations and proven household methods. Explore our home management articles, care instructions, and lifestyle guides below. Access seasonal preventative maintenance checklists, veterinarian-reviewed dietary precautions, and energy efficiency upgrades.",
+        "culture": "Our Culture, Sports & Entertainment repository chronicles historical milestones, international sporting traditions, holiday backgrounds, and societal events. Explore rich historical contexts, archival retrospectives, and cultural celebrations with verified timelines and engaging editorial perspectives. Delve into our cultural chronicles, holiday histories, and athletic retrospectives below. Learn the origins, statutory recognitions, and cultural significance behind prominent global commemorations and competitive athletic leagues."
+    }
 
     def write_prerendered_page(rel_path, page_title, page_desc, page_url, page_type="article", extra_data=None):
         escaped_title = page_title.replace('&', '&amp;')
@@ -234,6 +352,14 @@ def rebuild_site():
             page_html = page_html.replace('<section class="trending-banner-row" id="home-trending-section"', '<section class="trending-banner-row hidden" id="home-trending-section"', 1)
             page_html = page_html.replace('<p class="category-header-desc" id="category-banner-desc">Curated editorial manuals, in-depth breakdowns, and interactive references.</p>', f'<p class="category-header-desc" id="category-banner-desc">{escaped_desc}</p>', 1)
             page_html = page_html.replace('<span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">Calculators</span>', f'<span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">{cat_display_name}</span>', 1)
+
+            # Insert Category Editorial Overview Box
+            cat_overview = category_editorial_overviews.get(cat_slug, "")
+            overview_html = f'''
+        <div class="category-editorial-scope" style="margin-top: 18px; font-size: 0.95rem; line-height: 1.65; color: var(--text-muted); background: var(--bg-card); padding: 18px 22px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <p style="margin:0;">{cat_overview}</p>
+        </div>'''
+            page_html = page_html.replace('<!-- 6. 2-COLUMN MAGAZINE CONTENT + SIDEBAR -->', f'{overview_html}\n      <!-- 6. 2-COLUMN MAGAZINE CONTENT + SIDEBAR -->', 1)
 
             # Pre-render category cards:
             cat_posts = [p for p in posts_data if p.get("category_slug") == cat_slug]
