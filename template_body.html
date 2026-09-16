@@ -150,7 +150,7 @@
           <span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">Calculators</span>
         </div>
         <div class="category-header-top">
-          <h2 class="category-header-title" id="category-banner-title">Category Title</h2>
+          <div class="category-header-title" id="category-banner-title">Category Title</div>
         </div>
         <p class="category-header-desc" id="category-banner-desc">Curated editorial manuals, in-depth breakdowns, and interactive references.</p>
         <div class="category-header-meta">
@@ -165,7 +165,7 @@
         <!-- Left Main Column (~70%) -->
         <div class="mag-main-col">
           <div class="mag-section-bar">
-            <h2 class="mag-section-title" id="mag-feed-heading">Latest Published Reports</h2>
+            <div class="mag-section-title" id="mag-feed-heading">Latest Published Reports</div>
             <span class="mag-section-extra" id="mag-feed-count">Showing verified guides</span>
           </div>
 
@@ -188,10 +188,10 @@
           
           <!-- Widget: Top Popular Stories (Numbered 1-5) -->
           <div class="sidebar-widget">
-            <h3 class="widget-title">
+            <div class="widget-title">
               <span>Popular Guides</span>
               <span style="font-size: 0.75rem; color: var(--secondary);">TOP 5</span>
-            </h3>
+            </div>
             <div class="popular-list" id="popular-posts-list">
               <!-- Populated via JS -->
             </div>
@@ -199,7 +199,7 @@
 
           <!-- Widget: Categories Taxonomy -->
           <div class="sidebar-widget">
-            <h3 class="widget-title">Categories</h3>
+            <div class="widget-title">Categories</div>
             <ul class="cat-tax-list" id="cat-tax-list">
               <!-- Dynamically populated via JS with real-time article counts -->
             </ul>
@@ -207,7 +207,7 @@
 
           <!-- Widget: Guest Contributor CTA -->
           <div class="guest-cta-widget">
-            <h4>Become a Contributor</h4>
+            <div class="guest-cta-title">Become a Contributor</div>
             <p>
               We welcome guest writers, subject specialists, and industry analysts. Get your authoritative research published.
             </p>
@@ -219,6 +219,8 @@
         </aside>
 
       </div>
+
+      <!-- STATIC_CATEGORIES_PLACEHOLDER -->
 
     </div>
 
@@ -240,7 +242,7 @@
 
           <header class="art-header-block">
             <span id="art-category-badge" class="category-badge">Category</span>
-            <h2 id="art-title" class="art-title-text">Article Title</h2>
+            <div id="art-title" class="art-title-text">Article Title</div>
             <p id="art-meta" class="art-excerpt-lead">Article Excerpt</p>
             
             <div class="art-byline-bar">
@@ -269,7 +271,7 @@
         <!-- Article Sidebar -->
         <aside class="mag-sidebar">
           <div class="sidebar-widget">
-            <h3 class="widget-title">Fact-Check Notice</h3>
+            <div class="widget-title">Fact-Check Notice</div>
             <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
               This publication undergoes multi-stage editorial verification to adhere to accuracy, Google helpful content guidelines, and standard safety policies.
             </p>
@@ -279,7 +281,7 @@
           </div>
 
           <div class="sidebar-widget">
-            <h3 class="widget-title">Trending in Category</h3>
+            <div class="widget-title">Trending in Category</div>
             <div class="popular-list" id="art-sidebar-trending">
               <!-- JS -->
             </div>
@@ -312,7 +314,7 @@
 
         <aside class="mag-sidebar">
           <div class="sidebar-widget">
-            <h3 class="widget-title">Policy &amp; Legal</h3>
+            <div class="widget-title">Policy &amp; Legal</div>
             <ul class="footer-links">
               <li><button onclick="showStaticPage('about')">About Us</button></li>
               <li><button onclick="showStaticPage('write-for-us')">Write For Us</button></li>
@@ -332,7 +334,7 @@
         <div class="author-profile-header">
           <img class="author-profile-avatar" id="author-profile-avatar" src="" alt="Author" />
           <div class="author-profile-info">
-            <h2 class="author-profile-name" id="author-profile-name">Author Name</h2>
+            <div class="author-profile-name" id="author-profile-name">Author Name</div>
             <span class="author-profile-role" id="author-profile-role">Category Writer</span>
             <p class="author-profile-bio" id="author-profile-bio">Author bio goes here.</p>
           </div>
@@ -340,7 +342,7 @@
       </div>
 
       <div class="mag-section-bar" style="margin-top: 32px;">
-        <h2 class="mag-section-title" id="author-articles-heading">Articles by Author</h2>
+        <div class="mag-section-title" id="author-articles-heading">Articles by Author</div>
         <span class="mag-section-extra" id="author-articles-count">0 articles</span>
       </div>
 
@@ -356,7 +358,7 @@
     <!-- ==================== SEARCH VIEW ==================== -->
     <div id="search-view" class="hidden" style="padding: 24px 0 60px;">
       <div class="mag-section-bar">
-        <h2 class="mag-section-title" id="search-query-title">Search Results</h2>
+        <div class="mag-section-title" id="search-query-title">Search Results</div>
         <span class="mag-section-extra" id="search-count-meta">0 results identified</span>
       </div>
 
@@ -395,7 +397,7 @@
 
         <!-- Col 2: Publication Sections -->
         <div class="footer-col">
-          <h4>Magazine Sections</h4>
+          <div class="footer-col-title">Magazine Sections</div>
           <ul class="footer-links">
             <li><a href="/category/how-to" onclick="handleNavClick(event, () => filterCategory('how-to'))">How-To &amp; Tutorials</a></li>
             <li><a href="/category/finance" onclick="handleNavClick(event, () => filterCategory('finance'))">Finance &amp; Tax</a></li>
@@ -408,7 +410,7 @@
 
         <!-- Col 3: Editorial & Submissions -->
         <div class="footer-col">
-          <h4>Editorial Desk</h4>
+          <div class="footer-col-title">Editorial Desk</div>
           <ul class="footer-links">
             <li><a href="/write-for-us" onclick="handleNavClick(event, () => showStaticPage('write-for-us'))">Write for Us (Guest Post)</a></li>
             <li><a href="/editorial-guidelines" onclick="handleNavClick(event, () => showStaticPage('editorial-guidelines'))">Editorial Guidelines</a></li>
@@ -419,7 +421,7 @@
 
         <!-- Col 4: Trust & Compliance -->
         <div class="footer-col">
-          <h4>Policy &amp; Trust</h4>
+          <div class="footer-col-title">Policy &amp; Trust</div>
           <ul class="footer-links">
             <li><a href="/privacy-policy" onclick="handleNavClick(event, () => showStaticPage('privacy-policy'))">Privacy Policy</a></li>
             <li><a href="/terms" onclick="handleNavClick(event, () => showStaticPage('terms'))">Terms of Service</a></li>

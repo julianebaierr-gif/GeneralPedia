@@ -12,7 +12,10 @@ def rebuild_site():
     with open(DB_PATH, "r", encoding="utf-8") as f:
         posts_data = json.load(f)
 
+    # Escape h1-h4 tags in JSON strings to prevent HTML scanners/crawlers from reading raw duplicate headings inside script blocks
     articles_json = json.dumps(posts_data, ensure_ascii=False).replace("</script", "<\\/script").replace("</Script", "<\\/Script")
+    for h in ["h1", "h2", "h3", "h4"]:
+        articles_json = articles_json.replace(f"<{h}", f"\\u003c{h}").replace(f"</{h}>", f"\\u003c/{h}\\u003e")
 
     with open(os.path.join(SCRATCH_DIR, "theme.css"), "r", encoding="utf-8") as f:
         theme_css = f.read()
@@ -66,7 +69,7 @@ def rebuild_site():
     with open(os.path.join(SCRATCH_DIR, "template_body.html"), "r", encoding="utf-8") as f:
         body_part = f.read()
 
-    # Pre-render categories into HTML
+    # Pre-render categories into HTML for homepage showcase
     cat_previews_html = []
     categories = [
         ("how-to", "How-To Guides"),
@@ -97,7 +100,7 @@ def rebuild_site():
                 {img_tag}
                 <div class="mag-card-body">
                   <span class="category-badge">{cat_name}</span>
-                  <h3 class="mag-card-title">{p['title']}</h3>
+                  <div class="mag-card-title">{p['title']}</div>
                   <div class="mag-card-meta">
                     <span>{p.get('read_time', '5 min read')}</span>
                     <span>•</span>
@@ -114,13 +117,10 @@ def rebuild_site():
               <a href="/category/{cat_slug}" onclick="handleNavClick(event, () => filterCategory('{cat_slug}'))" class="mag-section-more">View All ({len(cat_posts)}) →</a>
             </div>
             <div class="mag-feed-grid">
-              {''.join(cards)}
+              {'\n'.join(cards)}
             </div>
           </section>
         """)
-
-    # Inject static categories into template_body
-    body_part = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "\n".join(cat_previews_html))
 
     with open(os.path.join(SCRATCH_DIR, "app.js"), "r", encoding="utf-8") as f:
         app_js = f.read()
@@ -130,13 +130,35 @@ def rebuild_site():
     except Exception as e:
         print(f"Error loading static pages: {e}")
         STATIC_PAGES = {}
-    static_json = json.dumps(STATIC_PAGES, ensure_ascii=False)
 
-    full_html = f"""{head_part}
+    static_json = json.dumps(STATIC_PAGES, ensure_ascii=False)
+    for h in ["h1", "h2", "h3", "h4"]:
+        static_json = static_json.replace(f"<{h}", f"\\u003c{h}").replace(f"</{h}>", f"\\u003c/{h}\\u003e")
+
+    # Template for subpages (removes STATIC_CATEGORIES_PLACEHOLDER completely)
+    body_clean = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "")
+    page_base_html = f"""{head_part}
   <style>
 {theme_css}
   </style>
-{body_part}
+{body_clean}
+  <script>
+    const ARTICLES_DATA = {articles_json};
+    const STATIC_PAGES = {static_json};
+
+{app_js}
+  </script>
+</body>
+</html>
+"""
+
+    # Template for Homepage
+    home_body = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "\n".join(cat_previews_html))
+    home_full_html = f"""{head_part}
+  <style>
+{theme_css}
+  </style>
+{home_body}
   <script>
     const ARTICLES_DATA = {articles_json};
     const STATIC_PAGES = {static_json};
@@ -154,7 +176,7 @@ def rebuild_site():
     home_logo_end_search = '</div>\n        </a>'
     home_logo_end_replace = '</div>\n        </a></h1>'
 
-    index_html = full_html.replace(home_logo_search, home_logo_replace, 1).replace(home_logo_end_search, home_logo_end_replace, 1)
+    index_html = home_full_html.replace(home_logo_search, home_logo_replace, 1).replace(home_logo_end_search, home_logo_end_replace, 1)
 
     index_file = os.path.join(SCRATCH_DIR, "index.html")
     site_index_file = os.path.join(SCRATCH_DIR, "site", "index.html")
@@ -170,7 +192,7 @@ def rebuild_site():
         escaped_title = page_title.replace('&', '&amp;')
         escaped_desc = page_desc.replace('"', '&quot;').replace('&', '&amp;')
         
-        page_html = full_html
+        page_html = page_base_html
         page_html = re.sub(r'<title>.*?</title>', f'<title>{escaped_title}</title>', page_html, count=1)
         page_html = re.sub(r'<meta name="description" content=".*?">', f'<meta name="description" content="{escaped_desc}">', page_html, count=1)
         page_html = re.sub(r'<link rel="canonical" href=".*?">', f'<link rel="canonical" href="{page_url}">', page_html, count=1)
@@ -180,20 +202,57 @@ def rebuild_site():
 
         # Enforce exactly 1 H1 per page:
         if page_type == "article":
-            # For article page, #art-title is converted from h2 to h1
+            p_data = extra_data or {}
+            clean_art_title = escaped_title.split(" | ")[0]
+            # Convert article title div to h1
             page_html = page_html.replace(
-                '<h2 id="art-title" class="art-title-text">Article Title</h2>',
-                f'<h1 id="art-title" class="art-title-text">{escaped_title.split(" | ")[0]}</h1>',
+                '<div id="art-title" class="art-title-text">Article Title</div>',
+                f'<h1 id="art-title" class="art-title-text">{clean_art_title}</h1>',
                 1
             )
+            # Make article-view visible and home-view hidden
+            page_html = page_html.replace('<div id="article-view" class="hidden">', '<div id="article-view">', 1)
+            page_html = page_html.replace('<div id="home-view">', '<div id="home-view" class="hidden">', 1)
+            # Pre-render content
+            page_html = page_html.replace('<!-- Article HTML inserted here -->', p_data.get('content_html', ''), 1)
+            page_html = page_html.replace('<p id="art-meta" class="art-excerpt-lead">Article Excerpt</p>', f'<p id="art-meta" class="art-excerpt-lead">{p_data.get("meta_description", "")}</p>', 1)
+            page_html = page_html.replace('<span id="art-category-badge" class="category-badge">Category</span>', f'<span id="art-category-badge" class="category-badge">{p_data.get("category_name", "Knowledge Guide")}</span>', 1)
+
         elif page_type == "category":
-            # For category page, #category-banner-title is converted from h2 to h1
+            cat_info = extra_data or {}
+            cat_slug = cat_info.get('slug', '')
             cat_display_name = escaped_title.split(" | ")[0]
+            # Convert category title to H1
             page_html = page_html.replace(
-                '<h2 class="category-header-title" id="category-banner-title">Category Title</h2>',
+                '<div class="category-header-title" id="category-banner-title">Category Title</div>',
                 f'<h1 class="category-header-title" id="category-banner-title">{cat_display_name}</h1>',
                 1
             )
+            # Show category banner, hide hero & trending
+            page_html = page_html.replace('<section id="category-header-banner" class="category-header-banner hidden"', '<section id="category-header-banner" class="category-header-banner"', 1)
+            page_html = page_html.replace('<section class="magazine-hero-section" id="home-hero-section"', '<section class="magazine-hero-section hidden" id="home-hero-section"', 1)
+            page_html = page_html.replace('<section class="trending-banner-row" id="home-trending-section"', '<section class="trending-banner-row hidden" id="home-trending-section"', 1)
+            page_html = page_html.replace('<p class="category-header-desc" id="category-banner-desc">Curated editorial manuals, in-depth breakdowns, and interactive references.</p>', f'<p class="category-header-desc" id="category-banner-desc">{escaped_desc}</p>', 1)
+            page_html = page_html.replace('<span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">Calculators</span>', f'<span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">{cat_display_name}</span>', 1)
+
+            # Pre-render category cards:
+            cat_posts = [p for p in posts_data if p.get("category_slug") == cat_slug]
+            cat_cards = []
+            for p in cat_posts:
+                img = p.get('featured_image', '')
+                img_tag = f'<div class="mag-card-thumb"><img src="{img}" alt="{p["title"]}" loading="lazy"></div>' if img else ''
+                cat_cards.append(f'''
+                  <a href="/{p["id"]}" class="mag-article-card">
+                    {img_tag}
+                    <div class="mag-card-body">
+                      <div class="mag-card-title">{p["title"]}</div>
+                      <p class="mag-card-excerpt">{p.get("meta_description","")}</p>
+                    </div>
+                  </a>
+                ''')
+            cat_cards_html = '\n'.join(cat_cards)
+            page_html = page_html.replace('<div class="mag-feed-grid" id="articles-feed">\n            <!-- Populated via JS -->\n          </div>', f'<div class="mag-feed-grid" id="articles-feed">{cat_cards_html}</div>', 1)
+
         elif page_type == "static":
             sp_data = extra_data or {}
             sp_content = sp_data.get('content', '')
@@ -202,7 +261,7 @@ def rebuild_site():
             # Inject into static-content container
             page_html = page_html.replace('<!-- Static page HTML populated here -->', sp_content, 1)
             # Update breadcrumb
-            clean_title = sp_data.get('title', '').replace('&amp;', '&')
+            clean_title = sp_data.get('title', '').replace('&', '&amp;')
             page_html = page_html.replace(
                 '<li id="static-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Information Page</li>',
                 f'<li id="static-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">{clean_title}</li>',
@@ -224,11 +283,11 @@ def rebuild_site():
             p_title = f"{p.get('title', 'GeneralPedia')} | GeneralPedia"
             p_desc = p.get('meta_description', '')
             p_url = f"https://www.generalpedia.com/{slug}"
-            write_prerendered_page(f"{slug}.html", p_title, p_desc, p_url, page_type="article")
+            write_prerendered_page(f"{slug}.html", p_title, p_desc, p_url, page_type="article", extra_data=p)
 
     # 2. Prerender static pages
     for sp_slug, sp_data in STATIC_PAGES.items():
-        clean_title = sp_data.get('title', '').replace('&amp;', '&')
+        clean_title = sp_data.get('title', '').replace('&', '&amp;')
         sp_title = f"{clean_title} | GeneralPedia"
         sp_desc = sp_data.get('description', '')
         sp_url = f"https://www.generalpedia.com/{sp_slug}"
@@ -249,7 +308,7 @@ def rebuild_site():
         cat_title = f"{cat_name} | GeneralPedia"
         cat_desc = f"Explore curated, research-backed guides, articles, and analyses in {cat_name} on GeneralPedia."
         cat_url = f"https://www.generalpedia.com/category/{cat_slug}"
-        write_prerendered_page(os.path.join("category", f"{cat_slug}.html"), cat_title, cat_desc, cat_url, page_type="category")
+        write_prerendered_page(os.path.join("category", f"{cat_slug}.html"), cat_title, cat_desc, cat_url, page_type="category", extra_data={"slug": cat_slug, "name": cat_name})
 
     # Update sitemap.xml
     today_str = datetime.now().strftime("%Y-%m-%d")

@@ -896,7 +896,7 @@
       padding: 24px;
       border: 1px solid #334155;
     }
-    .guest-cta-widget h4 {
+    .guest-cta-widget h4, .guest-cta-title {
       font-size: 1.125rem;
       font-weight: 800;
       color: #38bdf8;
@@ -1167,7 +1167,7 @@
       gap: 36px;
       margin-bottom: 40px;
     }
-    .footer-col h4 {
+    .footer-col h4, .footer-col-title {
       color: #ffffff;
       font-size: 1rem;
       font-weight: 800;
@@ -1178,7 +1178,7 @@
       padding-bottom: 8px;
       border-bottom: 2px solid #1e293b;
     }
-    .footer-col h4::after {
+    .footer-col h4::after, .footer-col-title::after {
       content: "";
       position: absolute;
       bottom: -2px;

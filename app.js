@@ -35,7 +35,7 @@
         <a href="/${p1.id}" class="hero-main-card" onclick="handleCardClick(event, '${p1.id}')" style="${getImg(p1) ? `background-image: url('${getImg(p1)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge">${escapeHtml(p1.category_name || 'Featured')}</span>
-            <h2 class="hero-main-title">${escapeHtml(p1.title)}</h2>
+            <div class="hero-main-title">${escapeHtml(p1.title)}</div>
             <div class="hero-meta">
               <span>By <span class="art-author-link" style="color:#ffffff;font-weight:700;" onclick="event.preventDefault();event.stopPropagation();showAuthorProfile('${p1.category_slug||''}')">${escapeHtml(p1.author_name || 'Editorial Staff')}</span></span>
               <span>•</span>
@@ -48,7 +48,7 @@
         <a href="/${p2.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p2.id}')" style="${getImg(p2) ? `background-image: url('${getImg(p2)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge blue">${escapeHtml(p2.category_name || 'Guide')}</span>
-            <h3 class="hero-sub-title">${escapeHtml(p2.title)}</h3>
+            <div class="hero-sub-title">${escapeHtml(p2.title)}</div>
             <div class="hero-meta">
               <span>${p2.display_date || 'Recent'}</span>
               <span>•</span>
@@ -59,7 +59,7 @@
         <a href="/${p3.id}" class="hero-sub-card" onclick="handleCardClick(event, '${p3.id}')" style="${getImg(p3) ? `background-image: url('${getImg(p3)}');` : ''}">
           <div class="hero-card-content">
             <span class="category-badge green">${escapeHtml(p3.category_name || 'Analysis')}</span>
-            <h3 class="hero-sub-title">${escapeHtml(p3.title)}</h3>
+            <div class="hero-sub-title">${escapeHtml(p3.title)}</div>
             <div class="hero-meta">
               <span>${p3.display_date || 'Recent'}</span>
               <span>•</span>
@@ -256,7 +256,7 @@
             <span>•</span>
             <span>${art.read_time || '5 min read'}</span>
           </div>
-          <h3 class="mag-card-title">${escapeHtml(art.title)}</h3>
+          <div class="mag-card-title">${escapeHtml(art.title)}</div>
           <p class="mag-card-excerpt">${escapeHtml(art.meta_description || '')}</p>
           <div class="mag-card-footer">
             <span>Read Full Story →</span>
@@ -355,7 +355,7 @@
         card.innerHTML = `
           <div>
             <div class="mini-card-tag">${escapeHtml(art.category_name || 'Trending')}</div>
-            <h4 class="mini-card-title">${escapeHtml(art.title)}</h4>
+            <div class="mini-card-title">${escapeHtml(art.title)}</div>
           </div>
           <div class="mini-card-date">${art.display_date || 'Updated'} • ${art.read_time || '4 min'}</div>
         `;
@@ -659,7 +659,7 @@
       if (results.length === 0) {
         grid.innerHTML = `
           <div style="grid-column: 1 / -1; padding: 48px; text-align: center; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
-            <h3>No matching reports found for "${escapeHtml(query)}"</h3>
+            <div style="font-size: 1.125rem; font-weight: 700; color: var(--text-main);">No matching reports found for "${escapeHtml(query)}"</div>
             <p style="color: var(--text-muted); margin-top: 8px;">Try broader terms such as "tax", "camry", "symptoms", or explore our category directory.</p>
           </div>
         `;
@@ -678,7 +678,7 @@
               <span>•</span>
               <span>${art.display_date || 'Recent'}</span>
             </div>
-            <h3 class="mag-card-title">${escapeHtml(art.title)}</h3>
+            <div class="mag-card-title">${escapeHtml(art.title)}</div>
           </div>
           <div class="mag-card-body">
             <p class="mag-card-excerpt">${escapeHtml(art.meta_description || '')}</p>
@@ -775,7 +775,7 @@
             ${art.featured_image ? `<img class="feed-card-img" src="${art.featured_image}" alt="${escapeHtml(art.title)}" loading="lazy" />` : ''}
             <div class="feed-card-body">
               <span class="category-badge small">${escapeHtml(art.category_name || '')}</span>
-              <h3 class="feed-card-title">${escapeHtml(art.title)}</h3>
+              <div class="feed-card-title">${escapeHtml(art.title)}</div>
               <div class="feed-card-meta"><span>${art.display_date || 'Recent'}</span><span>•</span><span>${art.read_time || '5 min read'}</span></div>
             </div>
           </a>`).join('');
