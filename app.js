@@ -1,17 +1,20 @@
     function handleCardClick(e, id) {
-      if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || (e.button && e.button !== 0)) {
-        return; // Allow native browser behavior for new tab / window / middle click
-      }
-      e.preventDefault();
-      openArticle(id);
+      // Allow natural browser navigation to the article's pre-rendered HTML page
+      // Each article has its own .html file with full content already rendered
+      // No SPA routing needed - direct navigation is faster and always works
     }
 
     function handleNavClick(e, actionFn) {
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || (e.button && e.button !== 0)) {
         return; // Allow native browser open in new tab/window
       }
-      e.preventDefault();
-      if (typeof actionFn === 'function') actionFn();
+      // If we are on the homepage (pathname === '/'), perform smooth client-side filtering
+      const isHome = window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname === '';
+      if (isHome && typeof actionFn === 'function') {
+        e.preventDefault();
+        actionFn();
+      }
+      // Otherwise, let the browser naturally navigate to the target href (no JS intercept bug)
     }
 
     function renderHeroGrid() {
@@ -846,6 +849,14 @@
       const foundArticle = findArticle(path);
       if (foundArticle) {
         openArticle(foundArticle.id, false);
+        return;
+      }
+
+      // If page has a visible pre-rendered static view or article view in DOM, do NOT override with home view
+      const activeStatic = document.getElementById('static-view');
+      const activeArticle = document.getElementById('article-view');
+      if ((activeStatic && !activeStatic.classList.contains('hidden') && activeStatic.innerHTML.trim().length > 200) ||
+          (activeArticle && !activeArticle.classList.contains('hidden') && activeArticle.innerHTML.trim().length > 200)) {
         return;
       }
 
