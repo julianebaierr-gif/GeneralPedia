@@ -496,7 +496,9 @@
         avatarImg.onclick = function(e) { e.preventDefault(); showAuthorProfile(authorCatSlug); };
       }
       const contentEl = document.getElementById('art-content');
-      contentEl.innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
+      if (post.content_html) {
+        contentEl.innerHTML = post.content_html;
+      }
       // Execute any interactive script tags embedded inside the article content (e.g. calculators)
       const scripts = contentEl.querySelectorAll('script');
       scripts.forEach(oldScript => {

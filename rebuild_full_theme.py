@@ -258,7 +258,7 @@ def rebuild_site():
     '''
 
     # Template for Homepage
-    home_body = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "\n".join(cat_previews_html))
+    home_body = body_part.replace("<!-- STATIC_CATEGORIES_PLACEHOLDER -->", "")
     home_body = home_body.replace('<div class="hero-grid" id="hero-grid-container">\n        </div>', f'<div class="hero-grid" id="hero-grid-container">{hero_grid_html}\n        </div>')
     home_body = home_body.replace('<div class="mag-feed-grid" id="articles-feed">\n            <!-- Populated via JS -->\n          </div>', f'<div class="mag-feed-grid" id="articles-feed">{home_feed_html}\n          </div>')
 

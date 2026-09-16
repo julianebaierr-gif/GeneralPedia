@@ -283,7 +283,7 @@
       document.getElementById('art-title-crumb').innerText = post.primary_keyword || post.title;
       document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
       document.getElementById('art-read-time').innerText = post.read_time || '5 min read';
-      document.getElementById('art-content').innerHTML = post.content_html || '<p>Content preview available shortly.</p>';
+      if (post.content_html) { document.getElementById('art-content').innerHTML = post.content_html; }
       updateSeoMetadata(
         `${post.title} | GeneralPedia`,
         post.meta_description || 'Comprehensive factual reference guide and breakdown on GeneralPedia.',
