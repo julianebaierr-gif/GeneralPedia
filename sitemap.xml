@@ -15,6 +15,15 @@
   <url><loc>https://www.generalpedia.com/category/automotive</loc><lastmod>2026-09-16</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.generalpedia.com/category/lifestyle</loc><lastmod>2026-09-16</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://www.generalpedia.com/category/culture</loc><lastmod>2026-09-16</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <!-- Authors -->
+  <url><loc>https://www.generalpedia.com/author/marcus-reid</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/sarah-mitchell</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/elena-torres</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/james-carter</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/david-chen</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/ryan-kowalski</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/nora-jacobs</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/amir-hassan</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <!-- Static Pages -->
   <url><loc>https://www.generalpedia.com/about</loc><lastmod>2026-09-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://www.generalpedia.com/write-for-us</loc><lastmod>2026-09-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
@@ -23,6 +32,7 @@
   <url><loc>https://www.generalpedia.com/terms</loc><lastmod>2026-09-16</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://www.generalpedia.com/contact</loc><lastmod>2026-09-16</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <!-- Articles -->
+  <url><loc>https://www.generalpedia.com/the-wizard-of-oz-classic-movie-facts</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.generalpedia.com/dryer-vent-cleaning-what-know-tips-easy</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.generalpedia.com/used-cars-for-sale-real-specs-performance</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.generalpedia.com/323-area-code-location-cities-served-lookup</loc><lastmod>2026-09-16</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>

@@ -344,6 +344,41 @@
       </div>
     </div>
 
+    <!-- ==================== AUTHOR PROFILE VIEW ==================== -->
+    <div id="author-view" class="hidden" style="padding: 24px 0 60px;">
+      <nav aria-label="Breadcrumb" style="margin-bottom: 20px;">
+        <ol class="breadcrumbs">
+          <li><button onclick="showHomeView()">Home</button></li>
+          <li>/</li>
+          <li style="color: var(--text-main); font-weight: 600;">Author Profile</li>
+        </ol>
+      </nav>
+
+      <div class="author-profile-card">
+        <div class="author-profile-header">
+          <img id="author-profile-avatar" class="author-profile-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&h=240&q=85" alt="Author Profile" width="100" height="100" />
+          <div>
+            <div id="author-profile-name" class="author-profile-name">Author Name</div>
+            <div id="author-profile-role" class="author-profile-role">Specialist Writer</div>
+            <p id="author-profile-bio" class="author-profile-bio">Author bio description...</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mag-section-bar" style="margin-top: 36px;">
+        <div class="mag-section-title" id="author-articles-heading">Articles by Author</div>
+        <span class="mag-section-extra" id="author-articles-count">0 articles</span>
+      </div>
+
+      <div class="mag-feed-grid" id="author-articles-grid" style="margin-top: 20px;">
+        <!-- Populated via JS -->
+      </div>
+
+      <div style="margin-top: 40px; text-align: center;">
+        <a href="/" onclick="showHomeView(); return false;" class="btn-primary" style="display:inline-block;text-decoration:none;">← Back to Frontpage</a>
+      </div>
+    </div>
+
   </main>
 
   <!-- ==================== 9. 4-COLUMN MAGAZINE FOOTER ==================== -->

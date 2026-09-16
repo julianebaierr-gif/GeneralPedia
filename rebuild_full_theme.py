@@ -330,6 +330,36 @@ def rebuild_site():
             page_html = page_html.replace('<p id="art-meta" class="art-excerpt-lead">Article Excerpt</p>', f'<p id="art-meta" class="art-excerpt-lead">{p_data.get("meta_description", "")}</p>', 1)
             page_html = page_html.replace('<span id="art-category-badge" class="category-badge">Category</span>', f'<span id="art-category-badge" class="category-badge">{p_data.get("category_name", "Knowledge Guide")}</span>', 1)
 
+            # Pre-render byline
+            author_name = p_data.get('author_name', 'Editorial Staff')
+            cat_slug = p_data.get('category_slug', 'how-to')
+            author_slug = author_name.lower().replace(' ', '-') if author_name else 'editorial-staff'
+            author_avatar = p_data.get('author_avatar', '')
+            if not author_avatar:
+                from config import AUTHORS
+                author_avatar = AUTHORS.get(cat_slug, {}).get('avatar', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&h=240&q=85')
+
+            page_html = page_html.replace(
+                '<img class="art-avatar-img" id="art-avatar-img" src="" alt="Author" width="42" height="42" />',
+                f'<img class="art-avatar-img" id="art-avatar-img" src="{author_avatar}" alt="{author_name}" width="42" height="42" style="cursor: pointer;" onclick="event.preventDefault(); showAuthorProfile(\'{cat_slug}\');" />',
+                1
+            )
+            page_html = page_html.replace(
+                '<div style="font-weight: 700; color: var(--text-main);" id="art-author-name">Editorial Staff</div>',
+                f'<div style="font-weight: 700; color: var(--text-main);" id="art-author-name"><a href="/author/{author_slug}" class="art-author-link" onclick="event.preventDefault(); showAuthorProfile(\'{cat_slug}\');">{author_name}</a></div>',
+                1
+            )
+            page_html = page_html.replace(
+                '<div id="art-date">September 13, 2026</div>',
+                f'<div id="art-date">{p_data.get("display_date", "Recent")}</div>',
+                1
+            )
+            page_html = page_html.replace(
+                '<div style="font-weight: 600;" id="art-read-time">5 min read</div>',
+                f'<div style="font-weight: 600;" id="art-read-time">{p_data.get("read_time", "5 min read")}</div>',
+                1
+            )
+
         elif page_type == "category":
             cat_info = extra_data or {}
             cat_slug = cat_info.get('slug', '')
@@ -397,6 +427,68 @@ def rebuild_site():
             page_html = page_html.replace('<div id="static-view" class="hidden">', '<div id="static-view">', 1)
             page_html = page_html.replace('<div id="home-view">', '<div id="home-view" class="hidden">', 1)
 
+        elif page_type == "author":
+            auth_info = extra_data or {}
+            auth_name = auth_info.get('name', 'Author Profile')
+            auth_cat = auth_info.get('category_slug', 'how-to')
+            auth_avatar = auth_info.get('avatar', '')
+            auth_bio = auth_info.get('bio', '')
+            auth_role = auth_info.get('role', 'Specialist Writer')
+            
+            # Convert author name to H1
+            page_html = page_html.replace(
+                '<div id="author-profile-name" class="author-profile-name">Author Name</div>',
+                f'<h1 id="author-profile-name" class="author-profile-name">{auth_name}</h1>',
+                1
+            )
+            page_html = page_html.replace(
+                '<img id="author-profile-avatar" class="author-profile-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&h=240&q=85" alt="Author Profile" width="100" height="100" />',
+                f'<img id="author-profile-avatar" class="author-profile-avatar" src="{auth_avatar}" alt="{auth_name}" width="100" height="100" />',
+                1
+            )
+            page_html = page_html.replace(
+                '<div id="author-profile-role" class="author-profile-role">Specialist Writer</div>',
+                f'<div id="author-profile-role" class="author-profile-role">{auth_role}</div>',
+                1
+            )
+            page_html = page_html.replace(
+                '<p id="author-profile-bio" class="author-profile-bio">Author bio description...</p>',
+                f'<p id="author-profile-bio" class="author-profile-bio">{auth_bio}</p>',
+                1
+            )
+            
+            # Pre-render author articles:
+            auth_posts = [p for p in posts_data if p.get("category_slug") == auth_cat or (p.get("author_name") and p.get("author_name").lower() == auth_name.lower())]
+            auth_cards = []
+            for p in auth_posts:
+                img = p.get('featured_image', '')
+                img_tag = f'<div class="mag-card-thumb"><img src="{img}" alt="{p["title"]}" width="600" height="338" loading="lazy"></div>' if img else ''
+                auth_cards.append(f'''
+                  <a href="/{p["id"]}" class="mag-article-card">
+                    {img_tag}
+                    <div class="mag-card-body">
+                      <div class="mag-card-title">{p["title"]}</div>
+                      <p class="mag-card-excerpt">{p.get("meta_description","")}</p>
+                    </div>
+                  </a>
+                ''')
+            auth_cards_html = '\n'.join(auth_cards)
+            page_html = page_html.replace(
+                '<div class="mag-section-title" id="author-articles-heading">Articles by Author</div>',
+                f'<h2 class="mag-section-title" id="author-articles-heading">Articles by {auth_name}</h2>',
+                1
+            )
+            page_html = page_html.replace(
+                '<span class="mag-section-extra" id="author-articles-count">0 articles</span>',
+                f'<span class="mag-section-extra" id="author-articles-count">{len(auth_posts)} published {"article" if len(auth_posts) == 1 else "articles"}</span>',
+                1
+            )
+            page_html = page_html.replace('<div class="mag-feed-grid" id="author-articles-grid" style="margin-top: 20px;">\n        <!-- Populated via JS -->\n      </div>', f'<div class="mag-feed-grid" id="author-articles-grid" style="margin-top: 20px;">{auth_cards_html}</div>', 1)
+
+            # Make author-view visible and home-view hidden:
+            page_html = page_html.replace('<div id="author-view" class="hidden"', '<div id="author-view"', 1)
+            page_html = page_html.replace('<div id="home-view">', '<div id="home-view" class="hidden">', 1)
+
         target_file = os.path.join(SCRATCH_DIR, rel_path)
         os.makedirs(os.path.dirname(target_file), exist_ok=True)
         with open(target_file, "w", encoding="utf-8") as pf:
@@ -453,6 +545,31 @@ def rebuild_site():
         cat_url = f"https://www.generalpedia.com/category/{cat_slug}"
         write_prerendered_page(os.path.join("category", f"{cat_slug}.html"), cat_title, cat_desc, cat_url, page_type="category", extra_data={"slug": cat_slug, "name": cat_name})
 
+    # 4. Prerender authors
+    from config import AUTHORS, CATEGORIES
+    for cat_slug, auth_data in AUTHORS.items():
+        auth_name = auth_data.get("name", "")
+        auth_slug = auth_name.lower().replace(" ", "-")
+        cat_name = CATEGORIES.get(cat_slug, {}).get("name", "Knowledge Guides")
+        auth_role = f"{cat_name} Specialist"
+        auth_title = f"{auth_name} - Author Profile | GeneralPedia"
+        auth_desc = auth_data.get("bio", f"Author profile and verified articles by {auth_name} on GeneralPedia.")
+        auth_url = f"https://www.generalpedia.com/author/{auth_slug}"
+        write_prerendered_page(
+            os.path.join("author", f"{auth_slug}.html"),
+            auth_title,
+            auth_desc,
+            auth_url,
+            page_type="author",
+            extra_data={
+                "name": auth_name,
+                "category_slug": cat_slug,
+                "avatar": auth_data.get("avatar", ""),
+                "bio": auth_data.get("bio", ""),
+                "role": auth_role
+            }
+        )
+
     # Update sitemap.xml
     today_str = datetime.now().strftime("%Y-%m-%d")
 
@@ -474,6 +591,15 @@ def rebuild_site():
         '  <url><loc>https://www.generalpedia.com/category/automotive</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
         '  <url><loc>https://www.generalpedia.com/category/lifestyle</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
         '  <url><loc>https://www.generalpedia.com/category/culture</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <!-- Authors -->',
+        '  <url><loc>https://www.generalpedia.com/author/marcus-reid</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/author/sarah-mitchell</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/author/elena-torres</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/author/james-carter</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/author/david-chen</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/author/ryan-kowalski</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/author/nora-jacobs</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/author/amir-hassan</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
         '  <!-- Static Pages -->',
         '  <url><loc>https://www.generalpedia.com/about</loc><lastmod>' + today_str + '</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>',
         '  <url><loc>https://www.generalpedia.com/write-for-us</loc><lastmod>' + today_str + '</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>',

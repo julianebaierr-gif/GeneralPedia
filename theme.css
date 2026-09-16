@@ -89,7 +89,7 @@
     /* Skip link */
     .skip-link {
       position: absolute;
-      top: -40px;
+      top: -100px;
       left: 10px;
       background: var(--secondary);
       color: #fff;
