@@ -129,7 +129,7 @@
       const feedItems = ARTICLES_DATA.length > 3 ? ARTICLES_DATA.slice(3) : ARTICLES_DATA;
       renderFeed(feedItems, PAGE_SIZE);
       if (push) history.pushState({ view: 'home' }, '', '/');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function filterCategory(slug, push = true) {
@@ -182,7 +182,7 @@
       updateSeoMetadata(`${catTitle} | GeneralPedia`, catDesc, `/category/${slug}`);
       renderFeed(filtered, PAGE_SIZE);
       if (push) history.pushState({ view: 'category', slug: slug }, '', `/category/${slug}`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function toggleMobileMenu() {
@@ -454,7 +454,11 @@
 
     async function openArticle(id, push = true) {
       let post = findArticle(id);
-      if (!post || !post.content_html) {
+      const contentEl = document.getElementById('art-content');
+      const hasPreRendered = contentEl && contentEl.innerHTML.trim().length > 100;
+
+      // Only fetch from API if we have NO post data AND NO pre-rendered content
+      if (!post && !hasPreRendered) {
         try {
           const res = await fetch(`/api/post/${id}`);
           if (res.ok) {
@@ -462,61 +466,77 @@
           }
         } catch(e) {}
       }
-      if (!post) {
+
+      if (!post && !hasPreRendered) {
         console.warn('Post not found for id/slug:', id);
         return;
       }
 
-      document.getElementById('art-title').innerText = post.title;
-      document.getElementById('art-meta').innerText = post.meta_description || '';
-      document.getElementById('art-category-badge').innerText = post.category_name || 'Knowledge Guide';
-      document.getElementById('art-category-crumb').innerText = post.category_name || 'Category';
-      if (post.category_slug) {
-        currentCategorySlug = post.category_slug;
-        updateNavHighlight(post.category_slug);
-        const catCrumb = document.getElementById('art-category-crumb');
-        if (catCrumb) {
-          catCrumb.onclick = () => filterCategory(post.category_slug);
+      // If we have post metadata, update header elements
+      if (post) {
+        document.getElementById('art-title').innerText = post.title;
+        document.getElementById('art-meta').innerText = post.meta_description || '';
+        document.getElementById('art-category-badge').innerText = post.category_name || 'Knowledge Guide';
+        document.getElementById('art-category-crumb').innerText = post.category_name || 'Category';
+        if (post.category_slug) {
+          currentCategorySlug = post.category_slug;
+          updateNavHighlight(post.category_slug);
+          const catCrumb = document.getElementById('art-category-crumb');
+          if (catCrumb) {
+            catCrumb.onclick = () => filterCategory(post.category_slug);
+          }
+        }
+        document.getElementById('art-title-crumb').innerText = post.primary_keyword || post.title;
+        document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
+
+        // Set author info — use AUTHORS_DATA for avatar if not in post
+        const authorNameEl = document.getElementById('art-author-name');
+        const authorSlug = getAuthorSlug(post.author_name);
+        const authorCatSlug = post.category_slug || '';
+        if (authorNameEl) {
+          authorNameEl.innerHTML = `<a href="/author/${authorSlug}" class="art-author-link" onclick="event.preventDefault(); showAuthorProfile('${authorCatSlug}')">${escapeHtml(post.author_name || 'Editorial Staff')}</a>`;
+        }
+        const avatarImg = document.getElementById('art-avatar-img');
+        if (avatarImg) {
+          const authorData = AUTHORS_DATA[authorCatSlug];
+          const avatarSrc = post.author_avatar || (authorData && authorData.avatar) || '';
+          if (avatarSrc) {
+            avatarImg.src = avatarSrc;
+            avatarImg.alt = post.author_name || 'Author';
+            avatarImg.style.cursor = 'pointer';
+            avatarImg.onclick = function(e) { e.preventDefault(); showAuthorProfile(authorCatSlug); };
+          }
+        }
+
+        // Only overwrite content if post has content_html (from API or site_data)
+        // Otherwise keep the pre-rendered HTML that's already in the page
+        if (post.content_html && contentEl) {
+          contentEl.innerHTML = post.content_html;
         }
       }
-      document.getElementById('art-title-crumb').innerText = post.primary_keyword || post.title;
-      document.getElementById('art-date').innerText = post.display_date || 'Recently Published';
-      // Set author info
-      const authorNameEl = document.getElementById('art-author-name');
-      const authorSlug = getAuthorSlug(post.author_name);
-      const authorCatSlug = post.category_slug || '';
-      if (authorNameEl) {
-        authorNameEl.innerHTML = `<a href="/author/${authorSlug}" class="art-author-link" onclick="event.preventDefault(); showAuthorProfile('${authorCatSlug}')">${escapeHtml(post.author_name || 'Editorial Staff')}</a>`;
-      }
-      const avatarImg = document.getElementById('art-avatar-img');
-      if (avatarImg && post.author_avatar) {
-        avatarImg.src = post.author_avatar;
-        avatarImg.alt = post.author_name || 'Author';
-        avatarImg.style.cursor = 'pointer';
-        avatarImg.onclick = function(e) { e.preventDefault(); showAuthorProfile(authorCatSlug); };
-      }
-      const contentEl = document.getElementById('art-content');
-      if (post.content_html) {
-        contentEl.innerHTML = post.content_html;
-      }
-      // Execute any interactive script tags embedded inside the article content (e.g. calculators)
-      const scripts = contentEl.querySelectorAll('script');
-      scripts.forEach(oldScript => {
-        const newScript = document.createElement('script');
-        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-        newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-        oldScript.parentNode.replaceChild(newScript, oldScript);
-      });
 
-      updateSeoMetadata(
-        `${post.title} | GeneralPedia`,
-        post.meta_description || 'Comprehensive factual reference guide and breakdown on GeneralPedia.',
-        `/${id}`
-      );
+      // Execute any interactive script tags embedded inside the article content (e.g. calculators)
+      if (contentEl) {
+        const scripts = contentEl.querySelectorAll('script');
+        scripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+          newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+      }
+
+      if (post) {
+        updateSeoMetadata(
+          `${post.title} | GeneralPedia`,
+          post.meta_description || 'Comprehensive factual reference guide and breakdown on GeneralPedia.',
+          `/${id}`
+        );
+      }
 
       // Dynamically inject or remove FAQ Schema JSON-LD for rich snippets
       let faqSchemaTag = document.getElementById('article-faq-schema');
-      if (post.faq_schema) {
+      if (post && post.faq_schema) {
         if (!faqSchemaTag) {
           faqSchemaTag = document.createElement('script');
           faqSchemaTag.id = 'article-faq-schema';
@@ -531,8 +551,9 @@
       hideAllViews();
       articleView.classList.remove('hidden');
       if (push) history.pushState({ view: 'article', id: id }, '', `/${id}`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
+
 
     function showStaticPage(slug, push = true) {
       updateNavHighlight(null);
@@ -552,7 +573,7 @@
       hideAllViews();
       staticView.classList.remove('hidden');
       if (push) history.pushState({ view: 'static', slug: slug }, '', `/${slug}`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     window.handleContactSubmit = async function(event) {
@@ -693,7 +714,7 @@
         grid.appendChild(card);
       });
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function toggleTheme() {
@@ -786,7 +807,7 @@
       const slug = getAuthorSlug(author.name);
       updateSeoMetadata(author.name + ' | GeneralPedia Author', author.bio, 'author/' + slug);
       if (push !== false) history.pushState({}, '', '/author/' + slug);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     // Handle URL routing on load and history navigation

@@ -13,7 +13,7 @@ def rebuild_site():
         posts_data = json.load(f)
 
     # Create minimal articles metadata for client-side search/feeds
-    feed_keys = ['id', 'slug', 'title', 'category_slug', 'category_name', 'featured_image', 'display_date', 'read_time', 'meta_description', 'author_name', 'primary_keyword']
+    feed_keys = ['id', 'slug', 'title', 'category_slug', 'category_name', 'featured_image', 'display_date', 'read_time', 'meta_description', 'author_name', 'author_avatar', 'primary_keyword']
     light_posts = [{k: p.get(k, '') for k in feed_keys} for p in posts_data]
 
     articles_json = json.dumps(light_posts, ensure_ascii=False).replace("</script", "<\\/script").replace("</Script", "<\\/Script")
