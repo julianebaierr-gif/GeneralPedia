@@ -407,19 +407,22 @@ def rebuild_site():
         slug = p.get('slug') or p.get('id')
         if slug:
             raw_title = p.get('title', 'GeneralPedia').strip()
-            # If escaped length with brand fits in 60:
+            # Always add brand suffix so <title> never duplicates <h1>
+            # Try progressively shorter suffixes to stay ≤60 chars
             with_brand = f"{raw_title} | GeneralPedia"
+            with_brand_dash = f"{raw_title} - GeneralPedia"
+            with_brand_short = f"{raw_title} | GP"
             if len(with_brand.replace('&', '&amp;')) <= 60:
                 p_title = with_brand
-            elif len(raw_title.replace('&', '&amp;')) <= 60:
-                p_title = raw_title
+            elif len(with_brand_short.replace('&', '&amp;')) <= 60:
+                p_title = with_brand_short
             else:
                 prefix = re.split(r'[:\-–—]', raw_title)[0].strip()
                 cand = f"{prefix} | GeneralPedia"
                 if len(cand.replace('&', '&amp;')) <= 60:
                     p_title = cand
                 else:
-                    p_title = prefix[:56]
+                    p_title = f"{prefix[:53]} | GP"
             
             p_desc = p.get('meta_description', '')
             p_url = f"https://www.generalpedia.com/{slug}"
