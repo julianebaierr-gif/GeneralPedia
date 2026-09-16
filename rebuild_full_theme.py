@@ -213,6 +213,7 @@ def rebuild_site():
         {"slug": "health", "name": "Health & Wellness"},
         {"slug": "tools", "name": "Calculators & Tools"},
         {"slug": "automotive", "name": "Automotive"},
+        {"slug": "tech", "name": "Tech & Digital"},
         {"slug": "lifestyle", "name": "Lifestyle & Living"},
         {"slug": "culture", "name": "Culture & Society"}
     ]
@@ -404,6 +405,31 @@ def rebuild_site():
             page_html = page_html.replace(
                 '<div style="font-weight: 600;" id="art-read-time">5 min read</div>',
                 f'<div style="font-weight: 600;" id="art-read-time">{p_data.get("read_time", "5 min read")}</div>',
+                1
+            )
+
+            # Pre-render trending in category or top stories in article sidebar
+            art_id = p_data.get('id', '')
+            trending_posts = [p for p in posts_data if p.get('id') != art_id]
+            # Prioritize same category if available, plus other popular posts
+            same_cat = [p for p in trending_posts if p.get('category_slug') == cat_slug]
+            diff_cat = [p for p in trending_posts if p.get('category_slug') != cat_slug]
+            chosen_sidebar_posts = (same_cat + diff_cat)[:5]
+
+            art_sidebar_cards = []
+            for idx, a_art in enumerate(chosen_sidebar_posts):
+                art_sidebar_cards.append(f'''
+                  <a href="/{a_art['id']}" class="popular-item">
+                    <div class="popular-num">0{idx + 1}</div>
+                    <div class="popular-content">
+                      <div class="popular-title">{a_art['title']}</div>
+                      <span>{a_art.get('display_date', 'Recent')} • {a_art.get('category_name', 'Guide')}</span>
+                    </div>
+                  </a>''')
+            art_sidebar_html = '\n'.join(art_sidebar_cards)
+            page_html = page_html.replace(
+                '<div class="popular-list" id="art-sidebar-trending">\n              <!-- JS -->\n            </div>',
+                f'<div class="popular-list" id="art-sidebar-trending">{art_sidebar_html}\n            </div>',
                 1
             )
 
