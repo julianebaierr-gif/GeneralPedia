@@ -774,7 +774,7 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
 def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     slug = slugify(primary_kw)
     capital_kw = capitalize_keyword(primary_kw)
-    post_url = f"https://general-pedia.vercel.app/{slug}"
+    post_url = f"https://generalpedia.com/{slug}"
     post_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     display_date = datetime.now().strftime("%B %d, %Y")
     
@@ -787,7 +787,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     # Topic-tailored, authentic human SEO title and exact 155-158 char meta description
     title = generate_topic_specific_seo_title(primary_kw, cat_slug, all_semantic_kws)
     slug = slugify_with_seo_title(primary_kw, title)
-    post_url = f"https://general-pedia.vercel.app/{slug}"
+    post_url = f"https://generalpedia.com/{slug}"
     meta_desc = generate_exact_seo_meta_description(primary_kw, cat_slug, min_len=155, max_len=158)
     tags = generate_tags(primary_kw, all_semantic_kws, cat_slug)
     

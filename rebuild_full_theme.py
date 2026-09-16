@@ -27,11 +27,11 @@ def rebuild_site():
   <meta name="keywords" content="generalpedia, knowledge hub, encyclopedia, digital magazine, personal finance, tutorials, tax guides, automotive reviews">
   <meta name="author" content="GeneralPedia Editorial Board">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://general-pedia.vercel.app/">
+  <link rel="canonical" href="https://generalpedia.com/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://general-pedia.vercel.app/">
+  <meta property="og:url" content="https://generalpedia.com/">
   <meta property="og:title" content="GeneralPedia | Digital Knowledge Magazine">
   <meta property="og:description" content="Research-backed articles, trending news, and tools across finance, health, tech, automotive, and everyday living.">
   <meta property="og:site_name" content="GeneralPedia">
@@ -164,20 +164,20 @@ def rebuild_site():
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
         '  <!-- Homepage -->',
         '  <url>',
-        '    <loc>https://general-pedia.vercel.app/</loc>',
+        '    <loc>https://generalpedia.com/</loc>',
         f'    <lastmod>{today_str}</lastmod>',
         '    <changefreq>daily</changefreq>',
         '    <priority>1.0</priority>',
         '  </url>',
         '  <!-- Categories -->',
-        '  <url><loc>https://general-pedia.vercel.app/category/how-to</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://general-pedia.vercel.app/category/finance</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://general-pedia.vercel.app/category/health</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://general-pedia.vercel.app/category/tools</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://general-pedia.vercel.app/category/automotive</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://general-pedia.vercel.app/category/tech</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://general-pedia.vercel.app/category/lifestyle</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
-        '  <url><loc>https://general-pedia.vercel.app/category/culture</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://generalpedia.com/category/how-to</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://generalpedia.com/category/finance</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://generalpedia.com/category/health</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://generalpedia.com/category/tools</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://generalpedia.com/category/automotive</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://generalpedia.com/category/tech</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://generalpedia.com/category/lifestyle</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://generalpedia.com/category/culture</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
         '  <!-- Articles -->'
     ]
 
@@ -185,7 +185,7 @@ def rebuild_site():
         p_slug = p.get('slug') or p.get('id')
         p_date = (p.get('published_at') or today_str)[:10]
         if p_slug:
-            sitemap_lines.append(f'  <url><loc>https://general-pedia.vercel.app/{p_slug}</loc><lastmod>{p_date}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>')
+            sitemap_lines.append(f'  <url><loc>https://generalpedia.com/{p_slug}</loc><lastmod>{p_date}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>')
 
     sitemap_lines.append('</urlset>\n')
     sitemap_content = '\n'.join(sitemap_lines)
