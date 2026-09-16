@@ -674,7 +674,6 @@ def rebuild_site():
         '  <url><loc>https://www.generalpedia.com/author/elena-torres</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
         '  <url><loc>https://www.generalpedia.com/author/james-carter</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
         '  <url><loc>https://www.generalpedia.com/author/david-chen</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
-        '  <url><loc>https://www.generalpedia.com/author/ryan-kowalski</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
         '  <url><loc>https://www.generalpedia.com/author/nora-jacobs</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
         '  <url><loc>https://www.generalpedia.com/author/amir-hassan</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
         '  <!-- Static Pages -->',

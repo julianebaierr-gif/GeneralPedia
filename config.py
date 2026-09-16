@@ -116,16 +116,6 @@ AUTHORS = {
         "expertise": ["Powertrain & Hybrid Technology", "Vehicle Trim Comparisons", "OBD-II Fault Diagnostics", "Fuel Economy Benchmarks", "Pre-Purchase Inspection Checklists"],
         "editorial_standards": "Objective manufacturer specification benchmarking, real-world road test verification, and certified diagnostic protocols."
     },
-    "tech": {
-        "name": "Ryan Kowalski",
-        "initials": "RK",
-        "role": "Software Engineer & Digital Security Analyst",
-        "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=240&h=240&q=85",
-        "bio": "Ryan Kowalski leads technology coverage at GeneralPedia, focusing on digital security, system optimization, software tutorials, and modern consumer tech architecture. His guides provide clear, actionable walk-throughs for configuring privacy settings, securing operating systems, troubleshooting network protocols, and leveraging productivity software. Ryan is passionate about making technical digital privacy and cybersecurity accessible to everyday users without unnecessary jargon.",
-        "experience": "8+ years in cloud infrastructure, system optimization, software engineering, and cybersecurity defense.",
-        "expertise": ["Cybersecurity & Privacy Best Practices", "Operating System Optimization", "Software Architecture", "Network Diagnostics", "Digital Productivity Tools"],
-        "editorial_standards": "Hands-on software reproduction, step-by-step UI verification, and defense-in-depth security best practices."
-    },
     "lifestyle": {
         "name": "Nora Jacobs",
         "initials": "NJ",
