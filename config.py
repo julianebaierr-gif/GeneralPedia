@@ -81,7 +81,7 @@ AUTHORS = {
     "health": {
         "name": "Elena Torres",
         "initials": "ET",
-        "avatar": "https://images.unsplash.com/photo-1594824476967-48c8b964ac31?auto=format&fit=crop&w=240&h=240&q=85",
+        "avatar": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=240&h=240&q=85",
         "bio": "Health science researcher and medical journalist writing evidence-based wellness and symptom guides."
     },
     "tools": {
