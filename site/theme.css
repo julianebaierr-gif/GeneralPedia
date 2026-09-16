@@ -1122,10 +1122,22 @@
       margin-bottom: 10px;
     }
     .author-profile-bio {
-      font-size: 0.9375rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 560px;
+      line-height: 1.65;
+      margin-top: 6px;
+    }
+    .author-expertise-badge {
+      display: inline-flex;
+      align-items: center;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.01em;
     }
     .art-author-link {
       color: inherit;

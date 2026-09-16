@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ryan Kowalski - Author Profile | GeneralPedia</title>
-  <meta name="description" content="Software engineer and cybersecurity specialist explaining digital tools and emerging tech trends.">
+  <meta name="description" content="Explore fact-checked guides, analysis, and research published by Ryan Kowalski, Software Engineer &amp; Digital Security Analyst on GeneralPedia.">
   <meta name="keywords" content="generalpedia, knowledge hub, encyclopedia, digital magazine, personal finance, tutorials, tax guides, automotive reviews">
   <meta name="author" content="GeneralPedia Editorial Board">
   <meta name="robots" content="index, follow">
@@ -14,7 +14,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.generalpedia.com/author/ryan-kowalski">
   <meta property="og:title" content="Ryan Kowalski - Author Profile | GeneralPedia">
-  <meta property="og:description" content="Software engineer and cybersecurity specialist explaining digital tools and emerging tech trends.">
+  <meta property="og:description" content="Explore fact-checked guides, analysis, and research published by Ryan Kowalski, Software Engineer &amp; Digital Security Analyst on GeneralPedia.">
   <meta property="og:site_name" content="GeneralPedia">
 
   <!-- Twitter / X -->
@@ -170,310 +170,16 @@
   <main id="main-content" role="main" class="container">
 
     <!-- ==================== HOME VIEW ==================== -->
-    <div id="home-view" class="hidden">
-
-      <!-- 4. MORENEWS MAGAZINE HERO GRID (1 BIG + 2 TILES) -->
-      <section class="magazine-hero-section" id="home-hero-section" aria-label="Top Featured Stories">
-        <div class="hero-grid" id="hero-grid-container">
-        </div>
-      </section>
-
-      <!-- 5. TRENDING / QUICK READ ROW -->
-      <section class="trending-banner-row" id="home-trending-section" aria-label="Trending Guides">
-        <div class="trending-mini-grid" id="trending-mini-container">
-          <!-- Injected via JS -->
-        </div>
-      </section>
-
-      <!-- Dedicated Category Archive Header Banner -->
-      <section id="category-header-banner" class="category-header-banner hidden" aria-label="Category Overview">
-        <div class="category-breadcrumbs">
-          <button onclick="showHomeView()">Home</button>
-          <span>/</span>
-          <span>Topics</span>
-          <span>/</span>
-          <span id="category-crumb-current" style="font-weight: 700; color: var(--text-main);">Calculators</span>
-        </div>
-        <div class="category-header-top">
-          <div class="category-header-title" id="category-banner-title">Category Title</div>
-        </div>
-        <p class="category-header-desc" id="category-banner-desc">Curated editorial manuals, in-depth breakdowns, and interactive references.</p>
-        <div class="category-header-meta">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          <span id="category-banner-meta">Showing 0 verified guides</span>
-        </div>
-      </section>
-
-      <!-- 6. 2-COLUMN MAGAZINE CONTENT + SIDEBAR -->
-      <div class="magazine-layout">
-        
-        <!-- Left Main Column (~70%) -->
-        <div class="mag-main-col">
-          <div class="mag-section-bar">
-            <div class="mag-section-title" id="mag-feed-heading">Latest Published Reports</div>
-            <span class="mag-section-extra" id="mag-feed-count">Showing verified guides</span>
-          </div>
-
-          <!-- 2-Column Article Card Feed -->
-          <div class="mag-feed-grid" id="articles-feed">
-            <!-- Populated via JS -->
-          </div>
-
-          <!-- Load More Button -->
-          <div class="gp-load-more-container" id="feed-load-more-container">
-            <button type="button" class="gp-load-more-btn hidden" id="feed-load-more-btn" onclick="loadMoreArticles()">
-              <span>Load More Articles</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- Right Sidebar Column (~30%) -->
-        <aside class="mag-sidebar" role="complementary" aria-label="Magazine Sidebar">
-          
-          <!-- Widget: Top Popular Stories (Numbered 1-5) -->
-          <div class="sidebar-widget">
-            <div class="widget-title">
-              <span>Popular Guides</span>
-              <span style="font-size: 0.75rem; color: var(--secondary);">TOP 5</span>
-            </div>
-            <div class="popular-list" id="popular-posts-list">
-              <a href="/the-wizard-of-oz-classic-movie-facts" class="popular-item">
-                <div class="popular-num">01</div>
-                <div class="popular-content">
-                  <div class="popular-title">The Wizard Of Oz: Classic Movie Facts, Cast & Meaning</div>
-                  <span>September 16, 2026 • Entertainment & Culture</span>
-                </div>
-              </a>
-
-              <a href="/dryer-vent-cleaning-what-know-tips-easy" class="popular-item">
-                <div class="popular-num">02</div>
-                <div class="popular-content">
-                  <div class="popular-title">Dryer Vent Cleaning: What to Know, Tips & Easy Steps</div>
-                  <span>September 16, 2026 • Home & Lifestyle</span>
-                </div>
-              </a>
-
-              <a href="/used-cars-for-sale-real-specs-performance" class="popular-item">
-                <div class="popular-num">03</div>
-                <div class="popular-content">
-                  <div class="popular-title">Used Cars For Sale: Real Specs, Performance & Buying Guide</div>
-                  <span>September 16, 2026 • Automotive</span>
-                </div>
-              </a>
-
-              <a href="/323-area-code-location-cities-served-lookup" class="popular-item">
-                <div class="popular-num">04</div>
-                <div class="popular-content">
-                  <div class="popular-title">323 Area Code: Location, Cities Served & Lookup Info</div>
-                  <span>September 16, 2026 • Calculators & Tools</span>
-                </div>
-              </a>
-
-              <a href="/thrush-in-mouth-common-causes-home-remedies" class="popular-item">
-                <div class="popular-num">05</div>
-                <div class="popular-content">
-                  <div class="popular-title">Thrush In Mouth: Common Causes, Home Remedies & Care</div>
-                  <span>September 16, 2026 • Health & Wellness</span>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          <!-- Widget: Categories Taxonomy -->
-          <div class="sidebar-widget">
-            <div class="widget-title">Categories</div>
-            <ul class="cat-tax-list" id="cat-tax-list">
-              <li>
-                <a href="/category/how-to" class="cat-tax-item" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
-                  <span>How-To & Tutorials</span>
-                  <span class="cat-count">2</span>
-                </a>
-              </li>
-
-              <li>
-                <a href="/category/finance" class="cat-tax-item" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
-                  <span>Finance & Tax</span>
-                  <span class="cat-count">2</span>
-                </a>
-              </li>
-
-              <li>
-                <a href="/category/health" class="cat-tax-item" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
-                  <span>Health & Wellness</span>
-                  <span class="cat-count">2</span>
-                </a>
-              </li>
-
-              <li>
-                <a href="/category/tools" class="cat-tax-item" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
-                  <span>Calculators & Tools</span>
-                  <span class="cat-count">2</span>
-                </a>
-              </li>
-
-              <li>
-                <a href="/category/automotive" class="cat-tax-item" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
-                  <span>Automotive</span>
-                  <span class="cat-count">2</span>
-                </a>
-              </li>
-
-              <li>
-                <a href="/category/lifestyle" class="cat-tax-item" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
-                  <span>Lifestyle & Living</span>
-                  <span class="cat-count">2</span>
-                </a>
-              </li>
-
-              <li>
-                <a href="/category/culture" class="cat-tax-item" style="text-decoration:none; display:flex; justify-content:space-between; align-items:center; color:inherit;">
-                  <span>Culture & Society</span>
-                  <span class="cat-count">2</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Widget: Guest Contributor CTA -->
-          <div class="guest-cta-widget">
-            <div class="guest-cta-title">Become a Contributor</div>
-            <p>
-              We welcome guest writers, subject specialists, and industry analysts. Get your authoritative research published.
-            </p>
-            <button onclick="showStaticPage('write-for-us')" class="btn-widget-cta">
-              Write for GeneralPedia →
-            </button>
-          </div>
-
-        </aside>
-
-      </div>
-
-      
-
-    </div>
+    <div id="home-view" class="hidden"></div>
 
     <!-- ==================== ARTICLE VIEW ==================== -->
-    <div id="article-view" class="hidden">
-      <div class="article-view-layout">
-        
-        <!-- Main Article Reading Column -->
-        <article class="article-wrapper" aria-labelledby="art-title">
-          <nav aria-label="Breadcrumb">
-            <ol class="breadcrumbs">
-              <li><button onclick="showHomeView()">Home</button></li>
-              <li>/</li>
-              <li><button id="art-category-crumb" onclick="filterCategory(currentCategorySlug)">Category</button></li>
-              <li>/</li>
-              <li id="art-title-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Article</li>
-            </ol>
-          </nav>
-
-          <header class="art-header-block">
-            <span id="art-category-badge" class="category-badge">Category</span>
-            <div id="art-title" class="art-title-text">Article Title</div>
-            <p id="art-meta" class="art-excerpt-lead">Article Excerpt</p>
-            
-            <div class="art-byline-bar">
-              <div class="art-author-info">
-                <img class="art-avatar-img" id="art-avatar-img" src="" alt="Author" width="42" height="42" />
-                <div>
-                  <div style="font-weight: 700; color: var(--text-main);" id="art-author-name">Editorial Staff</div>
-                  <div id="art-date">September 13, 2026</div>
-                </div>
-              </div>
-              <div style="font-weight: 600;" id="art-read-time">5 min read</div>
-            </div>
-          </header>
-
-          <div id="art-content" class="article-body">
-            <!-- Article HTML inserted here -->
-          </div>
-
-          <!-- Back button -->
-          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-            <a href="/" onclick="showHomeView(); return false;" class="btn-primary" style="display:inline-block;text-decoration:none;">← Back to Frontpage</a>
-            <button onclick="showStaticPage('write-for-us')" class="btn-secondary">Submit a Story</button>
-          </div>
-        </article>
-
-        <!-- Article Sidebar -->
-        <aside class="mag-sidebar">
-          <div class="sidebar-widget">
-            <div class="widget-title">Fact-Check Notice</div>
-            <p style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.6;">
-              This publication undergoes multi-stage editorial verification to adhere to accuracy, Google helpful content guidelines, and standard safety policies.
-            </p>
-            <button onclick="showStaticPage('editorial-guidelines')" class="nav-guest-btn" style="width: 100%; text-align: center; margin-top: 12px; background: var(--secondary);">
-              Read Editorial Policy
-            </button>
-          </div>
-
-          <div class="sidebar-widget">
-            <div class="widget-title">Trending in Category</div>
-            <div class="popular-list" id="art-sidebar-trending">
-              <!-- JS -->
-            </div>
-          </div>
-        </aside>
-
-      </div>
-    </div>
+    <div id="article-view" class="hidden"></div>
 
     <!-- ==================== STATIC PAGES VIEW ==================== -->
-    <div id="static-view" class="hidden">
-      <div class="article-view-layout">
-        <article class="article-wrapper">
-          <nav aria-label="Breadcrumb">
-            <ol class="breadcrumbs">
-              <li><button onclick="showHomeView()">Home</button></li>
-              <li>/</li>
-              <li id="static-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Information Page</li>
-            </ol>
-          </nav>
-          
-          <div id="static-content" class="article-body">
-            <!-- Static page HTML populated here -->
-          </div>
-          
-          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color);">
-            <a href="/" onclick="showHomeView(); return false;" class="btn-primary" style="display:inline-block;text-decoration:none;">← Back to Frontpage</a>
-          </div>
-        </article>
-
-        <aside class="mag-sidebar">
-          <div class="sidebar-widget">
-            <div class="widget-title">Policy &amp; Legal</div>
-            <ul class="footer-links">
-              <li><button onclick="showStaticPage('about')">About Us</button></li>
-              <li><button onclick="showStaticPage('write-for-us')">Write For Us</button></li>
-              <li><button onclick="showStaticPage('editorial-guidelines')">Editorial Guidelines</button></li>
-              <li><button onclick="showStaticPage('privacy-policy')">Privacy Policy</button></li>
-              <li><button onclick="showStaticPage('terms')">Terms of Service</button></li>
-              <li><button onclick="showStaticPage('contact')">Contact Desk</button></li>
-            </ul>
-          </div>
-        </aside>
-      </div>
-    </div>
-
+    <div id="static-view" class="hidden"></div>
 
     <!-- ==================== SEARCH VIEW ==================== -->
-    <div id="search-view" class="hidden" style="padding: 24px 0 60px;">
-      <div class="mag-section-bar">
-        <div class="mag-section-title" id="search-query-title">Search Results</div>
-        <span class="mag-section-extra" id="search-count-meta">0 results identified</span>
-      </div>
-
-      <div class="mag-feed-grid" id="search-results-grid" style="margin-top: 24px;">
-        <!-- Injected via JS -->
-      </div>
-      
-      <div style="margin-top: 40px; text-align: center;">
-        <a href="/" onclick="showHomeView(); return false;" class="btn-primary" style="display:inline-block;text-decoration:none;">← Back to Frontpage</a>
-      </div>
-    </div>
+    <div id="search-view" class="hidden"></div>
 
     <!-- ==================== AUTHOR PROFILE VIEW ==================== -->
     <div id="author-view" style="padding: 24px 0 60px;">
@@ -490,9 +196,33 @@
           <img id="author-profile-avatar" class="author-profile-avatar" src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=240&h=240&q=85" alt="Ryan Kowalski" width="100" height="100" />
           <div>
             <h1 id="author-profile-name" class="author-profile-name">Ryan Kowalski</h1>
-            <div id="author-profile-role" class="author-profile-role">Tech & Digital Specialist</div>
-            <p id="author-profile-bio" class="author-profile-bio">Software engineer and cybersecurity specialist explaining digital tools and emerging tech trends.</p>
+            <div id="author-profile-role" class="author-profile-role">Software Engineer & Digital Security Analyst</div>
+            <p id="author-profile-bio" class="author-profile-bio">Ryan Kowalski leads technology coverage at GeneralPedia, focusing on digital security, system optimization, software tutorials, and modern consumer tech architecture. His guides provide clear, actionable walk-throughs for configuring privacy settings, securing operating systems, troubleshooting network protocols, and leveraging productivity software. Ryan is passionate about making technical digital privacy and cybersecurity accessible to everyday users without unnecessary jargon.</p>
           </div>
+        </div>
+
+        <!-- Experience & Credentials -->
+        <div class="author-profile-section" id="author-profile-experience-wrap" style="margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--border-color);">
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 6px;">Editorial Background &amp; Experience</div>
+          <p id="author-profile-experience" style="margin: 0; font-size: 0.925rem; color: var(--text-muted); line-height: 1.6;">8+ years in cloud infrastructure, system optimization, software engineering, and cybersecurity defense.</p>
+        </div>
+
+        <!-- Areas of Expertise -->
+        <div class="author-profile-section" id="author-profile-expertise-wrap" style="margin-top: 18px;">
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); margin-bottom: 8px;">Areas of Expertise &amp; Subject Authority</div>
+          <div id="author-profile-expertise-tags" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        <span class="author-expertise-badge">Cybersecurity & Privacy Best Practices</span>
+            <span class="author-expertise-badge">Operating System Optimization</span>
+            <span class="author-expertise-badge">Software Architecture</span>
+            <span class="author-expertise-badge">Network Diagnostics</span>
+            <span class="author-expertise-badge">Digital Productivity Tools</span>
+          </div>
+        </div>
+
+        <!-- Fact-Checking & Standards -->
+        <div class="author-profile-section" id="author-profile-standards-wrap" style="margin-top: 20px; padding: 16px 20px; background: var(--bg-subtle); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+          <div style="font-weight: 700; font-size: 0.9rem; color: var(--text-main); margin-bottom: 4px;">Editorial Policy &amp; Verification Protocol</div>
+          <p id="author-profile-standards" style="margin: 0; font-size: 0.875rem; color: var(--text-muted); line-height: 1.55;">Hands-on software reproduction, step-by-step UI verification, and defense-in-depth security best practices.</p>
         </div>
       </div>
 

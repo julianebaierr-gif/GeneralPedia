@@ -481,6 +481,9 @@ def rebuild_site():
             auth_avatar = auth_info.get('avatar', '')
             auth_bio = auth_info.get('bio', '')
             auth_role = auth_info.get('role', 'Specialist Writer')
+            auth_exp = auth_info.get('experience', '')
+            auth_exp_list = auth_info.get('expertise', [])
+            auth_standards = auth_info.get('editorial_standards', '')
             
             # Convert author name to H1
             page_html = page_html.replace(
@@ -503,6 +506,25 @@ def rebuild_site():
                 f'<p id="author-profile-bio" class="author-profile-bio">{auth_bio}</p>',
                 1
             )
+            if auth_exp:
+                page_html = page_html.replace(
+                    '<p id="author-profile-experience" style="margin: 0; font-size: 0.925rem; color: var(--text-muted); line-height: 1.6;">Experience description...</p>',
+                    f'<p id="author-profile-experience" style="margin: 0; font-size: 0.925rem; color: var(--text-muted); line-height: 1.6;">{auth_exp}</p>',
+                    1
+                )
+            if auth_exp_list:
+                tags_html = '\n'.join([f'            <span class="author-expertise-badge">{t}</span>' for t in auth_exp_list])
+                page_html = page_html.replace(
+                    '<!-- Populated via JS / Pre-rendered SSR -->',
+                    tags_html,
+                    1
+                )
+            if auth_standards:
+                page_html = page_html.replace(
+                    '<p id="author-profile-standards" style="margin: 0; font-size: 0.875rem; color: var(--text-muted); line-height: 1.55;">Standards description...</p>',
+                    f'<p id="author-profile-standards" style="margin: 0; font-size: 0.875rem; color: var(--text-muted); line-height: 1.55;">{auth_standards}</p>',
+                    1
+                )
             
             # Pre-render author articles:
             auth_posts = [p for p in posts_data if p.get("category_slug") == auth_cat or (p.get("author_name") and p.get("author_name").lower() == auth_name.lower())]
@@ -535,6 +557,12 @@ def rebuild_site():
             # Make author-view visible and home-view hidden:
             page_html = page_html.replace('<div id="author-view" class="hidden"', '<div id="author-view"', 1)
             page_html = page_html.replace('<div id="home-view">', '<div id="home-view" class="hidden">', 1)
+
+            # Strip bulky hidden views from static author pages to keep HTML ultra-lean and achieve >30-40% text-to-HTML ratio
+            page_html = re.sub(r'<div id="home-view" class="hidden">[\s\S]*?</div>\s*<!-- ==================== ARTICLE VIEW', '<div id="home-view" class="hidden"></div>\n\n    <!-- ==================== ARTICLE VIEW', page_html)
+            page_html = re.sub(r'<div id="article-view" class="hidden">[\s\S]*?</div>\s*<!-- ==================== STATIC PAGES VIEW', '<div id="article-view" class="hidden"></div>\n\n    <!-- ==================== STATIC PAGES VIEW', page_html)
+            page_html = re.sub(r'<div id="static-view" class="hidden">[\s\S]*?</div>\s*<!-- ==================== SEARCH VIEW', '<div id="static-view" class="hidden"></div>\n\n    <!-- ==================== SEARCH VIEW', page_html)
+            page_html = re.sub(r'<div id="search-view" class="hidden"[\s\S]*?</div>\s*<!-- ==================== AUTHOR PROFILE VIEW', '<div id="search-view" class="hidden"></div>\n\n    <!-- ==================== AUTHOR PROFILE VIEW', page_html)
 
         target_file = os.path.join(SCRATCH_DIR, rel_path)
         os.makedirs(os.path.dirname(target_file), exist_ok=True)
@@ -597,10 +625,9 @@ def rebuild_site():
     for cat_slug, auth_data in AUTHORS.items():
         auth_name = auth_data.get("name", "")
         auth_slug = auth_name.lower().replace(" ", "-")
-        cat_name = CATEGORIES.get(cat_slug, {}).get("name", "Knowledge Guides")
-        auth_role = f"{cat_name} Specialist"
+        auth_role = auth_data.get("role", f"{CATEGORIES.get(cat_slug, {}).get('name', 'Knowledge')} Specialist")
         auth_title = f"{auth_name} - Author Profile | GeneralPedia"
-        auth_desc = auth_data.get("bio", f"Author profile and verified articles by {auth_name} on GeneralPedia.")
+        auth_desc = f"Explore fact-checked guides, analysis, and research published by {auth_name}, {auth_role} on GeneralPedia."
         auth_url = f"https://www.generalpedia.com/author/{auth_slug}"
         write_prerendered_page(
             os.path.join("author", f"{auth_slug}.html"),
@@ -613,7 +640,10 @@ def rebuild_site():
                 "category_slug": cat_slug,
                 "avatar": auth_data.get("avatar", ""),
                 "bio": auth_data.get("bio", ""),
-                "role": auth_role
+                "role": auth_role,
+                "experience": auth_data.get("experience", ""),
+                "expertise": auth_data.get("expertise", []),
+                "editorial_standards": auth_data.get("editorial_standards", "")
             }
         )
 
