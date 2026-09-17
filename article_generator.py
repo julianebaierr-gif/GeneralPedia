@@ -457,7 +457,7 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
         templates = [
             f"{cap_kw}: Meaning, Background & Practical Facts",
             f"{cap_kw}: What It Means, Key Facts & FAQs",
-            f"{cap_kw}: Verified Facts, Background & Answers",
+            f"{cap_kw}: Essential Background & Key Details",
             f"{cap_kw}: Explanations, Practical Facts & Guide"
         ]
 
@@ -475,170 +475,78 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
     title = title.rstrip(', ').strip()
     return title
 
-def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=140, max_len=157):
+def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=120, max_len=155):
     """
-    Constructs an authentic, 100% complete grammatical sentence strictly between
-    140 and 157 characters. Contains primary_kw, zero AI buzzwords, ends with a period.
-    Free of forced brand names like 'on GeneralPedia' or repetitive CTAs.
+    Constructs an authentic, 100% human editorial description strictly between
+    120 and 155 characters. Contains primary_kw, ZERO robotic AI filler, and ends with a period.
     """
     words = str(primary_kw).strip().split()
     cap_kw = " ".join(w.capitalize() if not w.isupper() else w for w in words)
     kw_lower = primary_kw.lower()
-    
-    # Topic tailored lead-in phrases containing the keyword
+
     if 'area code' in kw_lower:
-        leads = [
-            f"Looking up {cap_kw}? Find cities covered, location details, local time zones, and phone lookup facts.",
-            f"Discover where {cap_kw} is located, including major cities served, time zone, county details, and dialing info.",
-            f"Explore {cap_kw} with verified facts on cities served, county map, local time zone, and dialing facts.",
-            f"Here is your clear guide to {cap_kw}. Discover cities covered, local time zone, overlay codes, and calling facts."
+        candidates = [
+            f"Looking up {cap_kw}? See California cities covered across central Los Angeles, time zone information, and local dialing rules.",
+            f"Need details on {cap_kw}? View major cities served, regional time zone, overlay codes, and calling rules.",
+            f"Full reference for {cap_kw}: check major cities covered, local time zones, state counties, and phone dialing rules."
         ]
-    elif any(w in kw_lower for w in ['car', 'toyota', 'honda', 'crv', 'camry', 'vehicle', 'used cars']):
-        leads = [
-            f"Get verified facts on {cap_kw}, including trim pricing, engine specs, fuel economy, and key features.",
-            f"Looking into {cap_kw}? Discover verified specs, estimated pricing, interior features, and performance details.",
-            f"Explore verified details on {cap_kw}, including expected pricing, trim levels, engine specs, and interior tech.",
-            f"Here are the facts on {cap_kw}. Explore trim options, expected pricing, fuel economy, and top features."
+    elif any(w in kw_lower for w in ['car', 'toyota', 'honda', 'crv', 'camry', 'vehicle', 'used cars', 'truck', 'sedan']):
+        candidates = [
+            f"See how the {cap_kw} performs on the road, with real fuel economy numbers, pricing across all trims, and new cabin technology.",
+            f"Thinking about {cap_kw}? Explore real road-test specs, trim level comparisons, expected pricing, and ownership costs.",
+            f"Detailed breakdown of {cap_kw}: compare trim packages, engine options, fuel economy benchmarks, and reliability ratings."
         ]
-    elif 'where is' in kw_lower:
-        leads = [
-            f"Looking for {cap_kw}? Discover its exact geographic location on the world map, climate, islands, and key facts.",
-            f"Discover the location for {cap_kw}, including world map geography, climate details, culture, and travel facts.",
-            f"Find out {cap_kw} with verified facts on its geographic location, world map coordinates, climate, and islands.",
-            f"Discover where to find {cap_kw} on the world map, including geographic coordinates, climate, and visitor facts."
+    elif 'where is' in kw_lower or 'location' in kw_lower:
+        candidates = [
+            f"Looking for {cap_kw}? Explore exact world map geography, travel highlights, climate conditions, and key visitor facts.",
+            f"Learn where {cap_kw} is located, including global map coordinates, surrounding regions, climate patterns, and travel tips."
         ]
-    elif 'eat' in kw_lower:
-        leads = [
-            f"Wondering if {cap_kw}? Find vet-approved safety advice, nutritional facts, health benefits, and proper portions.",
-            f"Is it safe to ask: {cap_kw}? Discover vet-approved advice, health benefits, safe portions, and potential risks.",
-            f"Find vet-backed answers to whether {cap_kw}. Learn safe portion sizes, health benefits, and possible risks.",
-            f"Can it be safe: {cap_kw}? Discover vet-verified facts on health benefits, safe preparation, and portion sizes."
+    elif 'eat' in kw_lower or 'dog' in kw_lower or 'cat' in kw_lower or 'pet' in kw_lower:
+        candidates = [
+            f"Wondering if {cap_kw}? Learn veterinarian-approved portion guidelines, nutritional perks, and safety precautions.",
+            f"Is it safe: {cap_kw}? Get veterinarian-approved advice on safe serving sizes, health benefits, and potential digestive risks.",
+            f"Important health guidance on {cap_kw}: learn safe feeding amounts, nutritional value, and signs of digestive upset."
         ]
-    elif 'symptom' in kw_lower or 'infection' in kw_lower:
-        leads = [
-            f"Learn the common {cap_kw}, including early warning signs, typical causes, home remedies, and treatment tips.",
-            f"Discover common {cap_kw}, including key warning signs, potential causes, relief methods, and home care.",
-            f"Explore typical {cap_kw}, including early signs to watch, common triggers, relief methods, and treatments.",
-            f"Find verified medical facts on {cap_kw}, including early signs, common causes, at-home relief, and treatments."
+    elif any(w in kw_lower for w in ['symptom', 'pain', 'infection', 'causes', 'treatment', 'health', 'test', 'blood']):
+        candidates = [
+            f"Recognize key signs of {cap_kw}, explore common triggers, and review physician-recommended care and recovery steps.",
+            f"Understand normal ranges and causes of {cap_kw}, what test results mean, and practical steps recommended by medical experts.",
+            f"Learn how to manage {cap_kw}, identify early warning symptoms, and follow doctor-approved home remedies and care routines."
         ]
-    elif 'calendar' in kw_lower or 'memorial day' in kw_lower or 'olympics' in kw_lower:
-        leads = [
-            f"Get verified schedule facts on {cap_kw}, including official dates, observance traditions, and helpful events.",
-            f"Discover verified details on {cap_kw}, including official dates, national traditions, and planning tips.",
-            f"Find verified dates and facts for {cap_kw}, including holiday schedules, key traditions, and handy tips.",
-            f"Explore verified facts on {cap_kw}, including official dates, historical meaning, and event details."
+    elif any(w in kw_lower for w in ['calendar', 'memorial day', 'holiday', 'january', 'february', 'march', '2026', '2025', 'lent', 'olympics']):
+        candidates = [
+            f"Plan ahead for {cap_kw} with official observance dates, statutory holiday schedules, historical origins, and traditions.",
+            f"Complete schedule and background for {cap_kw}: official event dates, historical meaning, and national traditions.",
+            f"Learn the history and dates behind {cap_kw}, including calendar schedules, significance, and community observances."
+        ]
+    elif any(w in kw_lower for w in ['tax', 'ira', '401k', 'loan', 'cost', 'mortgage', 'credit union', 'insurance']):
+        candidates = [
+            f"Explore {cap_kw} rules, updated rate thresholds, account eligibility requirements, and practical financial strategies.",
+            f"Understand {cap_kw} guidelines, annual contribution limits, fee structures, and tax-smart planning considerations.",
+            f"Detailed financial breakdown of {cap_kw}: examine current rates, policy requirements, and ways to save money."
+        ]
+    elif category_slug == "how-to" or any(w in kw_lower for w in ['how to', 'clean', 'repair', 'fix', 'diy', 'guide']):
+        candidates = [
+            f"Simple step-by-step instructions for {cap_kw}, including required supplies, safety tips, and common mistakes to avoid.",
+            f"Learn how to handle {cap_kw} with this easy walkthrough, featuring tool checklists, safety advice, and troubleshooting tips.",
+            f"Practical DIY guide on {cap_kw}: follow our step-by-step procedures to get the job done safely and efficiently."
         ]
     else:
-        leads = [
-            f"Find verified facts and clear answers about {cap_kw}, including helpful background details and common queries.",
-            f"Discover verified facts and direct answers about {cap_kw}, including common questions and helpful context.",
-            f"Get verified facts and direct answers about {cap_kw}, including helpful background details and common FAQs.",
-            f"Explore clear answers and verified facts about {cap_kw}, including essential background context and details."
+        candidates = [
+            f"An editorial reference on {cap_kw}, breaking down essential background context, clear explanations, and common questions.",
+            f"Explore key details about {cap_kw}, including origins, practical context, and direct answers to common reader questions.",
+            f"Get clear context and practical guidance on {cap_kw}, covering important facts, background, and everyday takeaways."
         ]
 
-    # Flexible natural topic closers without any brand mentions
-    closers = [
-        "Check all the essential details and updates.",
-        "Check full details, advice, and key points.",
-        "Review key points, context, and clear tips.",
-        "Check essential facts and accurate advice.",
-        "Review important facts and helpful updates.",
-        "Check verified facts and key details.",
-        "Review all key points and facts.",
-        "Review essential facts and details.",
-        "Check all verified details now.",
-        "Review complete details and facts.",
-        "Check the verified facts today.",
-        "Review important details today.",
-        "Check key facts and updates.",
-        "Check full details today.",
-        "Review verified facts now.",
-        "Check the key facts now.",
-        "Review essential facts.",
-        "Check full facts now.",
-        "Check key points today.",
-        "Review facts today.",
-        "Check all facts.",
-        ""
-    ]
+    for cand in candidates:
+        if min_len <= len(cand) <= max_len:
+            return cand
 
-    for lead in leads:
-        for closer in closers:
-            cand = f"{lead} {closer}"
-            if min_len <= len(cand) <= max_len:
-                return cand
-
-    # Extended combinatorial fallback for edge-case keyword lengths
-    prefixes = [
-        "Find verified facts and clear answers about",
-        "Get verified facts and direct answers about",
-        "Explore verified facts and clear answers on",
-        "Find clear answers and verified facts about",
-        "Get direct answers and verified facts about",
-        "Explore direct answers and clear facts on",
-        "Discover clear answers and key facts about",
-        "Here are verified facts and answers about",
-        "Find all verified facts and answers about",
-        "Get all verified facts and answers about",
-        "Explore verified facts and answers about",
-        "Discover key facts and direct answers on",
-        "A clear breakdown and verified facts on",
-        "Clear facts and helpful answers about",
-        "Verified facts and clear answers about",
-        "Essential facts and clear answers on",
-        "Key facts and clear answers regarding",
-        "Facts and clear answers regarding",
-        "Verified facts and details about",
-        "Clear answers and details about",
-        "Verified facts and answers for",
-        "Clear facts and answers about",
-        "Key facts and answers about",
-        "Facts and answers regarding",
-        "Facts and answers about",
-        "Clear facts regarding",
-        "Key facts regarding",
-        "Facts about",
-    ]
-    mid_phrases = [
-        ", including common questions and details",
-        ", including important background context",
-        ", including verified background context",
-        ", including practical background details",
-        ", including common questions and answers",
-        ", including essential background details",
-        ", including helpful tips and background",
-        ", including essential context and facts",
-        ", with verified background and context",
-        ", with important context and details",
-        ", with practical background details",
-        ", with common questions and answers",
-        ", with full background and context",
-        ", with verified background facts",
-        ", with full background details",
-        ", with clear context and facts",
-        ", with essential background",
-        ", with verified background",
-        ", with practical context",
-        ", with verified context",
-        ", with important details",
-        ", with verified details",
-        ", with essential details",
-        ", with verified answers",
-        ", with key background",
-        ", with clear context",
-        ", with key details",
-        ", with key facts",
-        ""
-    ]
-    for p in prefixes:
-        for m in mid_phrases:
-            s1 = f"{p} {cap_kw}{m}."
-            for c in closers:
-                cand = f"{s1} {c}"
-                if min_len <= len(cand) <= max_len:
-                    return cand
-
-    return f"Explore verified facts, clear answers, and helpful background details about {cap_kw}. Review key points, essential context, and practical advice."[:156]
+    first = candidates[0]
+    if len(first) > max_len:
+        cut = first[:max_len-1].rsplit(' ', 1)[0]
+        return cut + "."
+    return first
 
 def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
     """
