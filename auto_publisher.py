@@ -183,12 +183,15 @@ def publish_next_post(target_category=None):
         "last_published_at": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
     })
 
-    # 6. Rebuild static index.html
+    # 6. Rebuild static HTML pages, index.html, sitemap.xml, site_data.js
     try:
         from rebuild_full_theme import rebuild_site
         rebuild_site()
-    except Exception:
-        pass
+        print("[Auto-Publisher] Successfully rebuilt all HTML pages, sitemap, and index.")
+    except Exception as e:
+        print(f"[Auto-Publisher Error] Failed to rebuild theme: {e}")
+        import traceback
+        traceback.print_exc()
         
     return {
         "success": True,
