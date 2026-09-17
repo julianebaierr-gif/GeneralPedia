@@ -80,7 +80,11 @@ def rebuild_site():
     "description": "Premier Digital Knowledge Magazine & Fact-Checked Encyclopedia",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://www.generalpedia.com/?q={search_term_string}",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.generalpedia.com/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
     }
   }
   </script>
