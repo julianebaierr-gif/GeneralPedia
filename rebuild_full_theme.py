@@ -31,6 +31,8 @@ def rebuild_site():
         return
     with open(DB_PATH, "r", encoding="utf-8") as f:
         posts_data = json.load(f)
+    # Strict chronological order: latest published first
+    posts_data.sort(key=lambda p: str(p.get("published_at", "")), reverse=True)
 
     # Create minimal articles metadata for client-side search/feeds
     feed_keys = ['id', 'slug', 'title', 'category_slug', 'category_name', 'featured_image', 'display_date', 'read_time', 'meta_description', 'author_name', 'author_avatar', 'primary_keyword']
