@@ -293,6 +293,10 @@ def sanitize_ai_words(text):
         return table_html
     result = re.sub(r'<table\b.*?</table>', fix_table_cells, result, flags=re.DOTALL | re.IGNORECASE)
 
+    # Ensure zero h1 tags inside body content (SSR template already provides the single page H1)
+    result = re.sub(r'<h1\b([^>]*)>', r'<h2\1>', result, flags=re.IGNORECASE)
+    result = re.sub(r'</h1>', r'</h2>', result, flags=re.IGNORECASE)
+
     # Ensure zero em-dashes
     result = result.replace('—', ', ').replace('–', '-')
     return result

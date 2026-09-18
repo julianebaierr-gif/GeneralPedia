@@ -96,59 +96,6 @@ def rebuild_site():
     with open(os.path.join(SCRATCH_DIR, "template_body.html"), "r", encoding="utf-8") as f:
         body_part = f.read()
 
-    # Pre-render categories into HTML for homepage showcase
-    cat_previews_html = []
-    categories = [
-        ("how-to", "How-To Guides"),
-        ("finance", "Personal Finance"),
-        ("health", "Health & Wellness"),
-        ("tools", "Tools & Calculators"),
-        ("automotive", "Automotive"),
-        ("tech", "Tech & Software"),
-        ("lifestyle", "Lifestyle & Home"),
-        ("culture", "Culture & Society")
-    ]
-    for cat_slug, cat_name in categories:
-        cat_posts = [p for p in posts_data if p.get("category_slug") == cat_slug]
-        if not cat_posts:
-            continue
-        
-        cards = []
-        for p in cat_posts[:3]:
-            img_url = p.get('featured_image', '')
-            if not img_url and p.get('content_html'):
-                m = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', p.get('content_html'))
-                if m:
-                    img_url = m.group(1)
-            
-            img_tag = f'<div class="mag-card-thumb" style="background-image: url(\'{img_url}\');"></div>' if img_url else ''
-            cards.append(f"""
-              <a href="/{p['id']}" class="mag-card" onclick="handleCardClick(event, '{p['id']}')">
-                {img_tag}
-                <div class="mag-card-body">
-                  <span class="category-badge">{cat_name}</span>
-                  <div class="mag-card-title">{p['title']}</div>
-                  <div class="mag-card-meta">
-                    <span>{p.get('read_time', '5 min read')}</span>
-                    <span>•</span>
-                    <span>{p.get('display_date', 'Recent')}</span>
-                  </div>
-                </div>
-              </a>
-            """)
-        
-        cat_previews_html.append(f"""
-          <section class="mag-category-showcase" style="margin-top: 48px;">
-            <div class="mag-section-bar">
-              <h2 class="mag-section-title">{cat_name}</h2>
-              <a href="/category/{cat_slug}" onclick="handleNavClick(event, () => filterCategory('{cat_slug}'))" class="mag-section-more">View All ({len(cat_posts)}) →</a>
-            </div>
-            <div class="mag-feed-grid">
-              {'\n'.join(cards)}
-            </div>
-          </section>
-        """)
-
     with open(os.path.join(SCRATCH_DIR, "app.js"), "r", encoding="utf-8") as f:
         app_js = f.read()
 
