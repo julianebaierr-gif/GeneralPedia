@@ -36,6 +36,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
           GENERALPEDIA_SHEET_WEBHOOK: ${{ secrets.GENERALPEDIA_SHEET_WEBHOOK }}
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
         run: |
           python auto_publisher.py
           python rebuild_full_theme.py
