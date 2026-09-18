@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0f172a"/>
+  <!-- White Letter P -->
+  <path d="M128 384V128h122c45 0 77 26 77 71s-32 71-77 71h-54v114h-68zm68-182h50c18 0 28-9 28-23s-10-23-28-23h-50v46z" fill="#ffffff"/>
+  <!-- Red Brand Accent Bar -->
+  <rect x="340" y="128" width="56" height="256" rx="28" fill="#e63946"/>
+</svg>
