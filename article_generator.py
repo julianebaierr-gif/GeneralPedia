@@ -388,11 +388,18 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
                 f"{cap_kw}: Location, Geography & Practical Guide"
             ]
         elif 'stats' in kw_lower or 'vs' in kw_lower:
-            templates = [
-                f"{cap_kw}: Box Score, Highlights & Recap",
-                f"{cap_kw}: Full Game Stats, Results & Analysis",
-                f"{cap_kw}: Player Stats, Highlights & Final Score"
-            ]
+            if 'stats' in kw_lower:
+                templates = [
+                    f"{cap_kw}: Box Score & Highlights",
+                    f"{cap_kw}: Box Score & Breakdown",
+                    f"{cap_kw}: Full Game Box Score & Recap"
+                ]
+            else:
+                templates = [
+                    f"{cap_kw}: Player Stats & Box Score",
+                    f"{cap_kw}: Full Game Stats & Recap",
+                    f"{cap_kw}: Box Score & Highlights"
+                ]
         elif 'olympics' in kw_lower:
             templates = [
                 f"{cap_kw}: Dates, Host City, Events & Schedule",
@@ -597,8 +604,10 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
    - ZERO fluff, filler, or robotic throat-clearing. Get straight to the answer without preamble.
    - Maintain a neutral, professional human tone that immediately demonstrates real-world Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T).
 
-3. Organic Semantic Integration:
+3. Organic Semantic Integration & Diverse Subheadings:
    - Naturally weave the LSI and semantic keywords throughout headings and body paragraphs without keyword stuffing.
+   - STRICT SUBHEADING RULE: NEVER repeat the full primary keyword in every <h2> tag! Subheadings must be natural, concise, and diverse (e.g., "Game Overview & Summary", "Player Stats & Box Score Breakdown", "Backcourt Matchups", "Key Takeaways", etc.).
+   - NEVER generate two <h2> headings directly adjacent to each other without text in between.
 
 4. Featured Snippet Optimization (Zero-Click Answer):
    - Immediately following the first <h2> subheading, provide a direct, concise 40-55 word definitive answer block enclosed in a dedicated paragraph with bold tags: <p><strong>[Direct laser-accurate answer]</strong></p>.
