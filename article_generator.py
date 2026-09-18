@@ -222,46 +222,133 @@ Return strictly a JSON object with no markdown code fences:
     return combined_semantics[:10], visual_queries
 
 AI_REPLACEMENTS = {
-    # Direct robotic markers
-    r'\bcomprehensive\b': 'complete',
-    r'\bComprehensive\b': 'Complete',
-    r'\bkey insights\b': 'main takeaways',
-    r'\bKey Insights\b': 'Main Takeaways',
-    r'\bKey insights\b': 'Main Takeaways',
-    r'\bin-depth\b': 'detailed',
-    r'\bIn-depth\b': 'Detailed',
-    r'\bIn-Depth\b': 'Detailed',
+    # 1. Meta Description / Intro Banned Words & Clichés
+    r'\bdiscover verified facts\b': 'find verified information',
+    r'\bDiscover verified facts\b': 'Find verified information',
+    r'\bdiscover\b': 'find',
+    r'\bDiscover\b': 'Find',
+    r'\bexplore\b': 'review',
+    r'\bExplore\b': 'Review',
+    r'\buncover\b': 'reveal',
+    r'\bUncover\b': 'Reveal',
+    r'\ba deep dive into\b': 'a detailed review of',
+    r'\bA deep dive into\b': 'A detailed review of',
+    r'\bdeep dive\b': 'detailed review',
+    r'\bDeep Dive\b': 'Detailed Review',
+    r'\bDeep dive\b': 'Detailed review',
+    r'\bdive into\b': 'examine',
+    r'\bDive into\b': 'Examine',
+    r'\bunlock\b': 'access',
+    r'\bUnlock\b': 'Access',
+    r'\bdelve into\b': 'look into',
+    r'\bDelve into\b': 'Look into',
     r'\bdelve\b': 'look',
     r'\bDelve\b': 'Look',
     r'\bdelving\b': 'looking',
     r'\bDelving\b': 'Looking',
+    r'\blearn how\b': 'see how',
+    r'\bLearn how\b': 'See how',
+    r'\bin this article, we explore\b': 'we examine',
+    r'\bIn this article, we explore\b': 'We examine',
+    r'\bin this article\b': 'below',
+    r'\bIn this article\b': 'Below',
+    r'\ban in-depth look at\b': 'a detailed breakdown of',
+    r'\bAn in-depth look at\b': 'A detailed breakdown of',
+    r'\ban in-depth look into\b': 'a detailed breakdown of',
+    r'\bAn in-depth look into\b': 'A detailed breakdown of',
+    r'\bin-depth\b': 'detailed',
+    r'\bIn-depth\b': 'Detailed',
+    r'\bIn-Depth\b': 'Detailed',
+    r'\bpipelines\b': 'workflows',
+    r'\bPipelines\b': 'Workflows',
+
+    # 2. Titles & Headings Banned Words
+    r'\bcomprehensive guide to\b': 'complete breakdown of',
+    r'\bComprehensive Guide to\b': 'Complete Breakdown of',
+    r'\bComprehensive guide to\b': 'Complete breakdown of',
+    r'\bcomprehensive guide\b': 'complete overview',
+    r'\bComprehensive Guide\b': 'Complete Overview',
+    r'\bComprehensive guide\b': 'Complete overview',
+    r'\bcomprehensive\b': 'complete',
+    r'\bComprehensive\b': 'Complete',
+    r'\bultimate guide\b': 'complete handbook',
+    r'\bUltimate Guide\b': 'Complete Handbook',
+    r'\bUltimate guide\b': 'Complete handbook',
+    r'\bultimate\b': 'top',
+    r'\bUltimate\b': 'Top',
+    r'\ba guide to\b': 'an overview of',
+    r'\bA Guide To\b': 'An Overview Of',
+    r'\bA Guide to\b': 'An Overview of',
+    r'\bnavigating the\b': 'managing the',
+    r'\bNavigating the\b': 'Managing the',
+    r'\bNavigating The\b': 'Managing The',
+    r'\bnavigating\b': 'managing',
+    r'\bNavigating\b': 'Managing',
+    r'\bdemystifying\b': 'explaining',
+    r'\bDemystifying\b': 'Explaining',
+    r'\bunpacking\b': 'breaking down',
+    r'\bUnpacking\b': 'Breaking down',
+    r'\bquick guide\b': 'quick reference',
+    r'\bQuick Guide\b': 'Quick Reference',
+    r'\bbuying guide\b': 'buying advice',
+    r'\bBuying Guide\b': 'Buying Advice',
+    r'\bobservance guide\b': 'observance facts',
+    r'\bObservance Guide\b': 'Observance Facts',
+    r'\bcalling guide\b': 'calling rules',
+    r'\bCalling Guide\b': 'Calling Rules',
+    r'\bessential guide\b': 'essential facts',
+    r'\bEssential Guide\b': 'Essential Facts',
+    r'\bfull guide\b': 'full breakdown',
+    r'\bFull Guide\b': 'Full Breakdown',
+    r'\bguide\b': 'overview',
+    r'\bGuide\b': 'Overview',
+
+    # 3. Content Body & Clichés Banned Words
+    r"\bin today's fast-paced digital world\b": 'today',
+    r"\bIn today's fast-paced digital world\b": 'Today',
+    r"\bin today's fast-paced world\b": 'today',
+    r"\bIn today's fast-paced world\b": 'Today',
+    r"\bin today's digital era\b": 'today',
+    r"\bIn today's digital era\b": 'Today',
     r'\btapestry\b': 'mix',
     r'\bTapestry\b': 'Mix',
     r'\btestament\b': 'proof',
     r'\bTestament\b': 'Proof',
+    r'\bcrucial component\b': 'key part',
+    r'\bCrucial component\b': 'Key part',
+    r'\bCrucial Component\b': 'Key Part',
+    r'\bcrucial\b': 'important',
+    r'\bCrucial\b': 'Important',
+    r'\bbeacon\b': 'model',
+    r'\bBeacon\b': 'Model',
+    r'\bpivotal\b': 'central',
+    r'\bPivotal\b': 'Central',
+    r'\bit is important to remember\b': 'keep in mind',
+    r'\bIt is important to remember\b': 'Keep in mind',
+    r'\bit is important to note\b': 'note that',
+    r'\bIt is important to note\b': 'Note that',
+    r'\bit is crucial to\b': 'make sure to',
+    r'\bIt is crucial to\b': 'Make sure to',
+    r'\bin conclusion\b': 'to sum up',
+    r'\bIn conclusion\b': 'To sum up',
+    r'\bIn Conclusion\b': 'To sum up',
+    r'\bas we look ahead\b': 'looking forward',
+    r'\bAs we look ahead\b': 'Looking forward',
+    r'\bkey insights\b': 'main takeaways',
+    r'\bKey Insights\b': 'Main Takeaways',
+    r'\bKey insights\b': 'Main Takeaways',
     r'\bmoreover\b': 'also',
     r'\bMoreover\b': 'Also',
     r'\bfurthermore\b': 'also',
     r'\bFurthermore\b': 'Also',
-    r'\bin conclusion\b': 'to sum up',
-    r'\bIn conclusion\b': 'To sum up',
-    r'\bIn Conclusion\b': 'To sum up',
     r'\bvital role\b': 'major part',
     r'\bVital role\b': 'Major part',
-    r'\bnavigating\b': 'handling',
-    r'\bNavigating\b': 'Handling',
     r'\bembark\b': 'start',
     r'\bEmbark\b': 'Start',
     r'\bfoster\b': 'support',
     r'\bFoster\b': 'Support',
     r'\brealm\b': 'area',
     r'\bRealm\b': 'Area',
-    r'\bbeacon\b': 'example',
-    r'\bBeacon\b': 'Example',
-    r'\bit is important to remember\b': 'keep in mind',
-    r'\bIt is important to remember\b': 'Keep in mind',
-    r'\bit is crucial to\b': 'make sure to',
-    r'\bIt is crucial to\b': 'Make sure to',
     r'\blearn more today\b': 'get the full picture',
     r'\bLearn more today\b': 'Get the full picture',
     r'\blearn more details\b': 'see key facts',
@@ -270,8 +357,6 @@ AI_REPLACEMENTS = {
     r'\bLearn more now\b': 'Get full facts',
     r'\blearn more\b': 'see more',
     r'\bLearn more\b': 'See more',
-    r'\bcrucial\b': 'important',
-    r'\bCrucial\b': 'Important',
 }
 
 def sanitize_ai_words(text):
@@ -342,8 +427,7 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
     """
     Generates a 100% unique, topic-tailored, high-CTR SEO title (50-60 chars).
     Must naturally contain the primary keyword near the beginning.
-    Zero robotic AI cliches (Comprehensive, Key Insights, In-depth, Delve).
-    Deterministic and unique based on the keyword's content intent.
+    Zero robotic AI cliches or banned words.
     """
     kw = str(primary_kw).strip()
     words = kw.split()
@@ -353,11 +437,11 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
     slug = re.sub(r'[\s-]+', '-', slug)
     h = sum(ord(c) for c in slug)
 
-    # 1. Automotive intent (car, truck, suv, brand models) - strict check
+    # 1. Automotive intent
     if any(w in kw_lower for w in ['toyota', 'honda', 'crv', 'camry', 'porsche', 'ford', 'suv', 'used cars']) or (category_slug == "automotive" and any(w in kw_lower for w in ['car', 'vehicle', 'truck', 'sedan'])):
         templates = [
             f"{cap_kw}: Price, Specs, Features & Trim Review",
-            f"{cap_kw}: Real Specs, Performance & Buying Guide",
+            f"{cap_kw}: Real Specs, Performance & Buying Advice",
             f"{cap_kw}: What to Expect, Key Specs & Pricing",
             f"{cap_kw}: Features, Fuel Economy & Trim Details",
             f"{cap_kw}: Full Model Review, Specs & What to Know"
@@ -370,13 +454,13 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
                 f"{cap_kw}: Cities Covered, Time Zone & Scams",
                 f"{cap_kw}: Location, Cities Served & Lookup Info",
                 f"{cap_kw}: Where Is It Located, Cities & Details",
-                f"{cap_kw}: State, Major Cities & Calling Guide"
+                f"{cap_kw}: State, Major Cities & Calling Rules"
             ]
         else:
             templates = [
-                f"{cap_kw}: How It Works, Formula & Quick Guide",
+                f"{cap_kw}: How It Works, Formula & Quick Reference",
                 f"{cap_kw}: Free Online Tool, Formula & Examples",
-                f"{cap_kw}: Accurate Calculation, Guide & Formula"
+                f"{cap_kw}: Accurate Calculation, Formula & Steps"
             ]
     # 3. Culture / Geography / Travel / Movies / Sports / History
     elif any(w in kw_lower for w in ['where is', 'cape verde', 'movie', 'film', 'olympics', 'vs', 'match', 'stats', 'wizard of oz', 'queen of wands', 'tarot']) or category_slug == "culture":
@@ -385,7 +469,7 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
                 f"{cap_kw}: Exact Location, Map & Travel Facts",
                 f"{cap_kw}: Geography, Country Map & Key Facts",
                 f"{cap_kw}: World Map Location, Climate & Facts",
-                f"{cap_kw}: Location, Geography & Practical Guide"
+                f"{cap_kw}: Location, Geography & Practical Facts"
             ]
         elif 'stats' in kw_lower or 'vs' in kw_lower:
             if 'stats' in kw_lower:
@@ -404,7 +488,7 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
             templates = [
                 f"{cap_kw}: Dates, Host City, Events & Schedule",
                 f"{cap_kw}: Location, Schedule, Sports & Updates",
-                f"{cap_kw}: Host Cities, Dates & Essential Guide"
+                f"{cap_kw}: Host Cities, Dates & Key Details"
             ]
         elif 'wizard of oz' in kw_lower or 'movie' in kw_lower or 'film' in kw_lower:
             templates = [
@@ -414,13 +498,13 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
             ]
         elif 'wands' in kw_lower or 'tarot' in kw_lower:
             templates = [
-                f"{cap_kw}: Card Meaning, Symbolism & Full Guide",
-                f"{cap_kw}: Upright, Reversed & Symbolism Guide",
+                f"{cap_kw}: Card Meaning, Symbolism & Overview",
+                f"{cap_kw}: Upright, Reversed & Symbolism Breakdown",
                 f"{cap_kw}: Card Meanings, Love & Career Reading"
             ]
         else:
             templates = [
-                f"{cap_kw}: History, Meanings, Facts & Guide",
+                f"{cap_kw}: History, Meanings, Facts & Overview",
                 f"{cap_kw}: Story, Cast, Legacy & Historical Facts",
                 f"{cap_kw}: Meaning, Symbolism & Essential Facts"
             ]
@@ -444,16 +528,16 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
             ]
         else:
             templates = [
-                f"{cap_kw}: Practical Tips, Guide & Solutions",
+                f"{cap_kw}: Practical Tips, Solutions & Care",
                 f"{cap_kw}: What to Know, Tips & Easy Steps",
-                f"{cap_kw}: Essential Guide, Advice & Methods"
+                f"{cap_kw}: Essential Advice, Methods & Overview"
             ]
     # 6. Calendar / Events / Holidays
     elif any(w in kw_lower for w in ['calendar', 'memorial day', 'holiday', 'january', 'february', 'march', '2026', '2025']):
         templates = [
             f"{cap_kw}: Dates, Meaning, History & Traditions",
             f"{cap_kw}: Printable Dates, Holidays & Schedule",
-            f"{cap_kw}: Exact Date, Meaning & Observance Guide",
+            f"{cap_kw}: Exact Date, Meaning & Observance Facts",
             f"{cap_kw}: Key Dates, Holidays & Full Overview"
         ]
     # 7. Finance / Taxes
@@ -469,22 +553,21 @@ def generate_topic_specific_seo_title(primary_kw, category_slug, semantic_kws=No
             f"{cap_kw}: Meaning, Background & Practical Facts",
             f"{cap_kw}: What It Means, Key Facts & FAQs",
             f"{cap_kw}: Essential Background & Key Details",
-            f"{cap_kw}: Explanations, Practical Facts & Guide"
+            f"{cap_kw}: Explanations, Practical Facts & Overview"
         ]
 
     # Select deterministically based on hash so it never clashes
     idx = h % len(templates)
     title = templates[idx]
     
-    # If title is excessively long (> 72 chars), format gracefully without trailing comma or cut-off words
-    if len(title) > 70:
+    # If title is excessively long (> 65 chars), format gracefully
+    if len(title) > 65:
         if ':' in title:
             base_kw, suffix = title.split(':', 1)
-            # Shorten suffix to fit
             clean_suf = suffix.strip()
             title = f"{base_kw}: {clean_suf}"
     title = title.rstrip(', ').strip()
-    return title
+    return sanitize_ai_words(title)
 
 def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=120, max_len=155):
     """
@@ -504,60 +587,62 @@ def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=120, 
     elif any(w in kw_lower for w in ['car', 'toyota', 'honda', 'crv', 'camry', 'vehicle', 'used cars', 'truck', 'sedan']):
         candidates = [
             f"See how the {cap_kw} performs on the road, with real fuel economy numbers, pricing across all trims, and new cabin technology.",
-            f"Thinking about {cap_kw}? Explore real road-test specs, trim level comparisons, expected pricing, and ownership costs.",
+            f"Thinking about {cap_kw}? Review real road-test specs, trim level comparisons, expected pricing, and ownership costs.",
             f"Detailed breakdown of {cap_kw}: compare trim packages, engine options, fuel economy benchmarks, and reliability ratings."
         ]
     elif 'where is' in kw_lower or 'location' in kw_lower:
         candidates = [
-            f"Looking for {cap_kw}? Explore exact world map geography, travel highlights, climate conditions, and key visitor facts.",
-            f"Learn where {cap_kw} is located, including global map coordinates, surrounding regions, climate patterns, and travel tips."
+            f"Looking for {cap_kw}? Find exact world map geography, travel highlights, climate conditions, and key visitor facts.",
+            f"See where {cap_kw} is located, including global map coordinates, surrounding regions, climate patterns, and travel tips."
         ]
     elif 'eat' in kw_lower or 'dog' in kw_lower or 'cat' in kw_lower or 'pet' in kw_lower:
         candidates = [
-            f"Wondering if {cap_kw}? Learn veterinarian-approved portion guidelines, nutritional perks, and safety precautions.",
+            f"Wondering if {cap_kw}? Find veterinarian-approved portion guidelines, nutritional perks, and safety precautions.",
             f"Is it safe: {cap_kw}? Get veterinarian-approved advice on safe serving sizes, health benefits, and potential digestive risks.",
-            f"Important health guidance on {cap_kw}: learn safe feeding amounts, nutritional value, and signs of digestive upset."
+            f"Important health advice on {cap_kw}: find safe feeding amounts, nutritional value, and signs of digestive upset."
         ]
     elif any(w in kw_lower for w in ['symptom', 'pain', 'infection', 'causes', 'treatment', 'health', 'test', 'blood']):
         candidates = [
-            f"Recognize key signs of {cap_kw}, explore common triggers, and review physician-recommended care and recovery steps.",
+            f"Recognize key signs of {cap_kw}, review common triggers, and follow physician-recommended care and recovery steps.",
             f"Understand normal ranges and causes of {cap_kw}, what test results mean, and practical steps recommended by medical experts.",
-            f"Learn how to manage {cap_kw}, identify early warning symptoms, and follow doctor-approved home remedies and care routines."
+            f"See practical ways to manage {cap_kw}, identify early warning symptoms, and follow doctor-approved care routines."
         ]
     elif any(w in kw_lower for w in ['calendar', 'memorial day', 'holiday', 'january', 'february', 'march', '2026', '2025', 'lent', 'olympics']):
         candidates = [
             f"Plan ahead for {cap_kw} with official observance dates, statutory holiday schedules, historical origins, and traditions.",
             f"Complete schedule and background for {cap_kw}: official event dates, historical meaning, and national traditions.",
-            f"Learn the history and dates behind {cap_kw}, including calendar schedules, significance, and community observances."
+            f"Review the history and dates behind {cap_kw}, including calendar schedules, significance, and community observances."
         ]
     elif any(w in kw_lower for w in ['tax', 'ira', '401k', 'loan', 'cost', 'mortgage', 'credit union', 'insurance']):
         candidates = [
-            f"Explore {cap_kw} rules, updated rate thresholds, account eligibility requirements, and practical financial strategies.",
+            f"Review {cap_kw} rules, updated rate thresholds, account eligibility requirements, and practical financial strategies.",
             f"Understand {cap_kw} guidelines, annual contribution limits, fee structures, and tax-smart planning considerations.",
             f"Detailed financial breakdown of {cap_kw}: examine current rates, policy requirements, and ways to save money."
         ]
-    elif category_slug == "how-to" or any(w in kw_lower for w in ['how to', 'clean', 'repair', 'fix', 'diy', 'guide']):
+    elif category_slug == "how-to" or any(w in kw_lower for w in ['how to', 'clean', 'repair', 'fix', 'diy']):
         candidates = [
             f"Simple step-by-step instructions for {cap_kw}, including required supplies, safety tips, and common mistakes to avoid.",
-            f"Learn how to handle {cap_kw} with this easy walkthrough, featuring tool checklists, safety advice, and troubleshooting tips.",
-            f"Practical DIY guide on {cap_kw}: follow our step-by-step procedures to get the job done safely and efficiently."
+            f"See how to handle {cap_kw} with this easy walkthrough, featuring tool checklists, safety advice, and troubleshooting tips.",
+            f"Practical DIY breakdown for {cap_kw}: follow our step-by-step procedures to get the job done safely and efficiently."
         ]
     else:
         candidates = [
             f"An editorial reference on {cap_kw}, breaking down essential background context, clear explanations, and common questions.",
-            f"Explore key details about {cap_kw}, including origins, practical context, and direct answers to common reader questions.",
-            f"Get clear context and practical guidance on {cap_kw}, covering important facts, background, and everyday takeaways."
+            f"Review key details about {cap_kw}, including origins, practical context, and direct answers to common reader questions.",
+            f"Get clear context and practical advice on {cap_kw}, covering important facts, background, and everyday takeaways."
         ]
 
+    chosen = candidates[0]
     for cand in candidates:
         if min_len <= len(cand) <= max_len:
-            return cand
+            chosen = cand
+            break
 
-    first = candidates[0]
-    if len(first) > max_len:
-        cut = first[:max_len-1].rsplit(' ', 1)[0]
-        return cut + "."
-    return first
+    if len(chosen) > max_len:
+        cut = chosen[:max_len-1].rsplit(' ', 1)[0]
+        chosen = cut + "."
+        
+    return sanitize_ai_words(chosen)
 
 def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
     """
@@ -578,26 +663,36 @@ Category Desk: {category_name}
 
 CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
 1. ABSOLUTE BAN ON AI BUZZWORDS & CLICHES:
-   - NEVER use the following words or phrases anywhere in your headings or text:
-     * "comprehensive"
-     * "key insights"
-     * "in-depth"
-     * "delve" or "delving"
+   - NEVER use any of the following words or phrases anywhere in your headings, paragraphs, or FAQs:
+     * "discover" / "discover verified facts"
+     * "explore" / "in this article, we explore"
+     * "uncover"
+     * "dive into" / "a deep dive into" / "deep dive"
+     * "unlock"
+     * "delve" / "delve into" / "delving"
+     * "learn how"
+     * "in this article"
+     * "an in-depth look at" / "an in-depth look into" / "in-depth"
+     * "pipelines"
+     * "comprehensive" / "comprehensive guide"
+     * "guide" / "a guide to" / "ultimate guide" / "ultimate"
+     * "navigating" / "navigating the"
+     * "demystifying"
+     * "unpacking"
+     * "in today's fast-paced digital world" / "in today's fast-paced world" / "in today's digital era"
      * "tapestry"
      * "testament"
-     * "moreover"
-     * "furthermore"
-     * "in conclusion"
-     * "navigating" or "navigate the landscape"
-     * "vital role"
-     * "crucial"
+     * "crucial" / "crucial component"
      * "beacon"
-     * "foster"
-     * "realm"
-     * "embark"
-     * "it is important to remember / note"
-     * "in today's fast-paced world / digital era"
-   - Write like an experienced human reporter: plain spoken, grounded, fact-packed, clear, and engaging.
+     * "pivotal"
+     * "it is important to remember" / "it is important to note" / "it is crucial to"
+     * "in conclusion"
+     * "as we look ahead"
+     * "key insights"
+     * "moreover" / "furthermore"
+     * "vital role"
+     * "embark" / "foster" / "realm"
+   - Write like a top investigative reporter: conversational, factual, punchy, plain-spoken, and grounded.
 
 2. Google Helpful Content & Anti-De-Ranking Quality Guidelines:
    - Deliver rich, primary-source quality explanations, real numbers, verified context, practical steps, and direct comparisons.
