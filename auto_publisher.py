@@ -193,11 +193,11 @@ def publish_next_post(target_category=None):
         import traceback
         traceback.print_exc()
         
-    # 7. Auto-submit new article URL to Google Indexing API
+    # 7. Auto-submit full website sitemap URLs to Google Indexing API
     indexing_res = None
     try:
-        from google_indexing import submit_url_to_google_indexing
-        indexing_res = submit_url_to_google_indexing(article['post_url'])
+        from google_indexing import submit_all_site_urls
+        indexing_res = submit_all_site_urls()
     except Exception as e:
         print(f"[Auto-Publisher Error] Google Indexing API call failed: {e}")
         

@@ -2,9 +2,9 @@ name: Auto Publish Articles and Tools
 
 on:
   schedule:
-    # Runs every 6 hours (4 articles per day across categories)
-    # At 00:00, 06:00, 12:00, and 18:00 UTC
-    - cron: '0 */6 * * *'
+    # Runs every 12 hours (2 articles per day across categories)
+    # At 00:00 and 12:00 UTC
+    - cron: '0 0,12 * * *'
   workflow_dispatch:
 
 permissions:
@@ -40,6 +40,7 @@ jobs:
         run: |
           python auto_publisher.py
           python rebuild_full_theme.py
+          python google_indexing.py
 
       - name: Commit and Push New Posts and Site
         run: |
@@ -49,6 +50,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No new changes to commit."
           else
-            git commit -m "Auto-published new article and tools (6-hour interval)"
+            git commit -m "Auto-published new article and triggered full site indexing (12-hour interval)"
             git push origin main
           fi
