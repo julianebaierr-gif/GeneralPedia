@@ -3,34 +3,35 @@
   <!-- Homepage -->
   <url>
     <loc>https://www.generalpedia.com/</loc>
-    <lastmod>2026-09-21</lastmod>
+    <lastmod>2026-09-22</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <!-- Categories -->
-  <url><loc>https://www.generalpedia.com/category/how-to</loc><lastmod>2026-09-21</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.generalpedia.com/category/finance</loc><lastmod>2026-09-21</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.generalpedia.com/category/health</loc><lastmod>2026-09-21</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.generalpedia.com/category/tools</loc><lastmod>2026-09-21</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.generalpedia.com/category/automotive</loc><lastmod>2026-09-21</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.generalpedia.com/category/lifestyle</loc><lastmod>2026-09-21</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://www.generalpedia.com/category/culture</loc><lastmod>2026-09-21</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.generalpedia.com/category/how-to</loc><lastmod>2026-09-22</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.generalpedia.com/category/finance</loc><lastmod>2026-09-22</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.generalpedia.com/category/health</loc><lastmod>2026-09-22</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.generalpedia.com/category/tools</loc><lastmod>2026-09-22</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.generalpedia.com/category/automotive</loc><lastmod>2026-09-22</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.generalpedia.com/category/lifestyle</loc><lastmod>2026-09-22</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.generalpedia.com/category/culture</loc><lastmod>2026-09-22</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <!-- Authors -->
-  <url><loc>https://www.generalpedia.com/author/marcus-reid</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.generalpedia.com/author/sarah-mitchell</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.generalpedia.com/author/elena-torres</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.generalpedia.com/author/james-carter</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.generalpedia.com/author/david-chen</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.generalpedia.com/author/nora-jacobs</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.generalpedia.com/author/amir-hassan</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/marcus-reid</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/sarah-mitchell</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/elena-torres</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/james-carter</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/david-chen</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/nora-jacobs</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.generalpedia.com/author/amir-hassan</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <!-- Static Pages -->
-  <url><loc>https://www.generalpedia.com/about</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.generalpedia.com/write-for-us</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.generalpedia.com/editorial-guidelines</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://www.generalpedia.com/privacy-policy</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.generalpedia.com/terms</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.generalpedia.com/contact</loc><lastmod>2026-09-21</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.generalpedia.com/about</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.generalpedia.com/write-for-us</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.generalpedia.com/editorial-guidelines</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.generalpedia.com/privacy-policy</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.generalpedia.com/terms</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://www.generalpedia.com/contact</loc><lastmod>2026-09-22</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <!-- Articles -->
+  <url><loc>https://www.generalpedia.com/how-to-change-a-tire-meaning-background</loc><lastmod>2026-09-22</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.generalpedia.com/12mm-to-inches-meaning-background-practical-facts</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.generalpedia.com/fatty-liver-disease-common-causes-home-remedies</loc><lastmod>2026-09-21</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
   <url><loc>https://www.generalpedia.com/get-insurance-quotes-rates-financial-rules-key</loc><lastmod>2026-09-20</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
