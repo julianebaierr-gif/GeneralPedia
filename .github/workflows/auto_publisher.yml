@@ -1,10 +1,10 @@
 name: Auto Publish Articles and Tools
 
 on:
-  schedule:
-    # Runs every 12 hours (2 articles per day across categories)
-    # At 00:00 and 12:00 UTC
-    - cron: '0 0,12 * * *'
+  # Auto-posting temporarily paused upon user request.
+  # To resume, uncomment the schedule section below.
+  # schedule:
+  #   - cron: '0 0,12 * * *'
   workflow_dispatch:
 
 permissions:
