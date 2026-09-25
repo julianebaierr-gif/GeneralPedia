@@ -149,8 +149,10 @@ def publish_next_post(target_category=None):
     kd = selected_row.get('Primary_KD', 0)
     cpc = selected_row.get('Primary_CPC', 0.0)
 
-    # 1. Generate SEO Article via Gemini API & Unsplash API
+    # 1. Generate SEO Article via SERP Competitor Analysis, 50+ LSI Extraction & Gemini API
+    print(f"\n[Auto-Publisher] Commencing SERP competitor analysis & article generation for '{primary_kw}'...")
     article = generate_article(primary_kw, semantic_kws, volume=vol, kd=kd, cpc=cpc)
+    print(f"[Auto-Publisher] Generated article '{article['title']}' with {len(article.get('semantic_keywords', []))} LSI keywords and {len(article.get('faqs', []))} FAQs.")
     
     # 2. Save individual JSON post
     os.makedirs(POSTS_DIR, exist_ok=True)

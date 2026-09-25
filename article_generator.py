@@ -9,11 +9,13 @@ try:
     from image_service import fetch_unique_unsplash_image
     from tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
     from internal_linker import inject_natural_internal_links
+    from serp_competitor_analyzer import analyze_serp_for_keyword
 except ImportError:
     from .config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
     from .image_service import fetch_unique_unsplash_image
     from .tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
     from .internal_linker import inject_natural_internal_links
+    from .serp_competitor_analyzer import analyze_serp_for_keyword
 from env_loader import get_secret
 
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
@@ -26,7 +28,8 @@ FALLBACK_MODELS = [
     "gemini-3.7-flash",
     "gemini-3.1-flash-lite",
     "gemini-flash-lite-latest",
-    "gemini-flash-latest"
+    "gemini-flash-latest",
+    "gemini-2.5-flash"
 ]
 
 def slugify(text):
@@ -658,10 +661,13 @@ def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=120, 
         
     return sanitize_ai_words(chosen)
 
-def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name):
+def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name, competitor_intel=None):
     """
     Generates rich, 800-1200 word authoritative SEO article content dynamically via Gemini API.
     Enforces:
+    - Deep Google SERP competitor intelligence & outranking strategy
+    - Mandatory closing of identified competitor content gaps
+    - Natural integration of 50+ semantic and LSI keywords
     - Google Helpful Content, Spam & Anti-De-Ranking Policies (human-first, high E-E-A-T)
     - 100% human editorial tone: BANS ALL AI CLICHES (Comprehensive, Key Insights, in-depth, delve, etc.)
     - Featured snippet target (40-55 words)
@@ -669,11 +675,43 @@ def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_n
     - 100% complete generation
     - Fallback cascade through all Gemini versions
     """
+    competitor_block = ""
+    if competitor_intel:
+        comp_summary = competitor_intel.get("competitor_summary", "")
+        comp_gaps = competitor_intel.get("content_gaps", [])
+        comp_list = competitor_intel.get("competitor_results", [])
+        
+        comp_items_str = ""
+        for c in comp_list[:6]:
+            comp_items_str += f"   - Rank {c.get('rank', '?')} ({c.get('domain', 'web')}): {c.get('title', '')} | Focus: {c.get('snippet', '')[:130]}\n"
+            
+        gaps_str = ""
+        for idx, g in enumerate(comp_gaps, 1):
+            gaps_str += f"   - [GAP {idx}]: {g}\n"
+            
+        competitor_block = f"""
+TOP 5-8 COMPETITOR SERP INTELLIGENCE & GAP DOMINATION:
+1. Current Top Ranking Competitors on Google:
+{comp_items_str if comp_items_str else f'   - {comp_summary}'}
+
+2. MANDATORY CONTENT GAPS TO BRIDGE (CRITICAL TO OUTRANK COMPETITORS):
+   Google's top ranking competitors completely missed or under-explained the following areas. You MUST address every single one of these content gaps in your article with verified facts, concrete numbers, and practical steps so GeneralPedia provides vastly superior, complete information:
+{gaps_str}
+"""
+
+    lsi_str = ", ".join(semantic_kws) if semantic_kws else "None"
+    lsi_block = f"""
+EXHAUSTIVE 50+ SEMANTIC & LSI KEYWORDS MATRIX:
+The following 50+ LSI keywords and search variations represent real Google search intent for this topic. Naturally weave relevant terms across headings, tables, and paragraphs without keyword stuffing:
+{lsi_str}
+"""
+
     prompt = f"""You are a seasoned human investigative journalist, senior editor, and subject-matter specialist writing for GeneralPedia.
 Write an authentic, direct, highly informative reference guide for real everyday readers on:
 Primary Focus Keyword: "{primary_kw}"
-Related Semantic / LSI Keywords: {', '.join(semantic_kws[:12]) if semantic_kws else 'None'}
 Category Desk: {category_name}
+{competitor_block}
+{lsi_block}
 
 CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
 1. ABSOLUTE BAN ON AI BUZZWORDS & CLICHES:
@@ -808,8 +846,15 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     post_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     display_date = datetime.now().strftime("%B %d, %Y")
     
-    # 1. Enrich semantic keywords and visual queries
-    all_semantic_kws, visual_queries = enrich_semantic_and_visual_terms(primary_kw, semantic_kws)
+    # 1. Run live SERP Competitor Analysis, 50+ LSI Extraction & Content Gap Discovery
+    try:
+        competitor_intel = analyze_serp_for_keyword(primary_kw, semantic_kws)
+        all_semantic_kws = competitor_intel.get("semantic_keywords", [])
+        visual_queries = competitor_intel.get("visual_queries", [])
+    except Exception as e:
+        print(f"[Article Generator Warning] SERP analysis failed: {e}. Falling back to default enricher.")
+        all_semantic_kws, visual_queries = enrich_semantic_and_visual_terms(primary_kw, semantic_kws)
+        competitor_intel = None
     
     cat_slug = detect_category(primary_kw, all_semantic_kws)
     cat_info = CATEGORIES[cat_slug]
@@ -825,8 +870,8 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     safe_kd = int(kd) if kd and not str(kd).lower() == 'nan' else 0
     safe_cpc = float(cpc) if cpc and not str(cpc).lower() == 'nan' else 0.0
     
-    # 2. Fetch complete content via Gemini API cascade
-    body_content = generate_article_content_via_gemini_api(capital_kw, all_semantic_kws, cat_info["name"])
+    # 2. Fetch complete content via Gemini API cascade with competitor gap domination
+    body_content = generate_article_content_via_gemini_api(capital_kw, all_semantic_kws, cat_info["name"], competitor_intel=competitor_intel)
     if not body_content:
         body_content = f"<p>A detailed briefing on <strong>{capital_kw}</strong> will be available shortly.</p>"
     else:
