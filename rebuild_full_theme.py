@@ -26,6 +26,125 @@ def minify_js(js_content: str) -> str:
         cleaned.append(s)
     return '\n'.join(cleaned)
 
+def to_iso_datetime(dt_str: str) -> str:
+    if not dt_str:
+        return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    dt_str = str(dt_str).strip()
+    if 'T' in dt_str:
+        return dt_str
+    try:
+        dt = datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+        return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+    except Exception:
+        try:
+            dt = datetime.strptime(dt_str[:10], "%Y-%m-%d")
+            return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+        except Exception:
+            return dt_str
+
+def process_article_content_for_toc(content_html: str, post_url: str) -> str:
+    if not content_html:
+        return content_html
+
+    # If article has <= 1 <h2> but multiple <h3>, promote <h3> to <h2> for semantic consistency
+    h2_count = len(re.findall(r'<h2[^>]*>', content_html, re.IGNORECASE))
+    h3_count = len(re.findall(r'<h3[^>]*>', content_html, re.IGNORECASE))
+    if h2_count <= 1 and h3_count >= 2:
+        content_html = re.sub(r'<h3([^>]*)>(.*?)</h3>', r'<h2\1>\2</h2>', content_html, flags=re.IGNORECASE | re.DOTALL)
+
+    # Match all <h2>...</h2> tags
+    h2_pattern = re.compile(r'<h2([^>]*)>(.*?)</h2>', re.IGNORECASE | re.DOTALL)
+    
+    headings = []
+    seen_ids = set()
+
+    for m in h2_pattern.finditer(content_html):
+        attrs = m.group(1)
+        inner = m.group(2)
+        inner_text = re.sub(r'<[^>]+>', '', inner).strip()
+        if not inner_text:
+            continue
+        
+        id_m = re.search(r'id=["\']([^"\']+)["\']', attrs)
+        if id_m:
+            anchor_id = id_m.group(1)
+        else:
+            base_slug = re.sub(r'[^a-z0-9]+', '-', inner_text.lower()).strip('-')
+            if not base_slug:
+                base_slug = f"section-{len(headings) + 1}"
+            anchor_id = f"section-{base_slug}"
+            counter = 1
+            original_id = anchor_id
+            while anchor_id in seen_ids:
+                counter += 1
+                anchor_id = f"{original_id}-{counter}"
+        
+        seen_ids.add(anchor_id)
+        headings.append((anchor_id, inner_text))
+
+    if not headings:
+        if 'class="gp-source-citation"' not in content_html:
+            citation_html = f'''
+<p class="gp-source-citation" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 28px; border-top: 1px solid var(--border-color); padding-top: 14px;">
+  <em>Originally published and fact-checked at <a href="{post_url}" style="color: inherit; text-decoration: underline;">GeneralPedia</a>.</em>
+</p>'''
+            content_html += citation_html
+        return content_html
+
+    def replace_h2(match):
+        attrs = match.group(1)
+        inner = match.group(2)
+        inner_text = re.sub(r'<[^>]+>', '', inner).strip()
+        if not inner_text or 'id=' in attrs:
+            return match.group(0)
+        
+        for aid, atext in headings:
+            if atext == inner_text:
+                return f'<h2 id="{aid}"{attrs}>{inner}</h2>'
+        
+        base_slug = re.sub(r'[^a-z0-9]+', '-', inner_text.lower()).strip('-')
+        return f'<h2 id="section-{base_slug}"{attrs}>{inner}</h2>'
+
+    updated_content = h2_pattern.sub(replace_h2, content_html)
+
+    if len(headings) >= 2 and 'gp-toc-container' not in updated_content:
+        toc_items_html = "\n".join([
+            f'      <li><a href="#{aid}">{title}</a></li>'
+            for aid, title in headings
+        ])
+        toc_widget = f'''
+<nav class="gp-toc-container" aria-label="Table of Contents">
+  <div class="gp-toc-header">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3.01" y2="6"></line>
+      <line x1="3" y1="12" x2="3.01" y2="12"></line>
+      <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </svg>
+    <span>Table of Contents</span>
+  </div>
+  <ol class="gp-toc-list">
+{toc_items_html}
+  </ol>
+</nav>
+'''
+        first_h2_idx = updated_content.find('<h2')
+        if first_h2_idx != -1:
+            updated_content = updated_content[:first_h2_idx] + toc_widget + '\n' + updated_content[first_h2_idx:]
+        else:
+            updated_content = toc_widget + '\n' + updated_content
+
+    if 'class="gp-source-citation"' not in updated_content:
+        citation_html = f'''
+<p class="gp-source-citation" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 28px; border-top: 1px solid var(--border-color); padding-top: 14px;">
+  <em>Originally published and fact-checked at <a href="{post_url}" style="color: inherit; text-decoration: underline;">GeneralPedia</a>.</em>
+</p>'''
+        updated_content += citation_html
+
+    return updated_content
+
 def rebuild_site():
     if not os.path.exists(DB_PATH):
         return
@@ -53,7 +172,7 @@ def rebuild_site():
   <meta name="description" content="Explore practical DIY advice, IRS tax updates, car reviews, wellness insights, and interactive calculation tools made for everyday living.">
   <meta name="keywords" content="generalpedia, personal finance, tax rules, vehicle reviews, home improvement, wellness advice, reference calculators">
   <meta name="author" content="GeneralPedia Editorial Staff">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://www.generalpedia.com/">
 
   <!-- Open Graph -->
@@ -76,22 +195,41 @@ def rebuild_site():
   <link rel="manifest" href="/site.webmanifest">
 
   <!-- Structured Data (JSON-LD) -->
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="structured-data-jsonld">
   {
     "@context": "https://schema.org",
-    "@type": "NewsMediaOrganization",
-    "name": "GeneralPedia",
-    "alternateName": "GeneralPedia.com",
-    "url": "https://www.generalpedia.com",
-    "description": "Premier Digital Knowledge Magazine & Fact-Checked Encyclopedia",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://www.generalpedia.com/?q={search_term_string}"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.generalpedia.com/#organization",
+        "name": "GeneralPedia",
+        "alternateName": "GeneralPedia.com",
+        "url": "https://www.generalpedia.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.generalpedia.com/favicon.png",
+          "caption": "GeneralPedia Logo"
+        },
+        "description": "Premier Digital Knowledge Magazine & Fact-Checked Encyclopedia"
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "WebSite",
+        "@id": "https://www.generalpedia.com/#website",
+        "url": "https://www.generalpedia.com",
+        "name": "GeneralPedia",
+        "publisher": {
+          "@id": "https://www.generalpedia.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.generalpedia.com/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
   }
   </script>
   <!-- External Stylesheet (Minified) -->
@@ -283,7 +421,7 @@ def rebuild_site():
     home_logo_end_search = '</div>\n        </a>'
     home_logo_end_replace = '</div>\n        </a></h1>'
 
-    index_html = home_full_html.replace(home_logo_search, home_logo_replace, 1).replace(home_logo_end_search, home_logo_end_replace, 1).replace('<div class="mag-section-title" id="mag-feed-heading">Latest Published Reports</div>', '<h2 class="mag-section-title" id="mag-feed-heading">Latest Published Reports</h2>', 1)
+    index_html = home_full_html.replace(home_logo_search, home_logo_replace, 1).replace(home_logo_end_search, home_logo_end_replace, 1).replace('<div class="mag-section-title" id="mag-feed-heading">Latest Published Reports</div>', '<h2 class="mag-section-title" id="mag-feed-heading">Latest Published Reports</h2>', 1).replace(' id="structured-data-jsonld"', '', 1)
 
     index_file = os.path.join(SCRATCH_DIR, "index.html")
     site_index_file = os.path.join(SCRATCH_DIR, "site", "index.html")
@@ -322,6 +460,7 @@ def rebuild_site():
         if page_type == "article":
             p_data = extra_data or {}
             clean_art_title = (p_data.get('title') or escaped_title.split(" | ")[0]).replace('&', '&amp;')
+            raw_art_title = (p_data.get('title') or escaped_title.split(" | ")[0]).strip()
             # Convert article title div to h1
             page_html = page_html.replace(
                 '<div id="art-title" class="art-title-text">Article Title</div>',
@@ -331,14 +470,16 @@ def rebuild_site():
             # Make article-view visible and home-view hidden
             page_html = page_html.replace('<div id="article-view" class="hidden">', '<div id="article-view">', 1)
             page_html = page_html.replace('<div id="home-view">', '<div id="home-view" class="hidden">', 1)
-            # Pre-render content
-            page_html = page_html.replace('<!-- Article HTML inserted here -->', p_data.get('content_html', ''), 1)
+            # Pre-render content with TOC and scraper citation
+            processed_content = process_article_content_for_toc(p_data.get('content_html', ''), page_url)
+            page_html = page_html.replace('<!-- Article HTML inserted here -->', processed_content, 1)
             page_html = page_html.replace('<p id="art-meta" class="art-excerpt-lead">Article Excerpt</p>', f'<p id="art-meta" class="art-excerpt-lead">{p_data.get("meta_description", "")}</p>', 1)
             page_html = page_html.replace('<span id="art-category-badge" class="category-badge">Category</span>', f'<span id="art-category-badge" class="category-badge">{p_data.get("category_name", "Knowledge Guide")}</span>', 1)
 
             # Pre-render byline
             author_name = p_data.get('author_name', 'Editorial Staff')
             cat_slug = p_data.get('category_slug', 'how-to')
+            cat_name = p_data.get('category_name', 'Knowledge Guide')
             author_slug = author_name.lower().replace(' ', '-') if author_name else 'editorial-staff'
             author_avatar = p_data.get('author_avatar', '')
             if not author_avatar:
@@ -365,6 +506,115 @@ def rebuild_site():
                 f'<div style="font-weight: 600;" id="art-read-time">{p_data.get("read_time", "5 min read")}</div>',
                 1
             )
+
+            # Open Graph & Twitter meta tags
+            page_html = re.sub(r'<meta property="og:type" content="website">', '<meta property="og:type" content="article">', page_html, count=1)
+            page_html = re.sub(r'<meta name="author" content=".*?">', f'<meta name="author" content="{author_name}">', page_html, count=1)
+            featured_img = p_data.get('featured_image', '')
+            if featured_img:
+                img_metas = f'<meta property="og:image" content="{featured_img}">\n  <meta name="twitter:image" content="{featured_img}">'
+                page_html = page_html.replace('<!-- Favicon / Brand Icons', f'{img_metas}\n\n  <!-- Favicon / Brand Icons', 1)
+
+            # JSON-LD Schema: Organization, WebSite, Article, BreadcrumbList, FAQPage
+            pub_iso = to_iso_datetime(p_data.get('published_at', ''))
+            mod_iso = to_iso_datetime(p_data.get('modified_at') or p_data.get('published_at', ''))
+            author_url = f"https://www.generalpedia.com/author/{author_slug}"
+
+            article_graph = [
+                {
+                    "@type": "Organization",
+                    "@id": "https://www.generalpedia.com/#organization",
+                    "name": "GeneralPedia",
+                    "alternateName": "GeneralPedia.com",
+                    "url": "https://www.generalpedia.com",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://www.generalpedia.com/favicon.png",
+                        "caption": "GeneralPedia Logo"
+                    }
+                },
+                {
+                    "@type": "WebSite",
+                    "@id": "https://www.generalpedia.com/#website",
+                    "url": "https://www.generalpedia.com",
+                    "name": "GeneralPedia",
+                    "publisher": {
+                        "@id": "https://www.generalpedia.com/#organization"
+                    }
+                },
+                {
+                    "@type": "Article",
+                    "@id": f"{page_url}#article",
+                    "isPartOf": {
+                        "@type": "WebPage",
+                        "@id": page_url
+                    },
+                    "headline": raw_art_title,
+                    "description": page_desc,
+                    "image": featured_img or "https://www.generalpedia.com/favicon.png",
+                    "datePublished": pub_iso,
+                    "dateModified": mod_iso,
+                    "mainEntityOfPage": page_url,
+                    "author": {
+                        "@type": "Person",
+                        "name": author_name,
+                        "url": author_url
+                    },
+                    "publisher": {
+                        "@id": "https://www.generalpedia.com/#organization"
+                    }
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": f"{page_url}#breadcrumb",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://www.generalpedia.com/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": cat_name,
+                            "item": f"https://www.generalpedia.com/category/{cat_slug}"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 3,
+                            "name": raw_art_title,
+                            "item": page_url
+                        }
+                    ]
+                }
+            ]
+
+            faqs = p_data.get('faqs', [])
+            if faqs and isinstance(faqs, list) and len(faqs) > 0:
+                main_faq_entities = []
+                for q in faqs:
+                    q_text = q.get('question', '').strip()
+                    a_text = q.get('answer', '').strip()
+                    if q_text and a_text:
+                        main_faq_entities.append({
+                            "@type": "Question",
+                            "name": q_text,
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": a_text
+                            }
+                        })
+                if main_faq_entities:
+                    article_graph.append({
+                        "@type": "FAQPage",
+                        "@id": f"{page_url}#faq",
+                        "mainEntity": main_faq_entities
+                    })
+
+            article_schema_json = json.dumps({"@context": "https://schema.org", "@graph": article_graph}, ensure_ascii=False, indent=2)
+            schema_block = f'<script type="application/ld+json">\n{article_schema_json}\n  </script>'
+            page_html = re.sub(r'<script type="application/ld\+json" id="structured-data-jsonld">[\s\S]*?</script>', schema_block, page_html, count=1)
 
             # Pre-render trending in category or top stories in article sidebar
             art_id = p_data.get('id', '')
@@ -422,6 +672,52 @@ def rebuild_site():
         </div>'''
             page_html = page_html.replace('<!-- 6. 2-COLUMN MAGAZINE CONTENT + SIDEBAR -->', f'{overview_html}\n      <!-- 6. 2-COLUMN MAGAZINE CONTENT + SIDEBAR -->', 1)
 
+            # JSON-LD Schema: Organization, WebSite, BreadcrumbList
+            category_graph = [
+                {
+                    "@type": "Organization",
+                    "@id": "https://www.generalpedia.com/#organization",
+                    "name": "GeneralPedia",
+                    "alternateName": "GeneralPedia.com",
+                    "url": "https://www.generalpedia.com",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://www.generalpedia.com/favicon.png",
+                        "caption": "GeneralPedia Logo"
+                    }
+                },
+                {
+                    "@type": "WebSite",
+                    "@id": "https://www.generalpedia.com/#website",
+                    "url": "https://www.generalpedia.com",
+                    "name": "GeneralPedia",
+                    "publisher": {
+                        "@id": "https://www.generalpedia.com/#organization"
+                    }
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": f"{page_url}#breadcrumb",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://www.generalpedia.com/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": cat_display_name,
+                            "item": page_url
+                        }
+                    ]
+                }
+            ]
+            cat_schema_json = json.dumps({"@context": "https://schema.org", "@graph": category_graph}, ensure_ascii=False, indent=2)
+            schema_block = f'<script type="application/ld+json">\n{cat_schema_json}\n  </script>'
+            page_html = re.sub(r'<script type="application/ld\+json" id="structured-data-jsonld">[\s\S]*?</script>', schema_block, page_html, count=1)
+
             # Pre-render category cards:
             cat_posts = [p for p in posts_data if p.get("category_slug") == cat_slug]
             cat_cards = []
@@ -443,12 +739,13 @@ def rebuild_site():
         elif page_type == "static":
             sp_data = extra_data or {}
             sp_content = sp_data.get('content', '')
+            clean_title = sp_data.get('title', '').replace('&', '&amp;')
+            raw_title = sp_data.get('title', '').strip()
             # Convert first h2 of sp_content (page headline) into h1
             sp_content = re.sub(r'<h2([^>]*)>(.*?)</h2>', r'<h1\1>\2</h1>', sp_content, count=1, flags=re.DOTALL)
             # Inject into static-content container
             page_html = page_html.replace('<!-- Static page HTML populated here -->', sp_content, 1)
             # Update breadcrumb
-            clean_title = sp_data.get('title', '').replace('&', '&amp;')
             page_html = page_html.replace(
                 '<li id="static-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">Information Page</li>',
                 f'<li id="static-crumb" aria-current="page" style="color: var(--text-main); font-weight: 600;">{clean_title}</li>',
@@ -457,6 +754,52 @@ def rebuild_site():
             # Make static-view visible and home-view hidden for crawlers:
             page_html = page_html.replace('<div id="static-view" class="hidden">', '<div id="static-view">', 1)
             page_html = page_html.replace('<div id="home-view">', '<div id="home-view" class="hidden">', 1)
+
+            # JSON-LD Schema: Organization, WebSite, BreadcrumbList
+            static_graph = [
+                {
+                    "@type": "Organization",
+                    "@id": "https://www.generalpedia.com/#organization",
+                    "name": "GeneralPedia",
+                    "alternateName": "GeneralPedia.com",
+                    "url": "https://www.generalpedia.com",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://www.generalpedia.com/favicon.png",
+                        "caption": "GeneralPedia Logo"
+                    }
+                },
+                {
+                    "@type": "WebSite",
+                    "@id": "https://www.generalpedia.com/#website",
+                    "url": "https://www.generalpedia.com",
+                    "name": "GeneralPedia",
+                    "publisher": {
+                        "@id": "https://www.generalpedia.com/#organization"
+                    }
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": f"{page_url}#breadcrumb",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://www.generalpedia.com/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": raw_title,
+                            "item": page_url
+                        }
+                    ]
+                }
+            ]
+            static_schema_json = json.dumps({"@context": "https://schema.org", "@graph": static_graph}, ensure_ascii=False, indent=2)
+            schema_block = f'<script type="application/ld+json">\n{static_schema_json}\n  </script>'
+            page_html = re.sub(r'<script type="application/ld\+json" id="structured-data-jsonld">[\s\S]*?</script>', schema_block, page_html, count=1)
 
         elif page_type == "author":
             auth_info = extra_data or {}
@@ -509,6 +852,66 @@ def rebuild_site():
                     f'<p id="author-profile-standards" style="margin: 0; font-size: 0.875rem; color: var(--text-muted); line-height: 1.55;">{auth_standards}</p>',
                     1
                 )
+
+            # JSON-LD Schema: Organization, ProfilePage (Person), BreadcrumbList
+            author_graph = [
+                {
+                    "@type": "Organization",
+                    "@id": "https://www.generalpedia.com/#organization",
+                    "name": "GeneralPedia",
+                    "alternateName": "GeneralPedia.com",
+                    "url": "https://www.generalpedia.com",
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": "https://www.generalpedia.com/favicon.png",
+                        "caption": "GeneralPedia Logo"
+                    }
+                },
+                {
+                    "@type": "ProfilePage",
+                    "@id": f"{page_url}#profile",
+                    "isPartOf": {
+                        "@type": "WebPage",
+                        "@id": page_url
+                    },
+                    "mainEntity": {
+                        "@type": "Person",
+                        "name": auth_name,
+                        "url": page_url,
+                        "image": auth_avatar,
+                        "jobTitle": auth_role,
+                        "description": auth_bio,
+                        "knowsAbout": auth_exp_list
+                    }
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": f"{page_url}#breadcrumb",
+                    "itemListElement": [
+                        {
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Home",
+                            "item": "https://www.generalpedia.com/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": "Authors",
+                            "item": "https://www.generalpedia.com/about"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 3,
+                            "name": auth_name,
+                            "item": page_url
+                        }
+                    ]
+                }
+            ]
+            auth_schema_json = json.dumps({"@context": "https://schema.org", "@graph": author_graph}, ensure_ascii=False, indent=2)
+            schema_block = f'<script type="application/ld+json">\n{auth_schema_json}\n  </script>'
+            page_html = re.sub(r'<script type="application/ld\+json" id="structured-data-jsonld">[\s\S]*?</script>', schema_block, page_html, count=1)
             
             # Pre-render author articles:
             auth_posts = [p for p in posts_data if p.get("category_slug") == auth_cat or (p.get("author_name") and p.get("author_name").lower() == auth_name.lower())]
@@ -552,6 +955,12 @@ def rebuild_site():
         os.makedirs(os.path.dirname(target_file), exist_ok=True)
         with open(target_file, "w", encoding="utf-8") as pf:
             pf.write(page_html)
+
+        if os.path.exists(site_dir):
+            site_target_file = os.path.join(site_dir, rel_path)
+            os.makedirs(os.path.dirname(site_target_file), exist_ok=True)
+            with open(site_target_file, "w", encoding="utf-8") as pf:
+                pf.write(page_html)
 
     # 1. Prerender each article
     for p in posts_data:

@@ -35,25 +35,39 @@ def slugify(text):
 
 def slugify_with_seo_title(primary_kw, seo_title):
     """
-    Builds a high-impact, human-natural SEO slug incorporating the primary keyword
-    plus distinguishing keywords from the SEO Title (e.g. 'honda-crv-2026-price-specs-features-trim').
+    Builds a clean, short, human-natural SEO slug (3-5 words max) for FUTURE posts.
+    Strips robotic formula suffixes and filler words.
     """
-    clean_title = re.sub(r'[^a-zA-Z0-9\s-]', '', str(seo_title).lower())
-    words = clean_title.split()
-    stop_words = {'a', 'an', 'the', 'and', 'or', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'is', 'it', 'by', 'vs'}
-    meaningful = [w for w in words if w not in stop_words]
-    kw_terms = [re.sub(r'[^a-zA-Z0-9]', '', w.lower()) for w in primary_kw.split()]
+    clean_kw = re.sub(r'[^a-zA-Z0-9\s-]', '', str(primary_kw).lower()).strip()
+    kw_words = [w for w in re.split(r'[\s-]+', clean_kw) if w]
     
-    slug_words = []
-    for kw_w in kw_terms:
-        if kw_w and kw_w not in slug_words:
-            slug_words.append(kw_w)
-            
-    for w in meaningful:
-        if w not in slug_words and len(slug_words) < 7:
-            slug_words.append(w)
-            
-    return "-".join(slug_words)
+    # If primary keyword is already a complete phrase (3 to 5 words), use it directly
+    if 3 <= len(kw_words) <= 5:
+        return "-".join(kw_words)
+        
+    # If primary keyword is very long (> 5 words), compress to core terms
+    if len(kw_words) > 5:
+        stop_words = {'a', 'an', 'the', 'and', 'or', 'of', 'in', 'on', 'at', 'to', 'for', 'with', 'is', 'it', 'by', 'match', 'vs'}
+        core = [w for w in kw_words if w not in stop_words]
+        return "-".join(core[:5] if len(core) >= 3 else kw_words[:5])
+
+    # If primary keyword is short (1-2 words), optionally add 1-2 distinguishing keywords from title
+    banned_slug_fillers = {
+        'meaning', 'background', 'practical', 'facts', 'overview', 'rules', 'limits',
+        'rates', 'deadlines', 'what', 'means', 'key', 'details', 'guide', 'tips',
+        'care', 'full', 'recap', 'solutions', 'review', 'explaining', 'uncovered',
+        'a', 'an', 'the', 'and', 'or', 'of', 'in', 'on', 'at', 'to', 'for', 'with'
+    }
+    clean_title = re.sub(r'[^a-zA-Z0-9\s-]', '', str(seo_title).lower())
+    title_words = [w for w in re.split(r'[\s-]+', clean_title) if w and w not in banned_slug_fillers and w not in kw_words]
+    
+    result = list(kw_words)
+    for tw in title_words:
+        if len(result) >= 4:
+            break
+        result.append(tw)
+        
+    return "-".join(result)
 
 def capitalize_keyword(kw):
     if not kw:

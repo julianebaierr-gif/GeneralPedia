@@ -8,7 +8,7 @@
   <meta name="description" content="Explore practical DIY advice, IRS tax updates, car reviews, wellness insights, and interactive calculation tools made for everyday living.">
   <meta name="keywords" content="generalpedia, personal finance, tax rules, vehicle reviews, home improvement, wellness advice, reference calculators">
   <meta name="author" content="GeneralPedia Editorial Staff">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   <link rel="canonical" href="https://www.generalpedia.com/">
 
   <!-- Open Graph -->
@@ -34,19 +34,38 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "NewsMediaOrganization",
-    "name": "GeneralPedia",
-    "alternateName": "GeneralPedia.com",
-    "url": "https://www.generalpedia.com",
-    "description": "Premier Digital Knowledge Magazine & Fact-Checked Encyclopedia",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": {
-        "@type": "EntryPoint",
-        "urlTemplate": "https://www.generalpedia.com/?q={search_term_string}"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.generalpedia.com/#organization",
+        "name": "GeneralPedia",
+        "alternateName": "GeneralPedia.com",
+        "url": "https://www.generalpedia.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.generalpedia.com/favicon.png",
+          "caption": "GeneralPedia Logo"
+        },
+        "description": "Premier Digital Knowledge Magazine & Fact-Checked Encyclopedia"
       },
-      "query-input": "required name=search_term_string"
-    }
+      {
+        "@type": "WebSite",
+        "@id": "https://www.generalpedia.com/#website",
+        "url": "https://www.generalpedia.com",
+        "name": "GeneralPedia",
+        "publisher": {
+          "@id": "https://www.generalpedia.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.generalpedia.com/?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
   }
   </script>
   <!-- External Stylesheet (Minified) -->
@@ -187,7 +206,7 @@
           <a href="/skin-cancer-on-face-common-causes-home" class="hero-main-card" style="background-image: url('https://images.unsplash.com/photo-1770653927355-2ba81c1522df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8ZGVybWF0b2xvZ2lzdCUyMGV4YW1pbmluZyUyMGElMjBwYXRpZW50JTIwc2tpbiUyMHVzaW5nJTIwYSUyMGRlcm1hdG9zY29wZSUyMGluJTIwYSUyMGJyaWdodCUyMG1lZGljYWwlMjBjbGluaWN8ZW58MHwwfHx8MTc5MDI1MjAwOHww&ixlib=rb-4.1.0&q=80&w=1080');">
             <div class="hero-card-content">
               <span class="category-badge">Health & Wellness</span>
-              <div class="hero-main-title">Skin Cancer On Face: Common Causes, Home Remedies & Care</div>
+              <div class="hero-main-title">Skin Cancer on Face: Early Warning Signs, Causes & Clinical Care</div>
               <div class="hero-meta">
                 <span>By Elena Torres</span> • <span>September 24, 2026</span> • <span>6 min read</span>
               </div>
@@ -254,10 +273,10 @@
           <!-- 2-Column Article Card Feed -->
           <div class="mag-feed-grid" id="articles-feed">
             <a href="/skin-cancer-on-face-common-causes-home" class="mag-article-card">
-              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1770653927355-2ba81c1522df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8ZGVybWF0b2xvZ2lzdCUyMGV4YW1pbmluZyUyMGElMjBwYXRpZW50JTIwc2tpbiUyMHVzaW5nJTIwYSUyMGRlcm1hdG9zY29wZSUyMGluJTIwYSUyMGJyaWdodCUyMG1lZGljYWwlMjBjbGluaWN8ZW58MHwwfHx8MTc5MDI1MjAwOHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Skin Cancer On Face: Common Causes, Home Remedies & Care" width="600" height="338" loading="lazy"></div>
+              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1770653927355-2ba81c1522df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8ZGVybWF0b2xvZ2lzdCUyMGV4YW1pbmluZyUyMGElMjBwYXRpZW50JTIwc2tpbiUyMHVzaW5nJTIwYSUyMGRlcm1hdG9zY29wZSUyMGluJTIwYSUyMGJyaWdodCUyMG1lZGljYWwlMjBjbGluaWN8ZW58MHwwfHx8MTc5MDI1MjAwOHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Skin Cancer on Face: Early Warning Signs, Causes & Clinical Care" width="600" height="338" loading="lazy"></div>
               <div class="mag-card-body">
-                <div class="mag-card-title">Skin Cancer On Face: Common Causes, Home Remedies & Care</div>
-                <p class="mag-card-excerpt">An editorial reference on Skin Cancer On Face, breaking down essential background context, clear explanations, and common questions.</p>
+                <div class="mag-card-title">Skin Cancer on Face: Early Warning Signs, Causes & Clinical Care</div>
+                <p class="mag-card-excerpt">Recognize early warning signs of facial skin cancer, understand UV risks, and review dermatologist-recommended diagnostic evaluations and care.</p>
               </div>
             </a>
 
@@ -310,10 +329,10 @@
             </a>
 
             <a href="/fatty-liver-disease-common-causes-home-remedies" class="mag-article-card">
-              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1758691462493-120a069304e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8ZG9jdG9yJTIwZXhwbGFpbmluZyUyMGxpdmVyJTIwc2NhbiUyMHJlc3VsdHMlMjB0byUyMHBhdGllbnQlMjBpbiUyMG1lZGljYWwlMjBjbGluaWN8ZW58MHwwfHx8MTc4OTk0OTcxM3ww&ixlib=rb-4.1.0&q=80&w=1080" alt="Fatty Liver Disease: Common Causes, Home Remedies & Care" width="600" height="338" loading="lazy"></div>
+              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1758691462493-120a069304e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8ZG9jdG9yJTIwZXhwbGFpbmluZyUyMGxpdmVyJTIwc2NhbiUyMHJlc3VsdHMlMjB0byUyMHBhdGllbnQlMjBpbiUyMG1lZGljYWwlMjBjbGluaWN8ZW58MHwwfHx8MTc4OTk0OTcxM3ww&ixlib=rb-4.1.0&q=80&w=1080" alt="Fatty Liver Disease: Primary Causes, Lifestyle Management & Care" width="600" height="338" loading="lazy"></div>
               <div class="mag-card-body">
-                <div class="mag-card-title">Fatty Liver Disease: Common Causes, Home Remedies & Care</div>
-                <p class="mag-card-excerpt">An editorial reference on Fatty Liver Disease, breaking down essential background context, clear explanations, and common questions.</p>
+                <div class="mag-card-title">Fatty Liver Disease: Primary Causes, Lifestyle Management & Care</div>
+                <p class="mag-card-excerpt">Learn about fatty liver disease causes, metabolic risk factors, evidence-based nutrition protocols, and physician-guided liver care.</p>
               </div>
             </a>
 
@@ -366,10 +385,10 @@
             </a>
 
             <a href="/how-to-stop-snoring-what-do-common" class="mag-article-card">
-              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1766431066492-9bec8410a57b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8Y3BhcCUyMG1hc2slMjBtYWNoaW5lJTIwcmVzdGluZyUyMG9uJTIwd29vZGVuJTIwbmlnaHRzdGFuZCUyMGJlc2lkZSUyMGNvenklMjBiZWR8ZW58MHwwfHx8MTc4OTc3NjUzMHww&ixlib=rb-4.1.0&q=80&w=1080" alt="How To Stop Snoring: What to Do, Common Signs & Relief" width="600" height="338" loading="lazy"></div>
+              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1766431066492-9bec8410a57b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8Y3BhcCUyMG1hc2slMjBtYWNoaW5lJTIwcmVzdGluZyUyMG9uJTIwd29vZGVuJTIwbmlnaHRzdGFuZCUyMGJlc2lkZSUyMGNvenklMjBiZWR8ZW58MHwwfHx8MTc4OTc3NjUzMHww&ixlib=rb-4.1.0&q=80&w=1080" alt="How to Stop Snoring: Practical Techniques, Causes & Doctor Advice" width="600" height="338" loading="lazy"></div>
               <div class="mag-card-body">
-                <div class="mag-card-title">How To Stop Snoring: What to Do, Common Signs & Relief</div>
-                <p class="mag-card-excerpt">Simple step-by-step instructions for How To Stop Snoring, including required supplies, safety tips, and common mistakes to avoid.</p>
+                <div class="mag-card-title">How to Stop Snoring: Practical Techniques, Causes & Doctor Advice</div>
+                <p class="mag-card-excerpt">Explore practical steps to reduce nighttime snoring, understand airway anatomy, and learn when snoring signals obstructive sleep apnea.</p>
               </div>
             </a>
 
@@ -422,10 +441,10 @@
             </a>
 
             <a href="/ast-blood-test-main-causes-diagnosis-recovery" class="mag-article-card">
-              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1614935151651-0bea6508db6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8bWVkaWNhbCUyMGxhYm9yYXRvcnklMjB0ZWNobmljaWFuJTIwYW5hbHl6aW5nJTIwYmxvb2QlMjBzYW1wbGVzJTIwaW4lMjB0ZXN0JTIwdHViZXN8ZW58MHwwfHx8MTc4OTYyNTMyNnww&ixlib=rb-4.1.0&q=80&w=1080" alt="Ast Blood Test: Main Causes, Diagnosis & Recovery Steps" width="600" height="338" loading="lazy"></div>
+              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1614935151651-0bea6508db6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8bWVkaWNhbCUyMGxhYm9yYXRvcnklMjB0ZWNobmljaWFuJTIwYW5hbHl6aW5nJTIwYmxvb2QlMjBzYW1wbGVzJTIwaW4lMjB0ZXN0JTIwdHViZXN8ZW58MHwwfHx8MTc4OTYyNTMyNnww&ixlib=rb-4.1.0&q=80&w=1080" alt="AST Blood Test: Normal Ranges, Elevated Causes & Health Steps" width="600" height="338" loading="lazy"></div>
               <div class="mag-card-body">
-                <div class="mag-card-title">Ast Blood Test: Main Causes, Diagnosis & Recovery Steps</div>
-                <p class="mag-card-excerpt">Understand normal AST blood test ranges, what elevated enzyme levels suggest about liver health, and doctor-recommended recovery steps.</p>
+                <div class="mag-card-title">AST Blood Test: Normal Ranges, Elevated Causes & Health Steps</div>
+                <p class="mag-card-excerpt">Understand normal AST blood test ranges, what elevated enzyme levels indicate about liver function, and doctor-recommended diagnostic steps.</p>
               </div>
             </a>
 
@@ -478,10 +497,10 @@
             </a>
 
             <a href="/thrush-in-mouth-common-causes-home-remedies" class="mag-article-card">
-              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1669142742575-feed7bff9f9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8Y2xvc2UlMjB1cCUyMG9mJTIwZG9jdG9yJTIwZXhhbWluaW5nJTIwcGF0aWVudCUyMG9wZW4lMjBtb3V0aCUyMHdpdGglMjB0b25ndWUlMjBkZXByZXNzb3J8ZW58MHwwfHx8MTc4OTUxNzAzOHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Thrush In Mouth: Common Causes, Home Remedies & Care" width="600" height="338" loading="lazy"></div>
+              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1669142742575-feed7bff9f9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8Y2xvc2UlMjB1cCUyMG9mJTIwZG9jdG9yJTIwZXhhbWluaW5nJTIwcGF0aWVudCUyMG9wZW4lMjBtb3V0aCUyMHdpdGglMjB0b25ndWUlMjBkZXByZXNzb3J8ZW58MHwwfHx8MTc4OTUxNzAzOHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Oral Thrush: Common Triggers, Soothing Care & Clinical Options" width="600" height="338" loading="lazy"></div>
               <div class="mag-card-body">
-                <div class="mag-card-title">Thrush In Mouth: Common Causes, Home Remedies & Care</div>
-                <p class="mag-card-excerpt">What causes white patches in your mouth? See how to spot oral thrush early and soothe fungal infections with effective home care.</p>
+                <div class="mag-card-title">Oral Thrush: Common Triggers, Soothing Care & Clinical Options</div>
+                <p class="mag-card-excerpt">Learn what triggers oral thrush fungal infections, recognize key symptoms, and explore doctor-recommended antifungal care and oral hygiene.</p>
               </div>
             </a>
 
@@ -534,10 +553,10 @@
             </a>
 
             <a href="/sinus-infection-symptoms-main-causes-diagnosis-recovery" class="mag-article-card">
-              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1529386317747-0a2a51add902?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8c2ludXMlMjBpbmZlY3Rpb24lMjBzeW1wdG9tc3xlbnwwfDB8fHwxNzg5NDg0ODExfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Sinus Infection Symptoms: Main Causes, Diagnosis & Recovery Steps" width="600" height="338" loading="lazy"></div>
+              <div class="mag-card-thumb"><img src="https://images.unsplash.com/photo-1529386317747-0a2a51add902?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDY2MTU3fDB8MXxzZWFyY2h8MXx8c2ludXMlMjBpbmZlY3Rpb24lMjBzeW1wdG9tc3xlbnwwfDB8fHwxNzg5NDg0ODExfDA&ixlib=rb-4.1.0&q=80&w=1080" alt="Sinus Infection Symptoms: Causes, Recovery Timelines & Relief" width="600" height="338" loading="lazy"></div>
               <div class="mag-card-body">
-                <div class="mag-card-title">Sinus Infection Symptoms: Main Causes, Diagnosis & Recovery Steps</div>
-                <p class="mag-card-excerpt">Recognize early signs of a sinus infection, from facial pressure to congestion, plus doctor-approved home remedies that ease recovery.</p>
+                <div class="mag-card-title">Sinus Infection Symptoms: Causes, Recovery Timelines & Relief</div>
+                <p class="mag-card-excerpt">Identify common sinus infection symptoms, evaluate viral vs. bacterial causes, and follow physician-approved soothing routines and recovery care.</p>
               </div>
             </a>
 
@@ -580,7 +599,7 @@
               <a href="/skin-cancer-on-face-common-causes-home" class="popular-item">
                 <div class="popular-num">01</div>
                 <div class="popular-content">
-                  <div class="popular-title">Skin Cancer On Face: Common Causes, Home Remedies & Care</div>
+                  <div class="popular-title">Skin Cancer on Face: Early Warning Signs, Causes & Clinical Care</div>
                   <span>September 24, 2026 • Health & Wellness</span>
                 </div>
               </a>

@@ -1,8 +1,13 @@
 User-agent: *
 Allow: /
 
+# Prevent crawl traps and conserve search engine crawl budget
+Disallow: /*?*
+Disallow: /*?s=
+Disallow: /*?q=
+
 # Sitemaps
-Sitemap: https://generalpedia.com/sitemap.xml
+Sitemap: https://www.generalpedia.com/sitemap.xml
 
 # LLM Crawler Access
 Allow: /llms.txt

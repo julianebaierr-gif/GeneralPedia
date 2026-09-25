@@ -40,7 +40,6 @@ jobs:
         run: |
           python auto_publisher.py
           python rebuild_full_theme.py
-          python google_indexing.py
 
       - name: Commit and Push New Posts and Site
         run: |

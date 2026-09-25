@@ -2174,3 +2174,53 @@
       color: var(--text-muted) !important;
       line-height: 1.6 !important;
     }
+
+    /* ==================== TABLE OF CONTENTS (JUMP-TO MINI SITELINKS) ==================== */
+    .gp-toc-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      margin: 24px 0 32px 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .gp-toc-header {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .gp-toc-header svg {
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+    .gp-toc-list {
+      margin: 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .gp-toc-list li {
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .gp-toc-list a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s, transform 0.15s;
+      display: inline-block;
+    }
+    .gp-toc-list a:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
