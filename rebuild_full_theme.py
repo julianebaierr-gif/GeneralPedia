@@ -46,13 +46,17 @@ def process_article_content_for_toc(content_html: str, post_url: str) -> str:
     if not content_html:
         return content_html
 
-    # If article has <= 1 <h2> but multiple <h3>, promote <h3> to <h2> for semantic consistency
-    h2_count = len(re.findall(r'<h2[^>]*>', content_html, re.IGNORECASE))
+    # 1. Ensure any interactive tool title is a div, never h1/h2 (prevents polluting Table of Contents)
+    content_html = re.sub(r'<h[1-6]\b([^>]*class="[^"]*gp-tool-title[^"]*"[^>]*)>', r'<div\1>', content_html, flags=re.IGNORECASE)
+    content_html = re.sub(r'</h[1-6]>(\s*<span class="gp-tool-badge")', r'</div>\1', content_html, flags=re.IGNORECASE)
+    content_html = re.sub(r'<h[1-6] class="gp-tool-title">(.*?)</h[1-6]>', r'<div class="gp-tool-title">\1</div>', content_html, flags=re.IGNORECASE)
+
+    # 2. Promote content <h3> to <h2> when article uses <h3> for main sections
     h3_count = len(re.findall(r'<h3[^>]*>', content_html, re.IGNORECASE))
-    if h2_count <= 1 and h3_count >= 2:
+    if h3_count >= 2:
         content_html = re.sub(r'<h3([^>]*)>(.*?)</h3>', r'<h2\1>\2</h2>', content_html, flags=re.IGNORECASE | re.DOTALL)
 
-    # Match all <h2>...</h2> tags
+    # 3. Match all <h2>...</h2> tags
     h2_pattern = re.compile(r'<h2([^>]*)>(.*?)</h2>', re.IGNORECASE | re.DOTALL)
     
     headings = []
@@ -62,7 +66,7 @@ def process_article_content_for_toc(content_html: str, post_url: str) -> str:
         attrs = m.group(1)
         inner = m.group(2)
         inner_text = re.sub(r'<[^>]+>', '', inner).strip()
-        if not inner_text:
+        if not inner_text or 'gp-tool-title' in attrs:
             continue
         
         id_m = re.search(r'id=["\']([^"\']+)["\']', attrs)

@@ -55,7 +55,7 @@ Create a modern, fully functional, 100% client-side interactive tool for the exa
 REQUIREMENTS:
 1. Wrap everything inside: <div class="gp-interactive-tool-box" id="gp-custom-tool"> ... </div>
 2. Include:
-   - Header with clear title and <span class="gp-tool-badge">Interactive Tool</span>
+   - Header with clear title inside <div class="gp-tool-title">...</div> (NEVER use h1 or h2, always use a div tag) and <span class="gp-tool-badge">Interactive Tool</span>
    - Input fields specifically for "{primary_kw}" (with correct labels, default values, min/max, steps)
    - Real-time or on-click calculation button: <button type="button" class="gp-tool-btn" onclick="runToolCalc()">Calculate</button>
    - Results dashboard showing specific output values (e.g. converted amounts, calculated formulas, summary breakdowns)
@@ -112,6 +112,11 @@ REQUIREMENTS:
                 clean_html = re.sub(r'^```html\s*', '', raw_html, flags=re.IGNORECASE)
                 clean_html = re.sub(r'^```\s*', '', clean_html)
                 clean_html = re.sub(r'```$', '', clean_html).strip()
+
+                # Ensure tool title is never h1 or h2 (prevents polluting article Table of Contents)
+                clean_html = re.sub(r'<h[1-6]\b([^>]*class="[^"]*gp-tool-title[^"]*"[^>]*)>', r'<div\1>', clean_html, flags=re.IGNORECASE)
+                clean_html = re.sub(r'</h[1-6]>(\s*<span class="gp-tool-badge")', r'</div>\1', clean_html, flags=re.IGNORECASE)
+                clean_html = re.sub(r'<h[1-6] class="gp-tool-title">(.*?)</h[1-6]>', r'<div class="gp-tool-title">\1</div>', clean_html, flags=re.IGNORECASE)
 
                 if '<div class="gp-interactive-tool-box"' in clean_html and '<script>' in clean_html and '</script>' in clean_html and '</div>' in clean_html:
                     print(f"[Tool Generator] Successfully generated 100% custom AI interactive tool for '{primary_kw}' using {model_name}")
