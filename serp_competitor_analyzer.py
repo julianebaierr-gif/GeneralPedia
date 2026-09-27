@@ -8,12 +8,12 @@ from env_loader import get_secret
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
 
 FALLBACK_MODELS = [
-    "gemini-3.6-flash",
+    "gemini-3.8-flash",
     "gemini-3.7-flash",
+    "gemini-3.6-flash",
     "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
-    "gemini-flash-latest",
-    "gemini-2.5-flash"
+    "gemini-flash-latest"
 ]
 
 def fetch_top_competitors(keyword, max_results=8):

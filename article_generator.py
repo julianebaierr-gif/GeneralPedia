@@ -3,6 +3,7 @@ import re
 import json
 import urllib.request
 from datetime import datetime
+import requests
 
 try:
     from config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
@@ -21,15 +22,12 @@ from env_loader import get_secret
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
 
 FALLBACK_MODELS = [
-    "gemini-3.6-flash",
-    "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
     "gemini-3.8-flash",
     "gemini-3.7-flash",
-    "gemini-3.1-flash-lite",
-    "gemini-flash-lite-latest",
-    "gemini-flash-latest",
-    "gemini-2.5-flash"
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-flash-latest"
 ]
 
 def slugify(text):
@@ -799,39 +797,37 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
         try:
             print(f"[Gemini AI] Trying model: {model_name}...")
-            req = urllib.request.Request(
-                url,
-                data=json.dumps(payload).encode('utf-8'),
-                headers={'Content-Type': 'application/json', 'User-Agent': 'GeneralPedia-AI/1.0'}
-            )
-            with urllib.request.urlopen(req, timeout=45) as resp:
-                data = json.loads(resp.read().decode('utf-8'))
-                candidate = data.get('candidates', [{}])[0]
-                finish_reason = candidate.get('finishReason', '')
+            resp = requests.post(url, json=payload, headers={'User-Agent': 'GeneralPedia-AI/1.0'}, timeout=50)
+            if resp.status_code != 200:
+                print(f"[Gemini AI Notice] Model {model_name} returned status {resp.status_code}. Trying next fallback...")
+                continue
+            data = resp.json()
+            candidate = data.get('candidates', [{}])[0]
+            finish_reason = candidate.get('finishReason', '')
+            
+            parts = candidate.get('content', {}).get('parts', [])
+            if not parts:
+                continue
                 
-                parts = candidate.get('content', {}).get('parts', [])
-                if not parts:
-                    continue
-                    
-                raw_text = parts[0].get('text', '').strip()
-                if not raw_text or len(raw_text.split()) < 650:
-                    print(f"[Gemini AI] Model {model_name} generated too few words ({len(raw_text.split()) if raw_text else 0}), trying next...")
-                    continue
+            raw_text = parts[0].get('text', '').strip()
+            if not raw_text or len(raw_text.split()) < 650:
+                print(f"[Gemini AI] Model {model_name} generated too few words ({len(raw_text.split()) if raw_text else 0}), trying next...")
+                continue
 
-                clean_html = re.sub(r'^```html\s*', '', raw_text)
-                clean_html = re.sub(r'```$', '', clean_html).strip()
+            clean_html = re.sub(r'^```html\s*', '', raw_text)
+            clean_html = re.sub(r'```$', '', clean_html).strip()
 
-                # Ensure article ends cleanly with </details> or </p>
-                if not (clean_html.endswith('</details>') or clean_html.endswith('</p>') or clean_html.endswith('</div>')):
-                    print(f"[Gemini AI] Model {model_name} cut off prematurely, trying next fallback...")
-                    continue
+            # Ensure article ends cleanly with </details> or </p>
+            if not (clean_html.endswith('</details>') or clean_html.endswith('</p>') or clean_html.endswith('</div>')):
+                print(f"[Gemini AI] Model {model_name} cut off prematurely, trying next fallback...")
+                continue
 
-                # Sanitize any accidental AI buzzwords or em-dashes
-                clean_html = sanitize_ai_words(clean_html)
+            # Sanitize any accidental AI buzzwords or em-dashes
+            clean_html = sanitize_ai_words(clean_html)
 
-                word_count = len(clean_html.split())
-                print(f"[Gemini AI Success] Model: {model_name} generated complete article ({word_count} words, finish: {finish_reason})")
-                return clean_html
+            word_count = len(clean_html.split())
+            print(f"[Gemini AI Success] Model: {model_name} generated complete article ({word_count} words, finish: {finish_reason})")
+            return clean_html
         except Exception as e:
             print(f"[Gemini AI Warning] Model {model_name} failed: {e}. Trying next fallback...")
             continue
@@ -839,12 +835,12 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
     print("[Gemini AI Error] All model fallbacks failed.")
     return None
 
-def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
-    slug = slugify(primary_kw)
+def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_slug=None, custom_title=None, preserve_date=None, preserve_display_date=None, preserve_featured_image=None):
+    slug = custom_slug if custom_slug else slugify(primary_kw)
     capital_kw = capitalize_keyword(primary_kw)
     post_url = f"https://www.generalpedia.com/{slug}"
-    post_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    display_date = datetime.now().strftime("%B %d, %Y")
+    post_date_time = preserve_date if preserve_date else datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    display_date = preserve_display_date if preserve_display_date else datetime.now().strftime("%B %d, %Y")
     
     # 1. Run live SERP Competitor Analysis, 50+ LSI Extraction & Content Gap Discovery
     try:
@@ -860,8 +856,13 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     cat_info = CATEGORIES[cat_slug]
     
     # Topic-tailored, authentic human SEO title and exact 155-158 char meta description
-    title = generate_topic_specific_seo_title(primary_kw, cat_slug, all_semantic_kws)
-    slug = slugify_with_seo_title(primary_kw, title)
+    if custom_title:
+        title = custom_title
+    else:
+        title = generate_topic_specific_seo_title(primary_kw, cat_slug, all_semantic_kws)
+
+    if not custom_slug:
+        slug = slugify_with_seo_title(primary_kw, title)
     post_url = f"https://www.generalpedia.com/{slug}"
     meta_desc = generate_exact_seo_meta_description(primary_kw, cat_slug, min_len=155, max_len=158)
     tags = generate_tags(primary_kw, all_semantic_kws, cat_slug)
@@ -881,21 +882,32 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
     faqs = extract_faqs_from_html(body_content)
     faq_schema = build_faq_schema_json(faqs)
     
-    # 4. Fetch unique contextual featured image via Unsplash API by ID using enriched visual queries
-    img_info = fetch_unique_unsplash_image(query=visual_queries, fallback_terms=[primary_kw, cat_info["name"]])
-    featured_img_url = ""
-    image_id = ""
-    
-    if img_info:
-        image_id = img_info["id"]
-        featured_img_url = img_info["url"]
-        alt_text = f"{capital_kw} - {img_info['alt'] or 'Editorial Reference'}"
+    # 4. Handle contextual featured image
+    if preserve_featured_image:
+        featured_img_url = preserve_featured_image
+        image_id = ""
+        alt_text = f"{capital_kw} - Editorial Reference"
         img_html = f"""
         <figure style="margin: 24px 0;">
-            <img src="{img_info['url']}" alt="{alt_text}" width="1200" height="675" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
+            <img src="{featured_img_url}" alt="{alt_text}" width="1200" height="675" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
         </figure>
         """
         body_content = img_html + body_content
+    else:
+        img_info = fetch_unique_unsplash_image(query=visual_queries, fallback_terms=[primary_kw, cat_info["name"]])
+        featured_img_url = ""
+        image_id = ""
+        
+        if img_info:
+            image_id = img_info["id"]
+            featured_img_url = img_info["url"]
+            alt_text = f"{capital_kw} - {img_info['alt'] or 'Editorial Reference'}"
+            img_html = f"""
+            <figure style="margin: 24px 0;">
+                <img src="{img_info['url']}" alt="{alt_text}" width="1200" height="675" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
+            </figure>
+            """
+            body_content = img_html + body_content
 
     # 5. Fetch unique mid-content image strictly relative to keyword/subtopics and not used anywhere else
     mid_queries = [
@@ -949,6 +961,43 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
             else:
                 body_content = tool_widget + body_content
 
+    # 6.5. YMYL Medical Disclaimer & Clinical Citations for Health Articles
+    if cat_slug == "health":
+        if "gp-medical-disclaimer" not in body_content:
+            top_disclaimer = """
+<div class="gp-medical-disclaimer" style="margin: 20px 0 28px 0; padding: 16px 20px; background: #fff1f2; border-left: 4px solid #e11d48; border-radius: 8px; font-size: 0.92rem; line-height: 1.6; color: #881337;">
+  <div style="font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; color: #9f1239;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+    <span>Clinical Information &amp; Medical Disclaimer</span>
+  </div>
+  <p style="margin: 0;">This reference guide is compiled for educational and general informational purposes only and does not substitute for qualified clinical judgment, personalized medical evaluation, diagnosis, or treatment. Always consult a board-certified physician or specialized healthcare provider before initiating, changing, or discontinuing any health regimen.</p>
+</div>
+"""
+            # Insert top disclaimer after first figure if exists, else at start
+            fig_match = re.search(r'</figure>', body_content, re.IGNORECASE)
+            if fig_match:
+                insert_pos = fig_match.end()
+                body_content = body_content[:insert_pos] + "\n" + top_disclaimer + body_content[insert_pos:]
+            else:
+                body_content = top_disclaimer + "\n" + body_content
+
+            bottom_citations = """
+<div class="gp-medical-disclaimer" style="margin: 32px 0 20px 0; padding: 16px 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; font-size: 0.90rem; line-height: 1.6; color: #334155;">
+  <div style="font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; color: #0369a1;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+    <span>Medical Fact-Checking &amp; Primary Authorities</span>
+  </div>
+  <p style="margin: 0;">Content reviewed against authoritative clinical data from the <a href="https://www.cdc.gov" target="_blank" rel="noopener noreferrer" style="color: #0284c7; text-decoration: underline;">Centers for Disease Control and Prevention (CDC)</a>, the <a href="https://www.nih.gov" target="_blank" rel="noopener noreferrer" style="color: #0284c7; text-decoration: underline;">National Institutes of Health (NIH)</a>, and peer-reviewed journals indexed in <a href="https://pubmed.ncbi.nlm.nih.gov" target="_blank" rel="noopener noreferrer" style="color: #0284c7; text-decoration: underline;">PubMed</a>.</p>
+</div>
+<div class="gp-clinical-citations" style="margin: 20px 0; padding: 14px 18px; background: #f1f5f9; border-radius: 6px; font-size: 0.88rem; color: #475569;"><strong>Verified Clinical Sources &amp; Further Reading:</strong><ul style="margin: 8px 0 0 18px; padding: 0;"><li><a href="https://www.cdc.gov" target="_blank" rel="noopener noreferrer" style="color: #0f766e; text-decoration: underline;">CDC Guidelines on Sleep &amp; Clinical Health</a></li><li><a href="https://pubmed.ncbi.nlm.nih.gov" target="_blank" rel="noopener noreferrer" style="color: #0f766e; text-decoration: underline;">PubMed Clinical Studies &amp; Systematic Reviews</a></li></ul></div>
+"""
+            last_details = list(re.finditer(r'</details>', body_content, re.IGNORECASE))
+            if last_details:
+                idx = last_details[-1].end()
+                body_content = body_content[:idx] + "\n" + bottom_citations + body_content[idx:]
+            else:
+                body_content = body_content + "\n" + bottom_citations
+
     # 7. Naturally inject contextual in-text internal links & Related Guides box
     try:
         body_content = inject_natural_internal_links(body_content, slug, cat_slug)
@@ -978,6 +1027,8 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0):
         "faqs": faqs,
         "faq_schema": faq_schema,
         "content_html": body_content,
+        "serp_competitors": competitor_intel.get("competitor_results", []) if competitor_intel else [],
+        "content_gaps": competitor_intel.get("content_gaps", []) if competitor_intel else [],
         "author_name": AUTHORS.get(cat_slug, {}).get("name", "Editorial Staff"),
         "author_avatar": AUTHORS.get(cat_slug, {}).get("avatar", ""),
         "author_bio": AUTHORS.get(cat_slug, {}).get("bio", ""),
