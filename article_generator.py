@@ -4,6 +4,7 @@ import json
 import urllib.request
 from datetime import datetime
 import requests
+import time
 
 try:
     from config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
@@ -22,10 +23,10 @@ from env_loader import get_secret
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
 
 FALLBACK_MODELS = [
-    "gemini-3.5-flash-lite",
-    "gemini-3.8-flash",
     "gemini-3.7-flash",
+    "gemini-3.8-flash",
     "gemini-3.6-flash",
+    "gemini-3.5-flash-lite",
     "gemini-3.5-flash",
     "gemini-flash-latest"
 ]
@@ -792,45 +793,50 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
             }
         }
     }
-    
+
     for model_name in FALLBACK_MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
-        try:
-            print(f"[Gemini AI] Trying model: {model_name}...")
-            resp = requests.post(url, json=payload, headers={'User-Agent': 'GeneralPedia-AI/1.0'}, timeout=50)
-            if resp.status_code != 200:
-                print(f"[Gemini AI Notice] Model {model_name} returned status {resp.status_code}. Trying next fallback...")
-                continue
-            data = resp.json()
-            candidate = data.get('candidates', [{}])[0]
-            finish_reason = candidate.get('finishReason', '')
-            
-            parts = candidate.get('content', {}).get('parts', [])
-            if not parts:
-                continue
+        for attempt in range(2):
+            try:
+                print(f"[Gemini AI] Trying model: {model_name} (attempt {attempt+1})...")
+                resp = requests.post(url, json=payload, headers={'User-Agent': 'GeneralPedia-AI/1.0'}, timeout=50)
+                if resp.status_code == 503 and attempt == 0:
+                    print(f"[Gemini AI Notice] Model {model_name} temporary 503 spike. Retrying in 2.5s...")
+                    time.sleep(2.5)
+                    continue
+                if resp.status_code != 200:
+                    print(f"[Gemini AI Notice] Model {model_name} returned status {resp.status_code}. Trying next fallback...")
+                    break
+                data = resp.json()
+                candidate = data.get('candidates', [{}])[0]
+                finish_reason = candidate.get('finishReason', '')
                 
-            raw_text = parts[0].get('text', '').strip()
-            if not raw_text or len(raw_text.split()) < 650:
-                print(f"[Gemini AI] Model {model_name} generated too few words ({len(raw_text.split()) if raw_text else 0}), trying next...")
-                continue
+                parts = candidate.get('content', {}).get('parts', [])
+                if not parts:
+                    break
+                    
+                raw_text = parts[0].get('text', '').strip()
+                if not raw_text or len(raw_text.split()) < 650:
+                    print(f"[Gemini AI] Model {model_name} generated too few words ({len(raw_text.split()) if raw_text else 0}), trying next...")
+                    break
 
-            clean_html = re.sub(r'^```html\s*', '', raw_text)
-            clean_html = re.sub(r'```$', '', clean_html).strip()
+                clean_html = re.sub(r'^```html\s*', '', raw_text)
+                clean_html = re.sub(r'```$', '', clean_html).strip()
 
-            # Ensure article ends cleanly with </details> or </p>
-            if not (clean_html.endswith('</details>') or clean_html.endswith('</p>') or clean_html.endswith('</div>')):
-                print(f"[Gemini AI] Model {model_name} cut off prematurely, trying next fallback...")
-                continue
+                # Ensure article ends cleanly with </details> or </p>
+                if not (clean_html.endswith('</details>') or clean_html.endswith('</p>') or clean_html.endswith('</div>')):
+                    print(f"[Gemini AI] Model {model_name} cut off prematurely, trying next fallback...")
+                    break
 
-            # Sanitize any accidental AI buzzwords or em-dashes
-            clean_html = sanitize_ai_words(clean_html)
+                # Sanitize any accidental AI buzzwords or em-dashes
+                clean_html = sanitize_ai_words(clean_html)
 
-            word_count = len(clean_html.split())
-            print(f"[Gemini AI Success] Model: {model_name} generated complete article ({word_count} words, finish: {finish_reason})")
-            return clean_html
-        except Exception as e:
-            print(f"[Gemini AI Warning] Model {model_name} failed: {e}. Trying next fallback...")
-            continue
+                word_count = len(clean_html.split())
+                print(f"[Gemini AI Success] Model: {model_name} generated complete article ({word_count} words, finish: {finish_reason})")
+                return clean_html
+            except Exception as e:
+                print(f"[Gemini AI Warning] Model {model_name} failed: {e}. Trying next fallback...")
+                break
             
     print("[Gemini AI Error] All model fallbacks failed.")
     return None
@@ -874,9 +880,8 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_s
     # 2. Fetch complete content via Gemini API cascade with competitor gap domination
     body_content = generate_article_content_via_gemini_api(capital_kw, all_semantic_kws, cat_info["name"], competitor_intel=competitor_intel)
     if not body_content:
-        body_content = f"<p>A detailed briefing on <strong>{capital_kw}</strong> will be available shortly.</p>"
-    else:
-        body_content = format_crisp_paragraphs(body_content)
+        raise RuntimeError(f"ABORT: Gemini API failed to generate substantive content for '{capital_kw}'. No empty stubs allowed!")
+    body_content = format_crisp_paragraphs(body_content)
         
     # 3. Extract 5-8 FAQs for Schema markup
     faqs = extract_faqs_from_html(body_content)

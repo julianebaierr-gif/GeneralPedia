@@ -1,6 +1,8 @@
 import os
 import re
 import json
+import time
+import requests
 import urllib.request
 import urllib.parse
 from env_loader import get_secret
@@ -8,11 +10,11 @@ from env_loader import get_secret
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
 
 FALLBACK_MODELS = [
-    "gemini-3.8-flash",
     "gemini-3.7-flash",
+    "gemini-3.8-flash",
     "gemini-3.6-flash",
-    "gemini-3.5-flash",
     "gemini-3.5-flash-lite",
+    "gemini-3.5-flash",
     "gemini-flash-latest"
 ]
 
@@ -266,14 +268,17 @@ Return strictly a valid JSON object with no markdown code fences:
     
     for model_name in FALLBACK_MODELS:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
-        try:
-            req = urllib.request.Request(
-                url,
-                data=json.dumps(payload).encode('utf-8'),
-                headers={'Content-Type': 'application/json', 'User-Agent': 'GeneralPedia-SERP-Analyzer/1.0'}
-            )
-            with urllib.request.urlopen(req, timeout=25) as resp:
-                data = json.loads(resp.read().decode('utf-8'))
+        for attempt in range(2):
+            try:
+                resp = requests.post(url, json=payload, headers={'User-Agent': 'GeneralPedia-SERP-Analyzer/1.0'}, timeout=35)
+                if resp.status_code == 503 and attempt == 0:
+                    print(f"[SERP Analyzer Notice] Model {model_name} temporary 503 spike. Retrying in 2.5s...")
+                    time.sleep(2.5)
+                    continue
+                if resp.status_code != 200:
+                    print(f"[SERP Analyzer Notice] Model {model_name} returned status {resp.status_code}. Trying next fallback...")
+                    break
+                data = resp.json()
                 raw_json = data.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', '').strip()
                 
                 # Strip any accidental code fences
@@ -313,9 +318,9 @@ Return strictly a valid JSON object with no markdown code fences:
                     "semantic_keywords": clean_kws[:65], # 50+ rich keywords
                     "visual_queries": visuals if visuals else [f"{primary_kw} practical guide", f"{primary_kw} details"]
                 }
-        except Exception as e:
-            print(f"[SERP Analyzer Notice] Model {model_name} analysis error: {e}. Trying fallback...")
-            continue
+            except Exception as e:
+                print(f"[SERP Analyzer Notice] Model {model_name} analysis error: {e}. Trying fallback...")
+                break
 
     print("[SERP Analyzer Warning] All Gemini API models failed for competitor analysis. Using heuristic engine.")
     return generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws)
