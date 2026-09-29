@@ -158,6 +158,13 @@ def publish_next_post(target_category=None):
     if word_count < 650:
         raise RuntimeError(f"[Auto-Publisher Aborted] Article '{article.get('title')}' yielded only {word_count} words (minimum 650 required). Refusing to publish stub!")
 
+    # 1.5 Natural Bidirectional Internal Linking (outbound from new article & inbound from existing articles)
+    try:
+        from internal_linker import link_new_article_bidirectionally
+        article = link_new_article_bidirectionally(article, db_posts=posts)
+    except Exception as e:
+        print(f"[Auto-Publisher Warning] Bidirectional internal linking error: {e}")
+
     print(f"[Auto-Publisher] Generated article '{article['title']}' ({word_count} words) with {len(article.get('semantic_keywords', []))} LSI keywords and {len(article.get('faqs', []))} FAQs.")
     
     # 2. Save individual JSON post

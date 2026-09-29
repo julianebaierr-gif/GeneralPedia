@@ -69,6 +69,13 @@ def run_auto_post_from_sheet(count=1):
         
         article = generate_article(primary_kw, semantic_kws, volume=vol, kd=kd, cpc=cpc)
         
+        # Natural Bidirectional Internal Linking (outbound from new article & inbound from existing articles)
+        try:
+            from internal_linker import link_new_article_bidirectionally
+            article = link_new_article_bidirectionally(article, db_posts=posts)
+        except Exception as e:
+            print(f"[Sheet Auto-Poster Warning] Bidirectional internal linking error: {e}")
+            
         # Save individual post JSON
         post_path = os.path.join(POSTS_DIR, f"{slug}.json")
         with open(post_path, 'w', encoding='utf-8') as f:
