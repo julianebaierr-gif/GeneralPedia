@@ -313,6 +313,20 @@ ANCHOR_MAP = [
             r"\bdryer duct\b"
         ]
     },
+    {
+        "id": "how-cook-bacon-oven",
+        "title": "How To Cook Bacon In The Oven: Essential Advice, Methods & Overview",
+        "category": "lifestyle",
+        "patterns": [
+            r"\bhow to cook bacon in the oven\b",
+            r"\bcook bacon in the oven\b",
+            r"\bcooking bacon in the oven\b",
+            r"\boven-baked bacon\b",
+            r"\bbaked bacon in the oven\b",
+            r"\bbaking bacon in the oven\b",
+            r"\boven baked bacon\b"
+        ]
+    },
 
     # Tools / Calculations / Units
     {
@@ -585,7 +599,27 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None, max_link
     updated_content = p_pattern.sub(link_p, clean_content)
 
     # 3. Add 'Recommended Further Reading & Related Guides' strictly BELOW FAQs
-    selected_related = (same_cat_targets + other_cat_targets)[:3]
+    CURATED_RELATED_MAP = {
+        "how-cook-bacon-oven": [
+            "how-to-bake-sourdough-bread-practical-tips",
+            "oz-to-gallon-explanations-practical-facts-overview",
+            "12mm-to-inches-meaning-background-practical-facts"
+        ],
+        "how-to-bake-sourdough-bread-practical-tips": [
+            "how-cook-bacon-oven",
+            "oz-to-gallon-explanations-practical-facts-overview",
+            "dryer-vent-cleaning-what-know-tips-easy"
+        ]
+    }
+
+    curated_ids = CURATED_RELATED_MAP.get(curr_id, [])
+    if curated_ids:
+        curated_targets = [t for t in targets if t["id"] in curated_ids]
+        curated_targets.sort(key=lambda t: curated_ids.index(t["id"]) if t["id"] in curated_ids else 99)
+        remaining = [t for t in (same_cat_targets + other_cat_targets) if t["id"] not in curated_ids]
+        selected_related = (curated_targets + remaining)[:3]
+    else:
+        selected_related = (same_cat_targets + other_cat_targets)[:3]
 
     if selected_related:
         items_html = ""
