@@ -11,13 +11,13 @@ try:
     from image_service import fetch_unique_unsplash_image
     from tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
     from internal_linker import inject_natural_internal_links
-    from serp_competitor_analyzer import analyze_serp_for_keyword
+    from serp_competitor_analyzer import analyze_serp_for_keyword, generate_heuristic_100_plus_lsi
 except ImportError:
     from .config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
     from .image_service import fetch_unique_unsplash_image
     from .tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
     from .internal_linker import inject_natural_internal_links
-    from .serp_competitor_analyzer import analyze_serp_for_keyword
+    from .serp_competitor_analyzer import analyze_serp_for_keyword, generate_heuristic_100_plus_lsi
 from env_loader import get_secret
 
 GEMINI_API_KEY = get_secret("GEMINI_API_KEY")
@@ -159,7 +159,7 @@ def enrich_semantic_and_visual_terms(primary_kw, existing_semantic_kws):
     """
     Intelligently expands semantic/LSI keywords and generates contextual visual search terms.
     Filters out any irrelevant keywords from corrupted cluster lists.
-    Always uses Gemini to produce 6-8 directly relevant, intent-driven LSI terms and 3 precise visual queries.
+    Guarantees 100+ directly relevant, intent-driven LSI terms across diverse intent buckets and 3-4 precise visual queries.
     """
     kw_words = set(re.findall(r'\w+', primary_kw.lower()))
     
@@ -179,28 +179,28 @@ def enrich_semantic_and_visual_terms(primary_kw, existing_semantic_kws):
             cleaned_existing.append(k_clean)
 
     prompt = f"""For the primary informational topic: "{primary_kw}"
-Contextual keywords: {', '.join(cleaned_existing[:8]) if cleaned_existing else 'None'}
+Contextual keywords: {', '.join(cleaned_existing[:10]) if cleaned_existing else 'None'}
 
 Perform two tasks:
-1. Provide 6 to 8 highly relevant, intent-driven LSI/semantic search phrases strictly tied to "{primary_kw}".
-   - Ensure they match real Google search queries (how it works, definitions, causes, solutions, specifications, comparisons, schedules, facts).
-2. Provide 3 concrete, descriptive visual search queries for Unsplash stock photography that represent this exact subject (e.g. real-world objects, settings, equipment, authentic scenery - avoid abstract words or numbers alone).
+1. Provide AT LEAST 100 highly relevant, intent-driven LSI/semantic search phrases strictly tied to "{primary_kw}".
+   - Ensure they match real Google search queries across: definitions, step-by-step procedures, specifications, comparisons, rules, timelines, and common questions.
+2. Provide 3 to 4 concrete, descriptive visual search queries for Unsplash stock photography that represent this exact subject (e.g. real-world objects, settings, authentic scenery - avoid abstract words or numbers alone).
 
 Return strictly a JSON object with no markdown code fences:
-{{"semantic_keywords": ["keyword 1", "keyword 2"], "visual_queries": ["query 1", "query 2"]}}
+{{"semantic_keywords": ["keyword 1", "keyword 2", "...at least 100 distinct keywords..."], "visual_queries": ["query 1", "query 2", "query 3"]}}
 """
     payload = {
         "contents": [{"parts": [{"text": prompt}]}],
         "generationConfig": {
-            "temperature": 0.2,
-            "thinkingConfig": {"thinkingBudget": 200}
+            "temperature": 0.25,
+            "responseMimeType": "application/json"
         }
     }
     
     generated_semantics = []
     visual_queries = []
     
-    for model_name in ["gemini-3.6-flash", "gemini-3.7-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-flash-latest"]:
+    for model_name in ["gemini-3.7-flash", "gemini-3.8-flash", "gemini-3.6-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite", "gemini-flash-latest"]:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={GEMINI_API_KEY}"
         try:
             req = urllib.request.Request(
@@ -208,7 +208,7 @@ Return strictly a JSON object with no markdown code fences:
                 data=json.dumps(payload).encode('utf-8'),
                 headers={'Content-Type': 'application/json', 'User-Agent': 'GeneralPedia-SEO/1.0'}
             )
-            with urllib.request.urlopen(req, timeout=15) as resp:
+            with urllib.request.urlopen(req, timeout=25) as resp:
                 data = json.loads(resp.read().decode('utf-8'))
                 raw = data.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text', '').strip()
                 raw = re.sub(r'^```(json)?\s*', '', raw)
@@ -216,7 +216,7 @@ Return strictly a JSON object with no markdown code fences:
                 parsed = json.loads(raw)
                 generated_semantics = parsed.get("semantic_keywords", [])
                 visual_queries = parsed.get("visual_queries", [])
-                if generated_semantics:
+                if generated_semantics and len(generated_semantics) >= 40:
                     break
         except Exception:
             continue
@@ -231,11 +231,21 @@ Return strictly a JSON object with no markdown code fences:
             seen.add(lower)
             combined_semantics.append(clean)
 
+    # Ensure at least 100 keywords via algorithmic heuristic
+    if len(combined_semantics) < 100:
+        heuristic = generate_heuristic_100_plus_lsi(primary_kw, cleaned_existing)
+        for hk in heuristic["semantic_keywords"]:
+            if hk.lower() not in seen:
+                seen.add(hk.lower())
+                combined_semantics.append(hk)
+                if len(combined_semantics) >= 115:
+                    break
+
     # Fallback visual queries if API failed
     if not visual_queries:
         visual_queries = [primary_kw, f"{primary_kw} guide", "detailed reference"]
 
-    return combined_semantics[:10], visual_queries
+    return combined_semantics[:115], visual_queries
 
 AI_REPLACEMENTS = {
     # 1. Meta Description / Intro Banned Words & Clichés
@@ -594,52 +604,101 @@ def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=120, 
     cap_kw = " ".join(w.capitalize() if not w.isupper() else w for w in words)
     kw_lower = primary_kw.lower()
 
-    if 'area code' in kw_lower:
+    # 1. Biography, Celebrities, Age, Net Worth, People
+    if any(w in kw_lower for w in ['how old is', 'age of', 'net worth', 'who is', 'biography', 'elon musk', 'birthday', 'born in', 'spouse', 'career', 'celebrity']):
         candidates = [
-            f"Looking up {cap_kw}? See California cities covered across central Los Angeles, time zone information, and local dialing rules.",
-            f"Need details on {cap_kw}? View major cities served, regional time zone, overlay codes, and calling rules.",
-            f"Full reference for {cap_kw}: check major cities covered, local time zones, state counties, and phone dialing rules."
+            f"Looking up {cap_kw}? Find verified age, formative background, major career milestones, business leadership, and top reader FAQs.",
+            f"Get verified facts about {cap_kw}, including exact age, career milestones, entrepreneurial achievements, and common public FAQs.",
+            f"Complete profile on {cap_kw}: explore verified age, career timeline, major achievements, business ventures, and key life facts."
         ]
-    elif any(w in kw_lower for w in ['car', 'toyota', 'honda', 'crv', 'camry', 'vehicle', 'used cars', 'truck', 'sedan']):
+    # 2. Automotive & Vehicles (checked before calendar so model years like '2026' don't collide)
+    elif any(w in kw_lower for w in ['car', 'toyota', 'honda', 'crv', 'cr-v', 'camry', 'vehicle', 'used cars', 'truck', 'sedan', 'ford', 'chevy', 'suv', 'porsche', 'corolla', 'accord']) or category_slug == "automotive":
         candidates = [
             f"See how the {cap_kw} performs on the road, with real fuel economy numbers, pricing across all trims, and new cabin technology.",
             f"Thinking about {cap_kw}? Review real road-test specs, trim level comparisons, expected pricing, and ownership costs.",
             f"Detailed breakdown of {cap_kw}: compare trim packages, engine options, fuel economy benchmarks, and reliability ratings."
         ]
+    # 3. Calendar, Events, Holidays, Observances
+    elif any(w in kw_lower for w in ['calendar', 'memorial day', 'holiday', 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december', 'lent', 'olympics', 'observance']):
+        candidates = [
+            f"Plan ahead for {cap_kw} with official observance dates, statutory holiday schedules, historical origins, and traditions.",
+            f"Complete schedule and background for {cap_kw}: official event dates, historical meaning, and national traditions.",
+            f"Review the history and dates behind {cap_kw}, including calendar schedules, significance, and community observances."
+        ]
+    # 3. Culture, Movies, Film, Entertainment, Media
+    elif any(w in kw_lower for w in ['movie', 'film', 'cast', 'wizard of oz', 'actor', 'actress', 'series', 'season', 'soundtrack', 'facts', 'tarot', 'wands']):
+        candidates = [
+            f"Explore {cap_kw} with verified behind-the-scenes history, iconic cast details, cultural impact, production facts, and key questions.",
+            f"Complete guide to {cap_kw}: review iconic cast performances, production background, cultural legacy, and verified trivia facts.",
+            f"Looking into {cap_kw}? Find verified behind-the-scenes facts, cultural significance, famous cast members, and popular FAQs."
+        ]
+    # 4. Cooking, Food, Recipes, Baking
+    elif any(w in kw_lower for w in ['cook', 'bake', 'recipe', 'bacon', 'oven', 'sourdough', 'temperature', 'pan', 'ingredient']):
+        candidates = [
+            f"Master {cap_kw} with verified cooking temperatures, exact timing, equipment tips, and chef-tested techniques for perfect results.",
+            f"Looking to prepare {cap_kw}? Follow our tested timing and temperature guide, pan setup tips, and easy cleanup recommendations.",
+            f"Complete culinary guide to {cap_kw}: learn ideal oven temperatures, step-by-step methods, crispness secrets, and safety tips."
+        ]
+    # 5. Tools, Area codes, Calculators, Converters
+    elif 'area code' in kw_lower:
+        candidates = [
+            f"Looking up {cap_kw}? See California cities covered across central Los Angeles, time zone information, and local dialing rules.",
+            f"Need details on {cap_kw}? View major cities served, regional time zone, overlay codes, and calling rules.",
+            f"Full reference for {cap_kw}: check major cities covered, local time zones, state counties, and phone dialing rules."
+        ]
+    elif any(w in kw_lower for w in ['calculator', 'converter', 'tracker', 'triangle', 'depth chart', 'to ml', 'to gallon', 'to inches']) or category_slug == "tools":
+        candidates = [
+            f"Calculate {cap_kw} accurately with verified geometric formulas, practical calculation steps, worked examples, and online tool tips.",
+            f"Understand {cap_kw} with direct formula explanations, step-by-step mathematical procedures, reference charts, and common FAQs.",
+            f"Practical reference for {cap_kw}: review core formulas, unit conversion benchmarks, calculation rules, and verified FAQs."
+        ]
+    # 5. Automotive
+    elif any(w in kw_lower for w in ['car', 'toyota', 'honda', 'crv', 'camry', 'vehicle', 'used cars', 'truck', 'sedan', 'ford', 'chevy']) or category_slug == "automotive":
+        candidates = [
+            f"See how the {cap_kw} performs on the road, with real fuel economy numbers, pricing across all trims, and new cabin technology.",
+            f"Thinking about {cap_kw}? Review real road-test specs, trim level comparisons, expected pricing, and ownership costs.",
+            f"Detailed breakdown of {cap_kw}: compare trim packages, engine options, fuel economy benchmarks, and reliability ratings."
+        ]
+    # 6. Geography & Travel
     elif 'where is' in kw_lower or 'location' in kw_lower:
         candidates = [
             f"Looking for {cap_kw}? Find exact world map geography, travel highlights, climate conditions, and key visitor facts.",
             f"See where {cap_kw} is located, including global map coordinates, surrounding regions, climate patterns, and travel tips."
         ]
+    # 7. Pets & Animal Care
     elif 'eat' in kw_lower or 'dog' in kw_lower or 'cat' in kw_lower or 'pet' in kw_lower:
         candidates = [
             f"Wondering if {cap_kw}? Find veterinarian-approved portion guidelines, nutritional perks, and safety precautions.",
             f"Is it safe: {cap_kw}? Get veterinarian-approved advice on safe serving sizes, health benefits, and potential digestive risks.",
             f"Important health advice on {cap_kw}: find safe feeding amounts, nutritional value, and signs of digestive upset."
         ]
-    elif any(w in kw_lower for w in ['symptom', 'pain', 'infection', 'causes', 'treatment', 'health', 'test', 'blood']):
+    # 8. Health & Clinical Symptoms
+    elif category_slug == "health" or any(w in kw_lower for w in ['symptom', 'pain', 'infection', 'causes', 'treatment', 'health', 'test', 'blood', 'cancer', 'thrush', 'snoring']):
         candidates = [
             f"Recognize key signs of {cap_kw}, review common triggers, and follow physician-recommended care and recovery steps.",
             f"Understand normal ranges and causes of {cap_kw}, what test results mean, and practical steps recommended by medical experts.",
             f"See practical ways to manage {cap_kw}, identify early warning symptoms, and follow doctor-approved care routines."
         ]
+    # 9. Calendar, Events, Holidays
     elif any(w in kw_lower for w in ['calendar', 'memorial day', 'holiday', 'january', 'february', 'march', '2026', '2025', 'lent', 'olympics']):
         candidates = [
             f"Plan ahead for {cap_kw} with official observance dates, statutory holiday schedules, historical origins, and traditions.",
             f"Complete schedule and background for {cap_kw}: official event dates, historical meaning, and national traditions.",
             f"Review the history and dates behind {cap_kw}, including calendar schedules, significance, and community observances."
         ]
-    elif any(w in kw_lower for w in ['tax', 'ira', '401k', 'loan', 'cost', 'mortgage', 'credit union', 'insurance']):
+    # 10. Finance, Taxes, Insurance, Retirement
+    elif category_slug == "finance" or any(w in kw_lower for w in ['tax', 'ira', '401k', 'loan', 'cost', 'mortgage', 'credit union', 'insurance', 'whole life']):
         candidates = [
             f"Review {cap_kw} rules, updated rate thresholds, account eligibility requirements, and practical financial strategies.",
             f"Understand {cap_kw} guidelines, annual contribution limits, fee structures, and tax-smart planning considerations.",
             f"Detailed financial breakdown of {cap_kw}: examine current rates, policy requirements, and ways to save money."
         ]
-    elif category_slug == "how-to" or any(w in kw_lower for w in ['how to', 'clean', 'repair', 'fix', 'diy']):
+    # 11. Hands-on DIY & Repairs
+    elif any(w in kw_lower for w in ['clean', 'repair', 'fix', 'diy', 'install', 'replace', 'change a tire', 'dryer vent']):
         candidates = [
-            f"Simple step-by-step instructions for {cap_kw}, including required supplies, safety tips, and common mistakes to avoid.",
+            f"Simple step-by-step instructions for {cap_kw}, including required supplies, safety tips, best practices, and common mistakes to avoid.",
             f"See how to handle {cap_kw} with this easy walkthrough, featuring tool checklists, safety advice, and troubleshooting tips.",
-            f"Practical DIY breakdown for {cap_kw}: follow our step-by-step procedures to get the job done safely and efficiently."
+            f"Practical DIY breakdown for {cap_kw}: follow our step-by-step procedures to complete the task safely and efficiently."
         ]
     else:
         candidates = [
@@ -662,16 +721,17 @@ def generate_exact_seo_meta_description(primary_kw, category_slug, min_len=120, 
 
 def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_name, competitor_intel=None):
     """
-    Generates rich, 800-1200 word authoritative SEO article content dynamically via Gemini API.
+    Generates rich, 2,200 to 3,500+ word authoritative SEO article content dynamically via Gemini API.
     Enforces:
     - Deep Google SERP competitor intelligence & outranking strategy
-    - Mandatory closing of identified competitor content gaps
-    - Natural integration of 50+ semantic and LSI keywords
+    - Mandatory closing of all 6-8 identified competitor content gaps
+    - Natural integration of 100+ semantic and LSI keywords
+    - Mandatory Key Takeaways callout box and at least 2 structured HTML tables
     - Google Helpful Content, Spam & Anti-De-Ranking Policies (human-first, high E-E-A-T)
     - 100% human editorial tone: BANS ALL AI CLICHES (Comprehensive, Key Insights, in-depth, delve, etc.)
     - Featured snippet target (40-55 words)
-    - 5 to 8 concise, punchy FAQ questions with direct answers
-    - 100% complete generation
+    - 6 to 8 concise, punchy FAQ questions with direct answers
+    - 100% complete generation with no stubs
     - Fallback cascade through all Gemini versions
     """
     competitor_block = ""
@@ -681,7 +741,7 @@ def generate_article_content_via_gemini_api(primary_kw, semantic_kws, category_n
         comp_list = competitor_intel.get("competitor_results", [])
         
         comp_items_str = ""
-        for c in comp_list[:6]:
+        for c in comp_list[:8]:
             comp_items_str += f"   - Rank {c.get('rank', '?')} ({c.get('domain', 'web')}): {c.get('title', '')} | Focus: {c.get('snippet', '')[:130]}\n"
             
         gaps_str = ""
@@ -694,19 +754,19 @@ TOP 5-8 COMPETITOR SERP INTELLIGENCE & GAP DOMINATION:
 {comp_items_str if comp_items_str else f'   - {comp_summary}'}
 
 2. MANDATORY CONTENT GAPS TO BRIDGE (CRITICAL TO OUTRANK COMPETITORS):
-   Google's top ranking competitors completely missed or under-explained the following areas. You MUST address every single one of these content gaps in your article with verified facts, concrete numbers, and practical steps so GeneralPedia provides vastly superior, complete information:
+   Google's top ranking competitors completely missed or under-explained the following 6-8 areas. You MUST thoroughly address every single one of these content gaps in your article with verified facts, concrete numbers, dedicated sections, and practical steps so GeneralPedia provides vastly superior, complete information:
 {gaps_str}
 """
 
     lsi_str = ", ".join(semantic_kws) if semantic_kws else "None"
     lsi_block = f"""
-EXHAUSTIVE 50+ SEMANTIC & LSI KEYWORDS MATRIX:
-The following 50+ LSI keywords and search variations represent real Google search intent for this topic. Naturally weave relevant terms across headings, tables, and paragraphs without keyword stuffing:
+EXHAUSTIVE 100+ SEMANTIC & LSI KEYWORDS MATRIX:
+The following 100+ LSI keywords and search variations represent real Google search intent for this topic. Naturally weave relevant terms across headings, tables, and paragraphs without keyword stuffing:
 {lsi_str}
 """
 
     prompt = f"""You are a seasoned human investigative journalist, senior editor, and subject-matter specialist writing for GeneralPedia.
-Write an authentic, direct, highly informative reference guide for real everyday readers on:
+Write an authentic, direct, highly informative masterclass reference guide for real everyday readers on:
 Primary Focus Keyword: "{primary_kw}"
 Category Desk: {category_name}
 {competitor_block}
@@ -751,36 +811,52 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
    - Maintain a neutral, professional human tone that immediately demonstrates real-world Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T).
 
 3. Organic Semantic Integration & Diverse Subheadings:
-   - Naturally weave the LSI and semantic keywords throughout headings and body paragraphs without keyword stuffing.
-   - STRICT SUBHEADING RULE: NEVER repeat the full primary keyword in every <h2> tag! Subheadings must be natural, concise, and diverse (e.g., "Game Overview & Summary", "Player Stats & Box Score Breakdown", "Backcourt Matchups", "Key Takeaways", etc.).
+   - Naturally weave the 100+ LSI and semantic keywords throughout headings, tables, and body paragraphs without keyword stuffing.
+   - STRICT SUBHEADING RULE: NEVER repeat the full primary keyword in every <h2> tag! Subheadings must be natural, concise, and diverse (e.g., "Overview & Background", "Step-by-Step Execution", "Technical Specifications", "Comparative Breakdown", "Common Pitfalls to Avoid", etc.).
    - NEVER generate two <h2> headings directly adjacent to each other without text in between.
 
-4. Featured Snippet Optimization (Zero-Click Answer):
-   - Immediately following the first <h2> subheading, provide a direct, concise 40-55 word definitive answer block enclosed in a dedicated paragraph with bold tags: <p><strong>[Direct laser-accurate answer]</strong></p>.
+4. Featured Snippet & Key Takeaways Optimization:
+   - Right after the initial introductory paragraphs, include a dedicated Key Takeaways box:
+     <div class="gp-key-takeaways" style="margin: 24px 0; padding: 20px 24px; background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px;">
+       <h3 style="margin-top: 0; color: #0f172a; font-size: 1.15rem;">Key Takeaways &amp; Quick Reference</h3>
+       <ul style="margin: 8px 0 0 20px; padding: 0; line-height: 1.7; color: #334155;">
+         <li>[Direct, high-value takeaway 1]</li>
+         <li>[Direct, high-value takeaway 2]</li>
+         <li>[Direct, high-value takeaway 3]</li>
+         <li>[Direct, high-value takeaway 4]</li>
+       </ul>
+     </div>
+   - Immediately following the first <h2> subheading, provide a direct, concise 40-55 word definitive answer block enclosed in bold tags: <p><strong>[Direct laser-accurate answer]</strong></p>.
 
-5. Complete Generation Guarantee:
-   - Produce the complete article from introduction to the final FAQ without stopping mid-thought or mid-sentence.
+5. Mandatory Inclusion of AT LEAST TWO Rich HTML Data Tables:
+   - You MUST include at least TWO comprehensive, structured comparison or specification tables:
+     * Table 1: Detailed Specifications, Formulas, Rules, Ingredients, or Operational Benchmarks.
+     * Table 2: Comparative Analysis vs. Alternatives, Scenario Matrix, or Diagnostic Breakdown.
+   - Format them cleanly using standard HTML: <table><thead><tr><th>...</th></tr></thead><tbody><tr><td>...</td></tr></tbody></table>.
+   - NEVER put <li> bullet tags inside <tr> or <td>! Always use clean, pure <td>Cell text</td>.
 
-6. Formatting & Typography:
-   - Return clean semantic HTML (<h2>, <h3>, <p>, <ul>, <li>, <blockquote>, <details>, <summary>).
+6. Mandatory Resolution of All Identified Competitor Content Gaps:
+   - Dedicate substantive sections or subsections to thoroughly answering all 6 to 8 competitor content gaps listed above.
+   - Provide concrete benchmarks, verified data points, edge cases, and actionable solutions.
+
+7. Formatting & Typography:
+   - Return clean semantic HTML (<h2>, <h3>, <p>, <ul>, <li>, <table>, <thead>, <tbody>, <tr>, <th>, <td>, <blockquote>, <details>, <summary>).
    - DO NOT wrap in ```html or ``` code fences.
    - CRITICAL PARAGRAPH LENGTH RULE (STRICT):
-     * NEVER write huge, thick, intimidating blocks of text or 5+ sentence paragraphs!
      * Break all content into crisp, bite-sized paragraphs: exactly 2 sentences per paragraph (maximum 35-50 words per paragraph).
-     * Use frequent whitespace, clear subheadings, and short 2-sentence paragraphs so readers on mobile and desktop can read effortlessly.
-   - CRITICAL HTML TABLE RULE:
-     * When creating comparisons or reference tables, always use standard table rows and cells: <table><thead><tr><th>...</th></tr></thead><tbody><tr><td>...</td></tr></tbody></table>.
-     * NEVER put <li> bullet tags inside <tr> or <td>! Always use clean, pure <td>Cell text</td>.
+     * Use frequent whitespace, clear subheadings, and short 2-sentence paragraphs so readers can read effortlessly.
    - CRITICAL CONSTRAINT: DO NOT USE ANY EM-DASHES ("—"). Use standard commas, parentheses, or simple hyphens instead.
 
-7. MANDATORY FAQ ACCORDION SECTION (5 to 8 Questions):
+8. MANDATORY FAQ ACCORDION SECTION (6 to 8 Questions):
    - Include a dedicated section with <h2>Frequently Asked Questions</h2>.
-   - Provide EXACTLY between 5 and 8 questions (minimum 5, maximum 8).
+   - Provide EXACTLY between 6 and 8 questions (minimum 6, maximum 8).
    - Format EACH question and answer using HTML5:
-     <details class="faq-item"><summary class="faq-question">Direct User Question?</summary><p class="faq-answer">Direct, factual answer in 25 to 45 words tailored for Google snippet capture.</p></details>
+     <details class="faq-item"><summary class="faq-question">Direct User Question?</summary><p class="faq-answer">Direct, factual answer in 30 to 55 words tailored for Google snippet capture.</p></details>
    - Target real questions users ask on Google Search regarding "{primary_kw}".
 
-8. Word Count Target: 850 to 1,250 words of pure substance.
+9. EXHAUSTIVE WORD COUNT TARGET (CRITICAL TO PREVENT DE-RANKING):
+   - Word Count Target: 2,200 to 3,500+ words of pure, authoritative, complete substance.
+   - Google de-ranks thin, superficial articles. Expand deeply on every single topic, mechanism, background, comparison, and instruction.
 """
     
     payload = {
@@ -799,7 +875,7 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
         for attempt in range(2):
             try:
                 print(f"[Gemini AI] Trying model: {model_name} (attempt {attempt+1})...")
-                resp = requests.post(url, json=payload, headers={'User-Agent': 'GeneralPedia-AI/1.0'}, timeout=50)
+                resp = requests.post(url, json=payload, headers={'User-Agent': 'GeneralPedia-AI/1.0'}, timeout=75)
                 if resp.status_code == 503 and attempt == 0:
                     print(f"[Gemini AI Notice] Model {model_name} temporary 503 spike. Retrying in 2.5s...")
                     time.sleep(2.5)
@@ -816,8 +892,8 @@ CRITICAL RULES: HUMAN EDITORIAL TONE & STRICT ANTI-AI BANNED WORDS:
                     break
                     
                 raw_text = parts[0].get('text', '').strip()
-                if not raw_text or len(raw_text.split()) < 650:
-                    print(f"[Gemini AI] Model {model_name} generated too few words ({len(raw_text.split()) if raw_text else 0}), trying next...")
+                if not raw_text or len(raw_text.split()) < 1600:
+                    print(f"[Gemini AI] Model {model_name} generated too few words ({len(raw_text.split()) if raw_text else 0}, minimum 1600 required), trying next...")
                     break
 
                 clean_html = re.sub(r'^```html\s*', '', raw_text)
@@ -870,7 +946,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_s
     if not custom_slug:
         slug = slugify_with_seo_title(primary_kw, title)
     post_url = f"https://www.generalpedia.com/{slug}"
-    meta_desc = generate_exact_seo_meta_description(primary_kw, cat_slug, min_len=155, max_len=158)
+    meta_desc = generate_exact_seo_meta_description(primary_kw, cat_slug, min_len=120, max_len=155)
     tags = generate_tags(primary_kw, all_semantic_kws, cat_slug)
     
     safe_vol = int(volume) if volume and not str(volume).lower() == 'nan' else 0
@@ -891,7 +967,7 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_s
     if preserve_featured_image:
         featured_img_url = preserve_featured_image
         image_id = ""
-        alt_text = f"{capital_kw} - Editorial Reference"
+        alt_text = f"{capital_kw} - Editorial Reference Guide"
         img_html = f"""
         <figure style="margin: 24px 0;">
             <img src="{featured_img_url}" alt="{alt_text}" width="1200" height="675" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
@@ -906,7 +982,11 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_s
         if img_info:
             image_id = img_info["id"]
             featured_img_url = img_info["url"]
-            alt_text = f"{capital_kw} - {img_info['alt'] or 'Editorial Reference'}"
+            clean_alt = (img_info.get('alt') or '').strip()
+            if not clean_alt or any(bad in clean_alt.lower() for bad in ['chocolate', 'cake', 'close up of', 'a photo of', 'an image of', 'stock photo', 'unsplash', 'person holding', 'woman in', 'man in']):
+                alt_text = f"{capital_kw} - Editorial Reference Guide"
+            else:
+                alt_text = f"{capital_kw} - {clean_alt[:55].rstrip('. ')}"
             img_html = f"""
             <figure style="margin: 24px 0;">
                 <img src="{img_info['url']}" alt="{alt_text}" width="1200" height="675" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
@@ -926,7 +1006,11 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_s
 
     mid_img_info = fetch_unique_unsplash_image(query=mid_queries, fallback_terms=[primary_kw, cat_info["name"]])
     if mid_img_info:
-        mid_alt = f"{capital_kw} - {mid_img_info['alt'] or 'In-Depth Overview'}"
+        clean_mid_alt = (mid_img_info.get('alt') or '').strip()
+        if not clean_mid_alt or any(bad in clean_mid_alt.lower() for bad in ['chocolate', 'cake', 'close up of', 'a photo of', 'an image of', 'stock photo', 'unsplash', 'person holding', 'woman in', 'man in']):
+            mid_alt = f"{capital_kw} - Practical Overview & Analysis"
+        else:
+            mid_alt = f"{capital_kw} - {clean_mid_alt[:55].rstrip('. ')}"
         mid_html = f"""
         <figure class="mid-article-figure" style="margin: 36px 0;">
             <img src="{mid_img_info['url']}" alt="{mid_alt}" width="1200" height="675" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />

@@ -69,6 +69,11 @@ def run_auto_post_from_sheet(count=1):
         
         article = generate_article(primary_kw, semantic_kws, volume=vol, kd=kd, cpc=cpc)
         
+        word_count = len(article.get("content_html", "").split())
+        if word_count < 1600:
+            print(f"[Sheet Auto-Poster Warning] Article '{article.get('title')}' yielded only {word_count} words (minimum 1,600 required). Skipping.")
+            continue
+        
         # Natural Bidirectional Internal Linking (outbound from new article & inbound from existing articles)
         try:
             from internal_linker import link_new_article_bidirectionally

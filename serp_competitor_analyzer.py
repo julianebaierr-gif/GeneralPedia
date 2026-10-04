@@ -69,17 +69,17 @@ def fetch_top_competitors(keyword, max_results=8):
         
     return results
 
-def generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws=None):
+def generate_heuristic_100_plus_lsi(primary_kw, existing_semantic_kws=None):
     """
-    Robust algorithmic fallback that generates 50+ high-relevance LSI/semantic terms
-    and comprehensive content gaps across intent categories.
+    Robust algorithmic fallback that generates 100+ high-relevance LSI/semantic terms
+    and 6 to 8 comprehensive content gaps across distinct intent categories.
     Guarantees the publishing pipeline NEVER crashes if external APIs are offline.
     """
     kw = primary_kw.strip()
     words = [w for w in re.split(r'\s+', kw.lower()) if w]
     stem = " ".join(words)
     
-    # 1. Core Intent Variations & Synonyms
+    # 1. Core Intent Variations & Synonyms (20 terms)
     variations = [
         f"{stem} meaning",
         f"{stem} overview",
@@ -87,18 +87,23 @@ def generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws=None):
         f"{stem} key facts",
         f"{stem} explained",
         f"{stem} full breakdown",
-        f"{stem} step by step",
-        f"{stem} practical tips",
         f"{stem} essential details",
-        f"{stem} real-world examples",
-        f"{stem} standard rules",
-        f"{stem} comparison",
-        f"{stem} advantages and limits",
-        f"{stem} common issues",
-        f"{stem} verified facts"
+        f"{stem} verified facts",
+        f"{stem} complete reference",
+        f"{stem} background context",
+        f"{stem} core concepts",
+        f"{stem} practical summary",
+        f"{stem} fundamental principles",
+        f"{stem} origins and development",
+        f"{stem} key characteristics",
+        f"{stem} definitive guide",
+        f"{stem} comprehensive review",
+        f"{stem} in practice",
+        f"{stem} structural framework",
+        f"{stem} primary functions"
     ]
     
-    # 2. User Questions & Problem Solving
+    # 2. User Questions & Problem Solving (20 terms)
     questions = [
         f"what is {stem}",
         f"how does {stem} work",
@@ -111,42 +116,119 @@ def generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws=None):
         f"how to calculate {stem}",
         f"how to choose the best {stem}",
         f"is {stem} safe",
-        f"who needs {stem}"
+        f"who needs {stem}",
+        f"where to find {stem}",
+        f"can you use {stem}",
+        f"what happens if {stem}",
+        f"how long does {stem} take",
+        f"what are the requirements for {stem}",
+        f"how does {stem} compare",
+        f"which is better for {stem}",
+        f"what to look for in {stem}"
     ]
     
-    # 3. High-Intent Semantic Entities & Technical Terms
+    # 3. Step-by-Step, Procedural & Logistical Terms (18 terms)
+    procedural = [
+        f"{stem} step by step instructions",
+        f"{stem} practical checklist",
+        f"{stem} workflow implementation",
+        f"{stem} operational timeline",
+        f"{stem} preparation guidelines",
+        f"{stem} execution phases",
+        f"{stem} setup procedures",
+        f"{stem} recommended practices",
+        f"{stem} verified protocols",
+        f"{stem} maintenance schedule",
+        f"{stem} configuration rules",
+        f"{stem} standard operating procedure",
+        f"{stem} inspection checklist",
+        f"{stem} monitoring criteria",
+        f"{stem} handling instructions",
+        f"{stem} transition steps",
+        f"{stem} routine management",
+        f"{stem} milestone checklist"
+    ]
+    
+    # 4. Technical Terms, Metrics, Benchmarks & Specifications (18 terms)
     entities = [
         f"{stem} specifications",
-        f"{stem} requirements",
-        f"{stem} benchmarks",
-        f"{stem} standards",
-        f"{stem} checklist",
-        f"{stem} documentation",
-        f"{stem} procedures",
-        f"{stem} calculations",
-        f"{stem} formula",
-        f"{stem} safety precautions",
-        f"{stem} maintenance",
-        f"{stem} timeline",
+        f"{stem} numerical benchmarks",
+        f"{stem} official standards",
+        f"{stem} calculation formula",
+        f"{stem} technical documentation",
+        f"{stem} performance metrics",
         f"{stem} eligibility criteria",
-        f"{stem} expert recommendations"
+        f"{stem} quantitative analysis",
+        f"{stem} reference dataset",
+        f"{stem} threshold parameters",
+        f"{stem} capacity limits",
+        f"{stem} efficiency ratings",
+        f"{stem} testing protocol",
+        f"{stem} measurement benchmarks",
+        f"{stem} official compliance",
+        f"{stem} statistical averages",
+        f"{stem} regulatory framework",
+        f"{stem} expert evaluation"
     ]
     
-    # 4. Long-Tail & Subtopic Angles
+    # 5. Comparisons, Tradeoffs & Alternatives (16 terms)
+    comparisons = [
+        f"{stem} vs alternative methods",
+        f"{stem} pros and cons breakdown",
+        f"{stem} comparative analysis",
+        f"{stem} cost performance trade-offs",
+        f"{stem} traditional vs modern approach",
+        f"{stem} differences and similarities",
+        f"{stem} top alternatives",
+        f"{stem} replacement options",
+        f"{stem} advantages and disadvantages",
+        f"{stem} side by side comparison",
+        f"{stem} efficiency comparison",
+        f"{stem} value assessment",
+        f"{stem} practical tradeoffs",
+        f"{stem} selection criteria",
+        f"{stem} market alternatives",
+        f"{stem} decision matrix"
+    ]
+    
+    # 6. Pitfalls, Risk Mitigation, Safety & Caveats (16 terms)
+    pitfalls = [
+        f"{stem} common pitfalls to avoid",
+        f"{stem} risk mitigation strategies",
+        f"{stem} critical safety precautions",
+        f"{stem} troubleshooting edge cases",
+        f"{stem} warning signs and red flags",
+        f"{stem} error handling protocols",
+        f"{stem} compliance risks",
+        f"{stem} quality control checks",
+        f"{stem} preventable oversights",
+        f"{stem} corrective actions",
+        f"{stem} consumer warnings",
+        f"{stem} diagnostic troubleshooting",
+        f"{stem} failure prevention",
+        f"{stem} verification checks",
+        f"{stem} hazard mitigation",
+        f"{stem} emergency contingency"
+    ]
+    
+    # 7. Industry Context, Long-Tail, Schedules & FAQs (16 terms)
     long_tail = [
-        f"{stem} alternatives",
-        f"{stem} pros and cons",
-        f"{stem} common pitfalls",
-        f"{stem} best practices",
-        f"{stem} troubleshooting",
-        f"{stem} official regulations",
-        f"{stem} key features",
-        f"{stem} historical context",
-        f"{stem} future trends",
-        f"{stem} step by step instructions",
-        f"{stem} average rates",
-        f"{stem} practical applications",
-        f"{stem} reference guide"
+        f"{stem} historical timeline and origins",
+        f"{stem} current market trends",
+        f"{stem} statutory deadlines and dates",
+        f"{stem} industry best practices",
+        f"{stem} legal and regulatory compliance",
+        f"{stem} real-world case examples",
+        f"{stem} professional recommendations",
+        f"{stem} future outlook and updates",
+        f"{stem} community standards",
+        f"{stem} official documentation references",
+        f"{stem} certified guidelines",
+        f"{stem} practical takeaways",
+        f"{stem} frequently asked questions",
+        f"{stem} authoritative reference guide",
+        f"{stem} everyday practical applications",
+        f"{stem} core reference summary"
     ]
     
     combined = []
@@ -160,7 +242,7 @@ def generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws=None):
                 seen.add(clean.lower())
                 combined.append(clean)
                 
-    for group in [variations, questions, entities, long_tail]:
+    for group in [variations, questions, procedural, entities, comparisons, pitfalls, long_tail]:
         for item in group:
             item_clean = item.strip()
             if item_clean.lower() not in seen:
@@ -168,11 +250,14 @@ def generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws=None):
                 combined.append(item_clean)
                 
     content_gaps = [
-        f"Competitors lacked exact step-by-step implementation details for {primary_kw}.",
-        f"Competitors omitted concrete numerical benchmarks, real data points, or pricing tables.",
-        f"Competitors gave generic high-level overviews without addressing common edge-case problems.",
-        f"Competitors failed to provide clear troubleshooting and safety caveats for {primary_kw}.",
-        f"Competitors missed answering direct user questions regarding timelines and practical requirements."
+        f"Competitors lacked exact step-by-step implementation details, logistical specifics, and verified data points for {primary_kw}.",
+        f"Competitors omitted concrete numerical benchmarks, real data matrices, and comparative reference tables.",
+        f"Competitors gave generic high-level overviews without addressing common edge-case problems and practical pitfalls.",
+        f"Competitors failed to provide clear troubleshooting rules, safety caveats, and expert-verified protocols.",
+        f"Competitors missed answering direct user search queries regarding timelines, schedules, and specific compliance factors.",
+        f"Competitors omitted actionable cost/performance trade-offs and objective alternative comparisons.",
+        f"Competitors overlooked regulatory, historical, and primary-source context essential for comprehensive authority.",
+        f"Competitors lacked direct, zero-click featured snippet answers for quick user reference."
     ]
     
     visual_queries = [
@@ -184,21 +269,24 @@ def generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws=None):
     return {
         "competitor_summary": f"Standard industry overview of {primary_kw} focusing on definitions, general procedures, and basic tips.",
         "content_gaps": content_gaps,
-        "semantic_keywords": combined[:60], # Ensures 50+
+        "semantic_keywords": combined[:115], # Guarantees 100+ keywords
         "visual_queries": visual_queries
     }
+
+# Backward compatibility alias
+generate_heuristic_50_plus_lsi = generate_heuristic_100_plus_lsi
 
 def analyze_competitors_and_extract_lsi(primary_kw, competitor_results, existing_semantic_kws=None):
     """
     Performs deep competitor SERP analysis via Gemini API:
     1. Audits top 5 to 8 competitor titles, snippets, and angles.
-    2. Extracts 50+ rich LSI and semantic keywords (covering intent, entities, questions, variations).
-    3. Identifies specific content gaps competitors missed.
+    2. Extracts 100+ rich LSI and semantic keywords across 6 distinct intent categories.
+    3. Identifies 6 to 8 critical content gaps competitors missed.
     4. Provides Unsplash photographic visual queries.
     """
     if not GEMINI_API_KEY:
         print("[SERP Analyzer] GEMINI_API_KEY not found in local environment. Using robust heuristic LSI engine.")
-        return generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws)
+        return generate_heuristic_100_plus_lsi(primary_kw, existing_semantic_kws)
         
     competitor_text_block = ""
     if competitor_results:
@@ -225,16 +313,18 @@ Perform an exhaustive, rigorous 4-part intelligence audit:
    - Briefly summarize what the top ranking competitors are focusing on (their structure, angles, and search intent).
 
 2. CONTENT GAP IDENTIFICATION (CRITICAL TO OUTRANK COMPETITORS):
-   - Identify 4 to 6 specific, tangible "Content Gaps" — critical details, missing data, concrete numbers, edge cases, step-by-step procedures, or user questions that competitors either completely missed or explained poorly.
+   - Identify 6 to 8 specific, tangible "Content Gaps" — critical details, missing data, concrete numbers, edge cases, step-by-step procedures, or user questions that competitors either completely missed or explained poorly.
 
-3. EXHAUSTIVE 50+ SEMANTIC & LSI KEYWORD EXTRACTION:
-   - Provide AT LEAST 50 distinct, high-relevance LSI and semantic keywords strictly related to "{primary_kw}".
-   - You MUST categorize them across these four buckets to ensure comprehensive topical coverage:
-     a) Core LSI Synonyms & Search Variations (15+ terms)
-     b) High-Intent Semantic Entities & Technical Terms (15+ terms)
-     c) User Questions & Problem-Solving Queries (10+ terms)
-     d) Long-Tail Secondary & Related Subtopics (10+ terms)
-   - Ensure the total combined list in "all_lsi_and_semantic_keywords" has 50+ items!
+3. EXHAUSTIVE 100+ SEMANTIC & LSI KEYWORD EXTRACTION:
+   - Provide AT LEAST 100 distinct, high-relevance LSI and semantic keywords strictly related to "{primary_kw}".
+   - You MUST categorize them across these six buckets to ensure comprehensive topical coverage:
+     a) Core LSI Synonyms & Search Variations (25+ terms)
+     b) High-Intent Semantic Entities & Technical Terms (25+ terms)
+     c) User Questions & Problem-Solving Queries (20+ terms)
+     d) Long-Tail Secondary & Related Subtopics (15+ terms)
+     e) Comparison, Tradeoff & Alternative Phrases (15+ terms)
+     f) Procedural, Safety, Rules & Numerical Phrases (15+ terms)
+   - Ensure the total combined list in "all_lsi_and_semantic_keywords" has AT LEAST 100 items (target 100 to 115 distinct keywords)!
 
 4. VISUAL SEARCH QUERIES (FOR UNSPLASH STOCK PHOTOS):
    - Provide 3 to 4 concrete, descriptive visual search phrases for real-world photography (e.g., authentic settings, equipment, hands-on action; avoid abstract concepts).
@@ -247,10 +337,14 @@ Return strictly a valid JSON object with no markdown code fences:
     "Gap 1: Competitors missed...",
     "Gap 2: Competitors only gave vague descriptions without...",
     "Gap 3: ...",
-    "Gap 4: ..."
+    "Gap 4: ...",
+    "Gap 5: ...",
+    "Gap 6: ...",
+    "Gap 7: ...",
+    "Gap 8: ..."
   ],
   "all_lsi_and_semantic_keywords": [
-    "keyword 1", "keyword 2", "...at least 50 distinct keywords..."
+    "keyword 1", "keyword 2", "...at least 100 distinct keywords..."
   ],
   "visual_queries": [
     "query 1", "query 2", "query 3"
@@ -292,7 +386,7 @@ Return strictly a valid JSON object with no markdown code fences:
                 summary = parsed.get("competitor_summary", "")
                 visuals = parsed.get("visual_queries", [])
                 
-                # Deduplicate and ensure >= 50 keywords
+                # Deduplicate and ensure >= 100 keywords
                 clean_kws = []
                 seen = set()
                 for k in keywords:
@@ -301,21 +395,30 @@ Return strictly a valid JSON object with no markdown code fences:
                         seen.add(k_str.lower())
                         clean_kws.append(k_str)
                         
-                # If model returned fewer than 50 keywords, intelligently supplement with heuristic terms
-                if len(clean_kws) < 50:
-                    heuristic = generate_heuristic_50_plus_lsi(primary_kw, clean_existing)
+                # If model returned fewer than 100 keywords, intelligently supplement with heuristic terms
+                if len(clean_kws) < 100:
+                    heuristic = generate_heuristic_100_plus_lsi(primary_kw, clean_existing)
                     for hk in heuristic["semantic_keywords"]:
                         if hk.lower() not in seen:
                             seen.add(hk.lower())
                             clean_kws.append(hk)
-                            if len(clean_kws) >= 60:
+                            if len(clean_kws) >= 110:
+                                break
+
+                # Ensure at least 6 content gaps
+                if len(gaps) < 6:
+                    heuristic = generate_heuristic_100_plus_lsi(primary_kw, clean_existing)
+                    for hg in heuristic["content_gaps"]:
+                        if hg not in gaps:
+                            gaps.append(hg)
+                            if len(gaps) >= 8:
                                 break
                                 
                 print(f"[SERP Analyzer Success] Model {model_name} generated {len(clean_kws)} LSI keywords and {len(gaps)} content gaps.")
                 return {
                     "competitor_summary": summary,
                     "content_gaps": gaps if gaps else ["Competitors lacked actionable step-by-step depth and real data benchmarks."],
-                    "semantic_keywords": clean_kws[:65], # 50+ rich keywords
+                    "semantic_keywords": clean_kws[:115], # 100+ rich keywords
                     "visual_queries": visuals if visuals else [f"{primary_kw} practical guide", f"{primary_kw} details"]
                 }
             except Exception as e:
@@ -323,7 +426,7 @@ Return strictly a valid JSON object with no markdown code fences:
                 break
 
     print("[SERP Analyzer Warning] All Gemini API models failed for competitor analysis. Using heuristic engine.")
-    return generate_heuristic_50_plus_lsi(primary_kw, existing_semantic_kws)
+    return generate_heuristic_100_plus_lsi(primary_kw, existing_semantic_kws)
 
 def analyze_serp_for_keyword(primary_kw, existing_semantic_kws=None):
     """

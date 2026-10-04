@@ -149,14 +149,14 @@ def publish_next_post(target_category=None):
     kd = selected_row.get('Primary_KD', 0)
     cpc = selected_row.get('Primary_CPC', 0.0)
 
-    # 1. Generate SEO Article via SERP Competitor Analysis, 50+ LSI Extraction & Gemini API
+    # 1. Generate SEO Article via SERP Competitor Analysis, 100+ LSI Extraction & Gemini API
     print(f"\n[Auto-Publisher] Commencing SERP competitor analysis & article generation for '{primary_kw}'...")
     article = generate_article(primary_kw, semantic_kws, volume=vol, kd=kd, cpc=cpc)
     
-    # Strict Guardrail: Never publish empty, stub, or low-content articles
+    # Strict Guardrail: Never publish thin or low-content articles (minimum 1,600 words enforced)
     word_count = len(article.get("content_html", "").split())
-    if word_count < 650:
-        raise RuntimeError(f"[Auto-Publisher Aborted] Article '{article.get('title')}' yielded only {word_count} words (minimum 650 required). Refusing to publish stub!")
+    if word_count < 1600:
+        raise RuntimeError(f"[Auto-Publisher Aborted] Article '{article.get('title')}' yielded only {word_count} words (minimum 1,600 required). Refusing to publish thin content!")
 
     # 1.5 Natural Bidirectional Internal Linking (outbound from new article & inbound from existing articles)
     try:
