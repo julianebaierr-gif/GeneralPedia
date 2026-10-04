@@ -100,3 +100,38 @@ def fetch_unique_unsplash_image(query, fallback_terms=None):
                     continue
 
     return None
+
+def get_local_post_images(slug):
+    """
+    Checks for locally hosted custom or AI-generated images in images/ matching the post slug.
+    Returns list of absolute generalpedia URLs for all matching images.
+    """
+    images_dir = os.path.join(BASE_DIR, "images")
+    if not os.path.exists(images_dir):
+        return []
+    matches = []
+    prefix = slug.lower().strip()
+    for fname in sorted(os.listdir(images_dir)):
+        if fname.lower().startswith(prefix) and any(fname.lower().endswith(ext) for ext in ['.jpg', '.jpeg', '.png', '.webp', '.avif']):
+            matches.append(f"https://www.generalpedia.com/images/{fname}")
+    return matches
+
+def sync_images_to_site():
+    """
+    Ensures all images in the root images/ folder are mirrored into site/images/ for static site hosting.
+    """
+    import shutil
+    src_dir = os.path.join(BASE_DIR, "images")
+    dst_dir = os.path.join(BASE_DIR, "site", "images")
+    if not os.path.exists(src_dir):
+        return 0
+    os.makedirs(dst_dir, exist_ok=True)
+    count = 0
+    for fname in os.listdir(src_dir):
+        src_file = os.path.join(src_dir, fname)
+        dst_file = os.path.join(dst_dir, fname)
+        if os.path.isfile(src_file):
+            shutil.copy2(src_file, dst_file)
+            count += 1
+    return count
+

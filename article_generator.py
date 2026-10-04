@@ -8,13 +8,13 @@ import time
 
 try:
     from config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
-    from image_service import fetch_unique_unsplash_image
+    from image_service import fetch_unique_unsplash_image, get_local_post_images, sync_images_to_site
     from tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
     from internal_linker import inject_natural_internal_links
     from serp_competitor_analyzer import analyze_serp_for_keyword, generate_heuristic_100_plus_lsi
 except ImportError:
     from .config import CATEGORIES, AUTHORS, DOMAIN, POSTS_DIR
-    from .image_service import fetch_unique_unsplash_image
+    from .image_service import fetch_unique_unsplash_image, get_local_post_images, sync_images_to_site
     from .tool_generator import is_tool_or_calculator_topic, generate_interactive_tool_html
     from .internal_linker import inject_natural_internal_links
     from .serp_competitor_analyzer import analyze_serp_for_keyword, generate_heuristic_100_plus_lsi
@@ -963,10 +963,23 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_s
     faqs = extract_faqs_from_html(body_content)
     faq_schema = build_faq_schema_json(faqs)
     
-    # 4. Handle contextual featured image
+    # 4. Handle contextual featured image (Local custom/AI images prioritized)
+    local_images = get_local_post_images(slug)
+    sync_images_to_site()
+
     if preserve_featured_image:
         featured_img_url = preserve_featured_image
         image_id = ""
+        alt_text = f"{capital_kw} - Editorial Reference Guide"
+        img_html = f"""
+        <figure style="margin: 24px 0;">
+            <img src="{featured_img_url}" alt="{alt_text}" width="1200" height="675" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
+        </figure>
+        """
+        body_content = img_html + body_content
+    elif local_images:
+        featured_img_url = local_images[0]
+        image_id = "local_custom_image_1"
         alt_text = f"{capital_kw} - Editorial Reference Guide"
         img_html = f"""
         <figure style="margin: 24px 0;">
@@ -994,29 +1007,15 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_s
             """
             body_content = img_html + body_content
 
-    # 5. Fetch unique mid-content image strictly relative to keyword/subtopics and not used anywhere else
-    mid_queries = [
-        f"{primary_kw} details",
-        f"{primary_kw} overview",
-        f"{cat_info['name']} reference",
-        "detailed workflow"
-    ]
-    if len(visual_queries) > 1:
-        mid_queries = visual_queries[1:] + mid_queries
-
-    mid_img_info = fetch_unique_unsplash_image(query=mid_queries, fallback_terms=[primary_kw, cat_info["name"]])
-    if mid_img_info:
-        clean_mid_alt = (mid_img_info.get('alt') or '').strip()
-        if not clean_mid_alt or any(bad in clean_mid_alt.lower() for bad in ['chocolate', 'cake', 'close up of', 'a photo of', 'an image of', 'stock photo', 'unsplash', 'person holding', 'woman in', 'man in']):
-            mid_alt = f"{capital_kw} - Practical Overview & Analysis"
-        else:
-            mid_alt = f"{capital_kw} - {clean_mid_alt[:55].rstrip('. ')}"
+    # 5. Fetch unique mid-content image strictly relative to keyword/subtopics
+    if len(local_images) > 1:
+        mid_img_url = local_images[1]
+        mid_alt = f"{capital_kw} - Practical Overview & Analysis"
         mid_html = f"""
         <figure class="mid-article-figure" style="margin: 36px 0;">
-            <img src="{mid_img_info['url']}" alt="{mid_alt}" width="1200" height="675" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
+            <img src="{mid_img_url}" alt="{mid_alt}" width="1200" height="675" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
         </figure>
         """
-        # Place mid-content: before 3rd h2 or 2nd h2 or halfway through paragraphs
         h2_positions = [m.start() for m in re.finditer(r'<h2\b[^>]*>', body_content, re.IGNORECASE)]
         if len(h2_positions) >= 3:
             pos = h2_positions[2]
@@ -1031,6 +1030,43 @@ def generate_article(primary_kw, semantic_kws, volume=0, kd=0, cpc=0.0, custom_s
                 body_content = body_content[:mid_pos] + mid_html + body_content[mid_pos:]
             else:
                 body_content = body_content + mid_html
+    else:
+        mid_queries = [
+            f"{primary_kw} details",
+            f"{primary_kw} overview",
+            f"{cat_info['name']} reference",
+            "detailed workflow"
+        ]
+        if len(visual_queries) > 1:
+            mid_queries = visual_queries[1:] + mid_queries
+
+        mid_img_info = fetch_unique_unsplash_image(query=mid_queries, fallback_terms=[primary_kw, cat_info["name"]])
+        if mid_img_info:
+            clean_mid_alt = (mid_img_info.get('alt') or '').strip()
+            if not clean_mid_alt or any(bad in clean_mid_alt.lower() for bad in ['chocolate', 'cake', 'close up of', 'a photo of', 'an image of', 'stock photo', 'unsplash', 'person holding', 'woman in', 'man in']):
+                mid_alt = f"{capital_kw} - Practical Overview & Analysis"
+            else:
+                mid_alt = f"{capital_kw} - {clean_mid_alt[:55].rstrip('. ')}"
+            mid_html = f"""
+            <figure class="mid-article-figure" style="margin: 36px 0;">
+                <img src="{mid_img_info['url']}" alt="{mid_alt}" width="1200" height="675" loading="lazy" style="width: 100%; max-height: 480px; object-fit: cover; border-radius: 8px;" />
+            </figure>
+            """
+            # Place mid-content: before 3rd h2 or 2nd h2 or halfway through paragraphs
+            h2_positions = [m.start() for m in re.finditer(r'<h2\b[^>]*>', body_content, re.IGNORECASE)]
+            if len(h2_positions) >= 3:
+                pos = h2_positions[2]
+                body_content = body_content[:pos] + mid_html + body_content[pos:]
+            elif len(h2_positions) >= 2:
+                pos = h2_positions[1]
+                body_content = body_content[:pos] + mid_html + body_content[pos:]
+            else:
+                p_positions = [m.end() for m in re.finditer(r'</p>', body_content, re.IGNORECASE)]
+                if len(p_positions) >= 4:
+                    mid_pos = p_positions[len(p_positions) // 2]
+                    body_content = body_content[:mid_pos] + mid_html + body_content[mid_pos:]
+                else:
+                    body_content = body_content + mid_html
 
     # 6. Auto-generate & embed interactive calculator/tool if topic warrants it
     if is_tool_or_calculator_topic(primary_kw, all_semantic_kws):
