@@ -609,6 +609,11 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None, max_link
             "how-cook-bacon-oven",
             "oz-to-gallon-explanations-practical-facts-overview",
             "dryer-vent-cleaning-what-know-tips-easy"
+        ],
+        "memorial-day-2026-dates-meaning-history-traditions": [
+            "january-2026-calendar-dates-meaning-history-traditions",
+            "tax-brackets-2025-key-dates-holidays-full",
+            "best-running-shoes-2025-printable-dates-holidays"
         ]
     }
 
