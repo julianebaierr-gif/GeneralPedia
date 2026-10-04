@@ -614,6 +614,16 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None, max_link
             "january-2026-calendar-dates-meaning-history-traditions",
             "tax-brackets-2025-key-dates-holidays-full",
             "best-running-shoes-2025-printable-dates-holidays"
+        ],
+        "the-wizard-of-oz-classic-movie-facts": [
+            "queen-of-wands-card-meaning-symbolism-overview",
+            "where-is-cape-verde-geography-country-map",
+            "memorial-day-2026-dates-meaning-history-traditions"
+        ],
+        "how-old-is-elon-musk-explanations-practical": [
+            "chevy-equinox-ev-what-means-key-facts",
+            "roth-ira-calculator-how-works-formula-quick",
+            "used-cars-for-sale-real-specs-performance"
         ]
     }
 
