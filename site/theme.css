@@ -1079,9 +1079,28 @@
       border: 1px solid var(--border-color);
       text-align: left;
     }
+    .article-body thead tr,
+    .article-body table tr:first-child:has(th) {
+      background: #0f172a !important;
+      color: #ffffff !important;
+    }
     .article-body th {
-      background: var(--bg-subtle);
+      background: #0f172a !important;
+      color: #ffffff !important;
       font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 1px solid #1e293b !important;
+    }
+    .article-body td {
+      color: var(--text-main);
+      background: var(--bg-card);
+    }
+    [data-theme="dark"] .article-body thead tr,
+    [data-theme="dark"] .article-body table tr:first-child:has(th),
+    [data-theme="dark"] .article-body th {
+      background: #1e293b !important;
+      color: #f8fafc !important;
+      border: 1px solid #334155 !important;
     }
     .article-body blockquote {
       border-left: 4px solid var(--secondary);
