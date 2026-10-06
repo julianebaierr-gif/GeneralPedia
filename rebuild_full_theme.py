@@ -885,6 +885,11 @@ def rebuild_site():
                         "url": page_url,
                         "image": auth_avatar,
                         "jobTitle": auth_role,
+                        "worksFor": {
+                            "@type": "Organization",
+                            "name": "GeneralPedia",
+                            "url": "https://www.generalpedia.com"
+                        },
                         "description": auth_bio,
                         "knowsAbout": auth_exp_list
                     }
@@ -1075,6 +1080,7 @@ def rebuild_site():
         '  <url><loc>https://www.generalpedia.com/category/tools</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
         '  <url><loc>https://www.generalpedia.com/category/automotive</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
         '  <url><loc>https://www.generalpedia.com/category/lifestyle</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
+        '  <url><loc>https://www.generalpedia.com/category/tech</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
         '  <url><loc>https://www.generalpedia.com/category/culture</loc><lastmod>' + today_str + '</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>',
         '  <!-- Authors -->',
         '  <url><loc>https://www.generalpedia.com/author/marcus-reid</loc><lastmod>' + today_str + '</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>',
