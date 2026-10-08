@@ -1102,7 +1102,7 @@ def rebuild_site():
 
     for p in posts_data:
         p_slug = p.get('slug') or p.get('id')
-        p_date = (p.get('published_at') or today_str)[:10]
+        p_date = (p.get('modified_at') or p.get('published_at') or today_str)[:10]
         if p_slug:
             sitemap_lines.append(f'  <url><loc>https://www.generalpedia.com/{p_slug}</loc><lastmod>{p_date}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>')
 
