@@ -482,6 +482,28 @@ ANCHOR_MAP = [
         ]
     },
     {
+        "id": "222-angel-number-meaning",
+        "title": "222 Angel Number Meaning: Love, Twin Flames & Spiritual Significance",
+        "category": "culture",
+        "patterns": [
+            r"\b222 angel number meaning\b",
+            r"\b222 angel number\b",
+            r"\bangel number 222\b",
+            r"\bseeing 222\b"
+        ]
+    },
+    {
+        "id": "what-is-my-rising-sign",
+        "title": "What Is My Rising Sign: Ascendant Meaning, Chart Calculation & Guide",
+        "category": "culture",
+        "patterns": [
+            r"\bwhat is my rising sign\b",
+            r"\brising sign\b",
+            r"\brising signs\b",
+            r"\bascendant sign\b"
+        ]
+    },
+    {
         "id": "where-is-cape-verde-geography-country-map",
         "title": "Where Is Cape Verde: Geography, Country Map & Key Facts",
         "category": "culture",
@@ -619,6 +641,21 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None, max_link
             "queen-of-wands-card-meaning-symbolism-overview",
             "where-is-cape-verde-geography-country-map",
             "memorial-day-2026-dates-meaning-history-traditions"
+        ],
+        "what-is-my-rising-sign": [
+            "queen-of-wands-card-meaning-symbolism-overview",
+            "222-angel-number-meaning",
+            "the-wizard-of-oz-classic-movie-facts"
+        ],
+        "222-angel-number-meaning": [
+            "what-is-my-rising-sign",
+            "queen-of-wands-card-meaning-symbolism-overview",
+            "the-wizard-of-oz-classic-movie-facts"
+        ],
+        "queen-of-wands-card-meaning-symbolism-overview": [
+            "what-is-my-rising-sign",
+            "222-angel-number-meaning",
+            "the-wizard-of-oz-classic-movie-facts"
         ],
         "how-old-is-elon-musk-explanations-practical": [
             "chevy-equinox-ev-what-means-key-facts",
