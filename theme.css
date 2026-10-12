@@ -1056,11 +1056,15 @@
     .article-body p {
       margin-bottom: 20px;
     }
-    .article-body > strong,
-    .article-body p strong:only-child {
+    .article-body > strong {
       display: block;
       margin-bottom: 22px;
       line-height: 1.8;
+    }
+    .article-body p strong {
+      display: inline !important;
+      font-weight: 700;
+      margin: 0 !important;
     }
     .article-body ul, .article-body ol {
       margin: 16px 0 24px 28px;
