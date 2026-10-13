@@ -523,6 +523,18 @@ ANCHOR_MAP = [
             r"\bhawks vs knicks\b",
             r"\bknicks vs hawks\b"
         ]
+    },
+    {
+        "id": "best-ukulele-for-beginners",
+        "title": "Best Ukulele for Beginners: Top Tested Models, Sizes & Buyer Guide",
+        "category": "lifestyle",
+        "patterns": [
+            r"\bbest ukulele for beginners\b",
+            r"\bbest ukulele\b",
+            r"\bbest beginner ukulele\b",
+            r"\bukulele for beginners\b",
+            r"\bbeginner ukulele\b"
+        ]
     }
 ]
 
@@ -661,6 +673,11 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None, max_link
             "chevy-equinox-ev-what-means-key-facts",
             "roth-ira-calculator-how-works-formula-quick",
             "used-cars-for-sale-real-specs-performance"
+        ],
+        "best-ukulele-for-beginners": [
+            "12mm-to-inches-meaning-background-practical-facts",
+            "the-wizard-of-oz-classic-movie-facts",
+            "how-to-bake-sourdough-bread-practical-tips"
         ]
     }
 
