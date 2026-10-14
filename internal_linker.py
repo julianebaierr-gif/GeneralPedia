@@ -535,6 +535,18 @@ ANCHOR_MAP = [
             r"\bukulele for beginners\b",
             r"\bbeginner ukulele\b"
         ]
+    },
+    {
+        "id": "is-weed-legal-in-florida",
+        "title": "Is Weed Legal in Florida: 2026 Laws & Penalties Guide",
+        "category": "how-to",
+        "patterns": [
+            r"\bis weed legal in florida\b",
+            r"\bflorida weed laws\b",
+            r"\bflorida marijuana laws\b",
+            r"\bmedical marijuana in florida\b",
+            r"\bflorida amendment 3\b"
+        ]
     }
 ]
 
@@ -678,6 +690,11 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None, max_link
             "12mm-to-inches-meaning-background-practical-facts",
             "the-wizard-of-oz-classic-movie-facts",
             "how-to-bake-sourdough-bread-practical-tips"
+        ],
+        "is-weed-legal-in-florida": [
+            "ast-blood-test-main-causes-diagnosis-recovery",
+            "how-to-change-a-tire-meaning-background",
+            "tax-brackets-2025-key-dates-holidays-full"
         ]
     }
 
