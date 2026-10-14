@@ -39,22 +39,39 @@ for fpath in all_html_files:
 
     file_issues = []
 
-    # 1. H1 Count
+    # 1. H1 Count and Zero-Truncation Length (<= 56 chars)
+    # 1. H1 Count and Zero-Truncation Length (<= 56 chars)
+    import html as html_mod
     h1_matches = re.findall(r'<h1[^>]*>(.*?)</h1>', html, re.DOTALL | re.IGNORECASE)
     h1_count = len(h1_matches)
     if h1_count != 1:
         file_issues.append(f"H1 count != 1 (found {h1_count})")
+    elif is_article := (not rel_path.startswith("category/") and not rel_path.startswith("author/") and rel_path not in ["index.html", "about.html", "contact.html", "editorial-guidelines.html", "privacy-policy.html", "terms.html", "write-for-us.html"]):
+        h1_text = html_mod.unescape(re.sub(r'<[^>]+>', '', h1_matches[0]).strip())
+        if len(h1_text) > 56:
+            file_issues.append(f"H1 > 56 chars ({len(h1_text)} chars: '{h1_text}')")
 
-    # 2. Meta Description
+    # 2. Page Title Zero-Truncation Check (<= 56 chars for articles)
+    title_m = re.search(r'<title>(.*?)</title>', html, re.DOTALL | re.IGNORECASE)
+    page_title = html_mod.unescape(title_m.group(1).strip()) if title_m else ""
+    if not page_title:
+        file_issues.append("Missing page title")
+    elif is_article := (not rel_path.startswith("category/") and not rel_path.startswith("author/") and rel_path not in ["index.html", "about.html", "contact.html", "editorial-guidelines.html", "privacy-policy.html", "terms.html", "write-for-us.html"]):
+        if len(page_title) > 56:
+            file_issues.append(f"Article title > 56 chars ({len(page_title)} chars: '{page_title}')")
+
+    # 3. Meta Description (Strict 120-138 chars date-proof limit)
     meta_m = re.search(r'<meta name="description" content="(.*?)">', html, re.DOTALL | re.IGNORECASE)
     meta_desc = meta_m.group(1) if meta_m else ""
     meta_len = len(meta_desc)
     if not meta_desc:
         file_issues.append("Missing meta description")
-    elif meta_len > 155:
-        file_issues.append(f"Meta desc > 155 chars ({meta_len} chars)")
+    elif meta_len > 138:
+        file_issues.append(f"Meta desc > 138 chars ({meta_len} chars - causes Google SERP date truncation ...)")
+    elif meta_len < 118:
+        file_issues.append(f"Meta desc < 118 chars ({meta_len} chars)")
 
-    # 3. Canonical Tag
+    # 4. Canonical Tag
     canon_m = re.search(r'<link rel="canonical" href="(.*?)">', html, re.DOTALL | re.IGNORECASE)
     canon_url = canon_m.group(1) if canon_m else ""
     if not canon_url:
