@@ -547,6 +547,20 @@ ANCHOR_MAP = [
             r"\bmedical marijuana in florida\b",
             r"\bflorida amendment 3\b"
         ]
+    },
+    {
+        "id": "headache-in-back-of-head",
+        "title": "Headache in Back of Head: Causes, Types & Doctor Care",
+        "category": "health",
+        "patterns": [
+            r"\bheadache in back of head\b",
+            r"\bpain in back of head\b",
+            r"\bpain in the back of your head\b",
+            r"\boccipital neuralgia\b",
+            r"\bcervicogenic headache\b",
+            r"\bbase of the skull headache\b",
+            r"\bback of head pain\b"
+        ]
     }
 ]
 
@@ -695,6 +709,11 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None, max_link
             "ast-blood-test-main-causes-diagnosis-recovery",
             "how-to-change-a-tire-meaning-background",
             "tax-brackets-2025-key-dates-holidays-full"
+        ],
+        "headache-in-back-of-head": [
+            "sinus-infection-symptoms-main-causes-diagnosis-recovery",
+            "how-to-stop-snoring-what-do-common",
+            "ast-blood-test-main-causes-diagnosis-recovery"
         ]
     }
 
