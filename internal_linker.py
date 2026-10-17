@@ -561,6 +561,18 @@ ANCHOR_MAP = [
             r"\bbase of the skull headache\b",
             r"\bback of head pain\b"
         ]
+    },
+    {
+        "id": "things-to-do-in-los-angeles",
+        "title": "Things to Do in Los Angeles: Top Attractions Guide",
+        "category": "culture",
+        "patterns": [
+            r"\bthings to do in los angeles\b",
+            r"\btop attractions in los angeles\b",
+            r"\bvisit los angeles\b",
+            r"\blos angeles travel guide\b",
+            r"\bvisiting los angeles\b"
+        ]
     }
 ]
 
@@ -714,6 +726,11 @@ def inject_natural_internal_links(content_html, curr_id, curr_cat=None, max_link
             "sinus-infection-symptoms-main-causes-diagnosis-recovery",
             "how-to-stop-snoring-what-do-common",
             "ast-blood-test-main-causes-diagnosis-recovery"
+        ],
+        "things-to-do-in-los-angeles": [
+            "the-wizard-of-oz-classic-movie-facts",
+            "where-is-cape-verde-geography-country-map",
+            "memorial-day-2026-dates-meaning-history-traditions"
         ]
     }
 
