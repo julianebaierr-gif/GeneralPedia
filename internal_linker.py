@@ -563,6 +563,55 @@ ANCHOR_MAP = [
         ]
     },
     {
+        "id": "how-to-clean-a-dishwasher",
+        "title": "How to Clean a Dishwasher: Deep Cleaning Guide",
+        "category": "how-to",
+        "patterns": [
+            r"\bhow to clean a dishwasher\b",
+            r"\bclean a dishwasher\b",
+            r"\bcleaning a dishwasher\b",
+            r"\bdishwasher cleaning\b",
+            r"\bdishwasher maintenance\b"
+        ]
+    },
+    {
+        "id": "honda-civic-sport",
+        "title": "Honda Civic Sport: 2026 Specs, Trims & Buyer Guide",
+        "category": "automotive",
+        "patterns": [
+            r"\bhonda civic sport\b",
+            r"\bcivic sport\b",
+            r"\bhonda civic\b"
+        ]
+    },
+    {
+        "id": "oliver-platt-movies-tv-shows",
+        "title": "Oliver Platt: Top Movies, TV Shows & Character Roles",
+        "category": "culture",
+        "patterns": [
+            r"\boliver platt movies and tv shows\b",
+            r"\boliver platt\b"
+        ]
+    },
+    {
+        "id": "yellowjackets-season-4",
+        "title": "Yellowjackets Season 4: Release Date, Cast & Season News",
+        "category": "culture",
+        "patterns": [
+            r"\byellowjackets season 4\b",
+            r"\byellowjackets\b"
+        ]
+    },
+    {
+        "id": "where-watch-summer-i-turned",
+        "title": "Where to Watch The Summer I Turned Pretty: Streaming Guide",
+        "category": "how-to",
+        "patterns": [
+            r"\bwhere to watch the summer i turned pretty\b",
+            r"\bthe summer i turned pretty\b"
+        ]
+    },
+    {
         "id": "things-to-do-in-los-angeles",
         "title": "Things to Do in Los Angeles: Top Attractions Guide",
         "category": "culture",
