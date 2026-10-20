@@ -18,6 +18,20 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 
 # Master Curated Anchor Patterns for Established Topic Clusters
 ANCHOR_MAP = [
+    {
+        "id": "truck-accident-attorney",
+        "title": "Truck Accident Attorney: 2026 Legal & Claims Guide",
+        "category": "finance",
+        "patterns": [
+            r"\btruck accident attorney\b",
+            r"\bcommercial truck accident lawyer\b",
+            r"\btruck accident lawyers\b",
+            r"\bsemi truck accident attorney\b",
+            r"\btractor trailer accident lawyer\b",
+            r"\bcommercial motor carrier liability\b"
+        ]
+    },
+
     # Health Cluster
     {
         "id": "ast-blood-test-main-causes-diagnosis-recovery",
