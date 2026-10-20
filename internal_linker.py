@@ -19,6 +19,19 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 # Master Curated Anchor Patterns for Established Topic Clusters
 ANCHOR_MAP = [
     {
+        "id": "twilight-movies-in-order",
+        "title": "Twilight Movies in Order: Complete Chronological Guide",
+        "category": "culture",
+        "patterns": [
+            r"\btwilight movies in order\b",
+            r"\btwilight saga in order\b",
+            r"\bthe twilight saga\b",
+            r"\btwilight films in order\b",
+            r"\bwatch twilight in order\b"
+        ]
+    },
+
+    {
         "id": "truck-accident-attorney",
         "title": "Truck Accident Attorney: 2026 Legal & Claims Guide",
         "category": "finance",
