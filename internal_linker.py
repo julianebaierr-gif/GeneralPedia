@@ -19,6 +19,19 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 # Master Curated Anchor Patterns for Established Topic Clusters
 ANCHOR_MAP = [
     {
+        "id": "aspire-credit-card",
+        "title": "Aspire Credit Card: Review, APR Fees & Credit Limits",
+        "category": "finance",
+        "patterns": [
+            r"\baspire credit card\b",
+            r"\baspire mastercard\b",
+            r"\baspire cash back rewards mastercard\b",
+            r"\bcredit cards for bad credit\b",
+            r"\bsubprime credit cards\b"
+        ]
+    },
+
+    {
         "id": "twilight-movies-in-order",
         "title": "Twilight Movies in Order: Complete Chronological Guide",
         "category": "culture",
