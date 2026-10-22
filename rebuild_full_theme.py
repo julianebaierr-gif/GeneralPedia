@@ -223,16 +223,9 @@ def rebuild_site():
         "@id": "https://www.generalpedia.com/#website",
         "url": "https://www.generalpedia.com",
         "name": "GeneralPedia",
+        "description": "Premier Digital Knowledge Magazine and Fact-Checked Encyclopedia",
         "publisher": {
           "@id": "https://www.generalpedia.com/#organization"
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": {
-            "@type": "EntryPoint",
-            "urlTemplate": "https://www.generalpedia.com/?q={search_term_string}"
-          },
-          "query-input": "required name=search_term_string"
         }
       }
     ]
