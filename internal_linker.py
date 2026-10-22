@@ -19,6 +19,18 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 # Master Curated Anchor Patterns for Established Topic Clusters
 ANCHOR_MAP = [
     {
+        "id": "sell-my-car",
+        "title": "Sell My Car: Value Calculator, Steps and Best Offers",
+        "category": "automotive",
+        "patterns": [
+            r"\bsell my car\b",
+            r"\bsell your car\b",
+            r"\bcar value calculator\b",
+            r"\bkelley blue book car value\b",
+            r"\bcar value by vin\b"
+        ]
+    },
+    {
         "id": "aspire-credit-card",
         "title": "Aspire Credit Card: Review, APR Fees & Credit Limits",
         "category": "finance",
