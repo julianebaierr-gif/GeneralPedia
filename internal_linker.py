@@ -19,6 +19,20 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 # Master Curated Anchor Patterns for Established Topic Clusters
 ANCHOR_MAP = [
     {
+        "id": "what-does-pmo-mean-in-text",
+        "title": "What Does PMO Mean in Text: Slang Definition and Uses",
+        "category": "culture",
+        "patterns": [
+            r"\bwhat does pmo mean in text\b",
+            r"\bpmo meaning in text\b",
+            r"\bwhat does pmo mean\b",
+            r"\bpmo in text\b",
+            r"\bwhat does wyll mean\b",
+            r"\bwhat does asl mean in text\b",
+            r"\bwhat does nfs mean in text\b"
+        ]
+    },
+    {
         "id": "sell-my-car",
         "title": "Sell My Car: Value Calculator, Steps and Best Offers",
         "category": "automotive",
