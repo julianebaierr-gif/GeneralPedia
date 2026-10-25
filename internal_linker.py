@@ -19,6 +19,23 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 # Master Curated Anchor Patterns for Established Topic Clusters
 ANCHOR_MAP = [
     {
+        "id": "what-is-doxycycline-used-for",
+        "title": "What Is Doxycycline Used For: Uses, Dose and Safety",
+        "category": "health",
+        "patterns": [
+            r"\bwhat is doxycycline used for\b",
+            r"\bdoxycycline used for\b",
+            r"\bdoxycycline uses\b",
+            r"\bdoxycycline for acne\b",
+            r"\bdoxycycline for lyme disease\b",
+            r"\bwhat is cephalexin used for\b",
+            r"\bwhat is azithromycin used for\b",
+            r"\bwhat is atorvastatin used for\b",
+            r"\bwhat is hydroxyzine used for\b",
+            r"\bwhat is lyrica used for\b"
+        ]
+    },
+    {
         "id": "what-does-pmo-mean-in-text",
         "title": "What Does PMO Mean in Text: Slang Definition and Uses",
         "category": "culture",
