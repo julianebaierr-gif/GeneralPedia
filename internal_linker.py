@@ -19,6 +19,18 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 # Master Curated Anchor Patterns for Established Topic Clusters
 ANCHOR_MAP = [
     {
+        "id": "high-school-musical-cast",
+        "title": "High School Musical Cast: Where Are They Now and Guide",
+        "category": "culture",
+        "patterns": [
+            r"\bhigh school musical cast\b",
+            r"\bhigh school musical cast members\b",
+            r"\bhigh school musical then and now\b",
+            r"\bcast of high school musical\b",
+            r"\btroy bolton and gabriella montez\b"
+        ]
+    },
+    {
         "id": "what-is-doxycycline-used-for",
         "title": "What Is Doxycycline Used For: Uses, Dose and Safety",
         "category": "health",
