@@ -19,6 +19,19 @@ POSTS_DIR = os.path.join(SCRATCH_DIR, "posts")
 # Master Curated Anchor Patterns for Established Topic Clusters
 ANCHOR_MAP = [
     {
+        "id": "wisdom-teeth-removal",
+        "title": "Wisdom Teeth Removal: Recovery, Cost and Pain Guide",
+        "category": "health",
+        "patterns": [
+            r"\bwisdom teeth removal\b",
+            r"\bwisdom tooth extraction\b",
+            r"\bwisdom teeth surgery\b",
+            r"\bimpacted wisdom teeth\b",
+            r"\bwisdom teeth recovery\b",
+            r"\bthird molars extraction\b"
+        ]
+    },
+    {
         "id": "high-school-musical-cast",
         "title": "High School Musical Cast: Where Are They Now and Guide",
         "category": "culture",
