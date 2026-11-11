@@ -413,14 +413,11 @@ def rebuild_site():
 </html>
 """
 
-    # For Homepage (index.html), wrap the site logo in <h1> so homepage has exactly 1 H1
-    home_logo_search = '<a href="/" onclick="handleNavClick(event, () => showHomeView())" class="site-logo" aria-label="GeneralPedia Magazine Home">'
-    home_logo_replace = '<h1 class="site-logo" style="display:inline-flex;margin:0;padding:0;font-size:inherit;line-height:inherit;"><a href="/" onclick="handleNavClick(event, () => showHomeView())" class="site-logo" aria-label="GeneralPedia Magazine Home">'
-    
-    home_logo_end_search = '</div>\n        </a>'
-    home_logo_end_replace = '</div>\n        </a></h1>'
+    # For Homepage (index.html), add a real descriptive <h1> heading in main content area (never wrap logo in H1)
+    home_h1_target = '<div class="home-main-title" id="home-main-h1">Everyday Reference, Money &amp; Living Guides</div>'
+    home_h1_replace = '<h1 class="home-main-title" id="home-main-h1">Everyday Reference, Money &amp; Living Guides</h1>'
 
-    index_html = home_full_html.replace(home_logo_search, home_logo_replace, 1).replace(home_logo_end_search, home_logo_end_replace, 1).replace('<div class="mag-section-title" id="mag-feed-heading">Latest Published Reports</div>', '<h2 class="mag-section-title" id="mag-feed-heading">Latest Published Reports</h2>', 1).replace(' id="structured-data-jsonld"', '', 1)
+    index_html = home_full_html.replace(home_h1_target, home_h1_replace, 1).replace('<div class="mag-section-title" id="mag-feed-heading">Latest Published Reports</div>', '<h2 class="mag-section-title" id="mag-feed-heading">Latest Published Reports</h2>', 1).replace(' id="structured-data-jsonld"', '', 1)
 
     index_file = os.path.join(SCRATCH_DIR, "index.html")
     site_index_file = os.path.join(SCRATCH_DIR, "site", "index.html")

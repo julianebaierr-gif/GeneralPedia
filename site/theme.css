@@ -417,6 +417,24 @@
     .magazine-hero-section {
       padding: 24px 0 16px;
     }
+    .home-editorial-header {
+      margin-bottom: 24px;
+      padding-bottom: 4px;
+    }
+    .home-main-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin: 0 0 6px 0;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .home-main-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.5;
+    }
     .hero-grid {
       display: grid;
       grid-template-columns: 1.6fr 1fr;
@@ -1679,6 +1697,12 @@
 
     /* Tablets & Phablets (max-width: 768px) */
     @media (max-width: 768px) {
+      .home-main-title {
+        font-size: 1.5rem;
+      }
+      .home-editorial-header {
+        margin-bottom: 16px;
+      }
       .magazine-layout {
         grid-template-columns: 1fr;
         gap: 24px;
